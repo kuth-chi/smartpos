@@ -115,12 +115,14 @@ if IS_HEROKU_APP:
     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
     # https://github.com/jazzband/dj-database-url
     DATABASES = {
-        "default": dj_database_url.config(
-        'postgres://webdata:webdata@34.142.215.184:5432/ezaccountdata',
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        ),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "accountdata",
+            "USER": "webdata",
+            "PASSWORD": "webdata",
+            "HOST": "34.142.215.184",
+            "PORT": "5432"
+        }
     }
 else:
     # When running locally in development or in CI, a sqlite database file will be used instead
