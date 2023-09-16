@@ -4,7 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-psycopg = "*"
+asgiref = "==3.7.2"
+brotli = "==1.1.0"
+dj-database-url = "==2.1.0"
+django = "==4.2.5"
+gunicorn = "==21.2.0"
+packaging = "==23.1"
+sqlparse = "==0.4.4"
+typing-extensions = "==4.7.1"
+tzdata = "==2023.3"
+whitenoise = "==6.5.0"
 
 [dev-packages]
 

@@ -9,3 +9,6 @@ db.sqlite3
 
 # macOS files
 .DS_Store
+
+# NPM
+node_modules
