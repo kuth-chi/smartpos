@@ -14,8 +14,6 @@ import os
 import secrets
 from pathlib import Path
 
-import dj_database_url
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -175,6 +173,11 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR / "static"),
+    #"/var/www/static/",
+]
+
 
 STORAGES = {
     # Enable WhiteNoise's GZip and Brotli compression of static assets:
