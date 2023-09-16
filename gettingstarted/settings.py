@@ -114,16 +114,26 @@ if IS_HEROKU_APP:
     # automatically by Heroku when a database addon is attached to your Heroku app. See:
     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
     # https://github.com/jazzband/dj-database-url
+
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "accountdata",
-            "USER": "webdata",
-            "PASSWORD": "webdata",
-            "HOST": "34.142.215.184",
-            "PORT": "5432"
-        }
+        'default': dj_database_url.config(
+            default='postgres://gaylxnavvsvxqd:8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008@ec2-3-232-218-211.compute-1.amazonaws.com:5432/daj0h80n2cdkmf',
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
+    # Connect with PSYCOPG
+    # DATABASES = {
+    #
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql",
+    #         "NAME": "accountdata",
+    #         "USER": "webdata",
+    #         "PASSWORD": "webdata",
+    #         "HOST": "34.142.215.184",
+    #         "PORT": "5432"
+    #     }
+    # }
 else:
     # When running locally in development or in CI, a sqlite database file will be used instead
     # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
