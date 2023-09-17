@@ -954,7 +954,7 @@ video {
 
   font-display: swap;
 
-  src: url(/static/assets/fonts/digital-7.ttf) format('ttf');
+  src: url(http://smartpos.ez-startup.com/static/assets/fonts/digital-7.ttf) format('ttf');
 
   unicode-range: U+1780-17FF, U+19E0-19FF, U+200C, U+25CC;
 }
