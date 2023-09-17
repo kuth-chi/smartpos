@@ -16,6 +16,8 @@ tzdata = "==2023.3"
 whitenoise = "==6.5.0"
 psycopg = {extras = ["binary", "pool"], version = "*"}
 django-rosetta = "*"
+pillow = "*"
+phonenumbers = "*"
 
 [dev-packages]
 

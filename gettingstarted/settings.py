@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import secrets
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -65,7 +66,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # USER APPS
     "hello",
+    "accounts",
+    
+    # THIRD_PARTY_APPS
+    'rosetta',
 ]
 
 MIDDLEWARE = [
@@ -112,13 +118,6 @@ if IS_HEROKU_APP:
     # automatically by Heroku when a database addon is attached to your Heroku app. See:
     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
     # https://github.com/jazzband/dj-database-url
-
-    if IS_HEROKU_APP:
-        # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-        # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-        # automatically by Heroku when a database addon is attached to your Heroku app. See:
-        # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
-        # https://github.com/jazzband/dj-database-url
         # DATABASES = {
         #     "default": {
         #         "ENGINE": "django.db.backends.postgresql",
@@ -138,25 +137,25 @@ if IS_HEROKU_APP:
         #     }
         # }
 
-        DATABASES = {
-            "default": {
-                "ENGINE": "django.db.backends.postgresql",
-                "NAME": "daj0h80n2cdkmf",
-                "USER": "gaylxnavvsvxqd",
-                "PASSWORD": "8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008",
-                "HOST": "ec2-3-232-218-211.compute-1.amazonaws.com",
-                "PORT": "5432",
-            }
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "daj0h80n2cdkmf",
+            "USER": "gaylxnavvsvxqd",
+            "PASSWORD": "8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008",
+            "HOST": "ec2-3-232-218-211.compute-1.amazonaws.com",
+            "PORT": "5432",
         }
-    else:
-        # When running locally in development or in CI, a sqlite database file will be used instead
-        # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
-        DATABASES = {
-            "default": {
-                "ENGINE": "django.db.backends.sqlite3",
-                "NAME": BASE_DIR / "db.sqlite3",
-            }
+    }
+else:
+    # When running locally in development or in CI, a sqlite database file will be used instead
+    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -186,6 +185,18 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+LANGUAGES = [
+    ('en', _('English')),
+    ('km', _('Khmer')),  # Khmer
+]
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+ROSETTA_STORAGE_CLASS = 'rosetta.storage.SessionRosettaStorage'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
+if LANGUAGE_CODE == 'en':
+    DATE_INPUT_FORMATS = ['%Y-%m-%d']
+else: 
+    DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
