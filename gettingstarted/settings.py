@@ -127,6 +127,14 @@ if IS_HEROKU_APP:
                 "PASSWORD": "webdatabase",
                 "HOST": "database.ez-startup.com",
                 "PORT": "5432",
+                "OPTIONS": {
+
+                    'sslmode': 'require',
+                    'sslcert': os.path.join(BASE_DIR, 'certs/client-cert.pem'),
+                    'sslkey': os.path.join(BASE_DIR, 'certs/client-key.pem'),
+                    'sslrootcert': os.path.join(BASE_DIR, 'certs/server-ca.pem'),
+
+                }
             }
         }
 
