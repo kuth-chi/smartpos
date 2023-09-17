@@ -34,6 +34,7 @@ SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     default=secrets.token_urlsafe(nbytes=64),
 )
+print(SECRET_KEY)
 
 # The `DYNO` env var is set on Heroku CI, but it's not a real Heroku app, so we have to
 # also explicitly exclude CI:
