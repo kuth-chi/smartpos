@@ -572,10 +572,6 @@ video {
   position: static;
 }
 
-.col-auto {
-  grid-column: auto;
-}
-
 .block {
   display: block;
 }
@@ -596,24 +592,16 @@ video {
   height: 90%;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-\[90\%\] {
   width: 90%;
 }
 
-.grid-flow-col {
-  grid-auto-flow: column;
+.w-full {
+  width: 100%;
 }
 
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-rows-4 {
-  grid-template-rows: repeat(4, minmax(0, 1fr));
 }
 
 .flex-row {
