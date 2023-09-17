@@ -6,44 +6,43 @@
 <div class="bg-gradient-to-r from-indigo-800 via-purple-700 to-pink-800/80 w-full overflow-hidden">
   <!-- header -->
   <div class="w-full shadow-md align-middle">
-
-      <nav class="flex flex-row justify-between container items-center h-[76px]">
-        <div class="text-bold text-slate-100">
-          EZ STARTUP
-        </div>
-        <div class="hidden md:block transition-all duration-200">
-          <div class="flex flex-row space-x-4 h-74">
-            <div class="hover:bg-slate-100/30 hover:text-gray-800 py-2 px-4 rounded-md text-slate-100">Products</div>
-            <div class="hover:bg-slate-100/30 hover:text-gray-800 py-2 px-4 rounded-md text-slate-100">Services</div>
-            <div class="hover:bg-slate-100/30 hover:text-gray-800 py-2 px-4 rounded-md text-slate-100">About</div>
-            <div class="hover:bg-slate-100/30 hover:text-gray-800 py-2 px-4 rounded-md text-slate-100">Contact Us</div>
-            <div class="hover:bg-slate-100/30 hover:text-gray-800 py-2 px-4 rounded-md text-slate-100">Quicks</div>
-          </div>
-        </div>
-      </nav>
-
+    {% include 'web/layout/navbar.html' %}
   </div>
 
-  <div class="container flex flex-row justify-center items-center w-full md:w-[90%] h-full md:h-[90%] p-2 md:p-8">
+  <div class="container flex flex-col md:flex-row justify-center items-center w-full md:w-[90%] h-full md:h-[90%] p-2 md:p-xl-5">
     <!-- Timing Section -->
-    <div class="w-full md:w-1/2 md:h-screen justify-center items-center">
+    <div class="w-full md:w-1/2 md:h-screen flex justify-center items-center">
       <h2 class="text-slate-100 uppercase">TIMING HERE</h2>
     </div>
-
-    <hr>
+  
+    <hr class="block md:hidden">
+  
     <!-- MENU Section -->
-    <div class="w-full md:w-1/2 md:h-screen justify-center items-center">
+    
+    <div class="w-full md:w-1/2 md:h-screen flex justify-center items-center">
       <h2 class="text-slate-100 uppercase">QUICK ACCESS</h2>
       <div class="w-full grid grid-cols-3 gap-4">
-        <div class="text-center">1</div>
-        <div class="text-center">2</div>
-        <div class="text-center">3</div>
-        <div class="text-center">4</div>
-        <div class="text-center">5</div>
-        <div class="text-center">6</div>
+        <div class="text-center rounded-md bg-slate-100/25">
+          <div class="card-title">Card Title 1</div>
+          <div class="card-body"></div>
+          <div class="card-footer"></div>
+        </div>
+        <div class="text-center rounded-md bg-slate-100/25">
+          <div class="card-title">Card Title 2</div>
+          <div class="card-body"></div>
+          <div class="card-footer"></div>
+        </div>
+        <div class="text-center rounded-md bg-slate-100/25">
+          <div class="card-title">Card Title 3</div>
+          <div class="card-body"></div>
+          <div class="card-footer"></div>
+        </div>
+        <div class="text-center card">4</div>
+        <div class="text-center card">5</div>
+        <div class="text-center card">6</div>
       </div>
     </div>
-
   </div>
+  
 </div>
 {% endblock %}

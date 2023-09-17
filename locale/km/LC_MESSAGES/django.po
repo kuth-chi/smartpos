@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 15:03+0700\n"
+"POT-Creation-Date: 2023-09-17 16:27+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
 #: .\accounts\forms.py:15 .\templates\auth\login.html:32
 #: .\templates\auth\register.html:147
 msgid "Password"
@@ -235,11 +236,11 @@ msgid ""
 "Invalid registration data. Please check the form for the following errors:"
 msgstr ""
 
-#: .\gettingstarted\settings.py:189
+#: .\gettingstarted\settings.py:190
 msgid "English"
 msgstr ""
 
-#: .\gettingstarted\settings.py:190
+#: .\gettingstarted\settings.py:191
 msgid "Khmer"
 msgstr ""
 
