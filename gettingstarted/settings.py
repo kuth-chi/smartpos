@@ -221,7 +221,7 @@ STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
 if IS_HEROKU_APP:
-    STATIC_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
+    STATIC_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME')) 
     MEDIA_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
     
 else:
@@ -234,7 +234,6 @@ STATICFILES_DIRS = [
     #"/var/www/static/",
 ]
 
-
 # STORAGES = {
 #     # Enable WhiteNoise's GZip and Brotli compression of static assets:
 #     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
@@ -246,7 +245,7 @@ STATICFILES_DIRS = [
 # Initialize the GCS client
 
 if IS_HEROKU_APP:
-    # google_cloud_storage = storage.Client(project=statup-394804)
+    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
