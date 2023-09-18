@@ -244,24 +244,24 @@ STATICFILES_DIRS = [
 # Configure GCS settings
 # Initialize the GCS client
 
-if IS_HEROKU_APP:
-    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-            "OPTIONS": {
-                "bucket_name": env('BUCKET_NAME'),
-                "location": env('LOCATIONS'),
-                "project_id": env('PROJECT_ID'),
-                "auto_create_bucket": True,
-                "default_acl": "publicRead",
-                "querystring_auth": False,
-                "file_overwrite": True,
-                "cache_control": "public, max-age=604800",
-                "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
-            },
+
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "OPTIONS": {
+            "bucket_name": env('BUCKET_NAME'),
+            "location": env('LOCATIONS'),
+            "project_id": env('PROJECT_ID'),
+            "auto_create_bucket": True,
+            "default_acl": "publicRead",
+            "querystring_auth": False,
+            "file_overwrite": True,
+            "cache_control": "public, max-age=604800",
+            "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
         },
-    }
+    },
+}
     
     
 
