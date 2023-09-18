@@ -220,13 +220,13 @@ else:
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
-if IS_HEROKU_APP:
-    STATIC_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME')) 
-    MEDIA_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
-    
-else:
-    STATIC_URL = "static/"
-    MEDIA_URL = "media/"
+
+STATIC_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME')) 
+MEDIA_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
+
+
+    # STATIC_URL = "static/"
+    # MEDIA_URL = "media/"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR / "static"),
