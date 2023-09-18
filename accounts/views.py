@@ -4,9 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
-import phonenumbers
-from phonenumbers.phonenumberutil import is_valid_number
-
+from accounts.utils import is_phone_number
 from .models import User
 from .forms import UserRegisterForm
 
@@ -16,59 +14,51 @@ def dashboard_user(request):
     return render(request, 'auth/dash/dashboard.html')
 
 
-def is_phone_number(value):
-    try:
-        parsed_number = phonenumbers.parse(value, None)  # None means "use the default region"
-        if is_valid_number(parsed_number):
-            return value
-    except phonenumbers.NumberParseException:
-        pass   # Invalid phone number format
-
-    return None
-
-
 User = get_user_model()
+
+from .utils import is_phone_number
+
 def user_signup(request):
+    """
+    Handle user sign up.
+    ...
+    """
+
     if request.user.is_authenticated:
         # for authenticated user, send them to dashboard
         return redirect('dashboard')
-    
-    elif request.method == 'POST':
+
+    if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             input_value = form.cleaned_data['email']
-            phone_or_email = is_phone_number(input_value)
+            phone_or_email = is_phone_number(input_value, is_email=True)
 
-            if phone_or_email and phone_or_email != str(User.objects.filter(pramary_phone=phone_or_email)):
-                print(str(User.objects.filter(pramary_phone=phone_or_email)))
-                # check if a phone number
-                user = User(primary_phone=phone_or_email)
-                # set email to blank if using phone number
-                user.email= '' 
+            if phone_or_email:
+                # The input value is an email address
+                if User.objects.filter(email=phone_or_email).exists():
+                    # Email address already in use
+                    raise ValidationError(_('Email already in use'))
             else:
-                try:
-                    # Check if an email address
-                    User.objects.filter(email=input_value)
-                    raise ValidationError(_('Email already in user'))
-                except User.DoesNotExist:
-                    # It's neither a valid phone number nor an existing email, raise an error
-                    raise ValidationError(_('Invalid email address or phone number'))
-                
+                # The input value is neither a valid phone number nor a valid email address
+                raise ValidationError(_('Invalid email address or phone number'))
+
+            user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             user.save()
             login(request, user)
             # Add message
             messages.success(request, _('Registration successful.'))
             # Redirect to success page
-            redirect('dashboard') # redirect to dashboard
+            return redirect('dashboard')  # redirect to dashboard
 
-        else:
-            # Add message for registration failure
-            error_message = _("Invalid registration data. Please check the form for the following errors:")
-            for field, errors in form.errors.items():
-                error_message += f"\n{field}: {', '.join(errors)}"
-            messages.error(request, error_message)
-    
+        # Add message for registration failure
+        error_message = _(
+            "Invalid registration data. Please check the form for the following errors:")
+        for field, errors in form.errors.items():
+            error_message += f"\n{field}: {', '.join(errors)}"
+        messages.error(request, error_message)
+
     else:
         form = UserRegisterForm()
 
@@ -77,6 +67,19 @@ def user_signup(request):
 
 # User login methods
 def user_login(request):
+    """
+    Logs in a user.
+
+    This function takes a request object as a parameter and checks if the user is already authenticated. If the user is authenticated, it redirects them to the dashboard page. If the user is not authenticated, it checks if the request method is POST and authenticates the user based on the provided username and password. 
+
+    Parameters:
+    - request: The request object containing the user's login information.
+
+    Returns:
+    - Redirects to the dashboard page if the user is authenticated.
+    - Renders the login page if the user is not authenticated or the request method is not POST.
+    """
+    # Function implementation...
 
     if request.user.is_authenticated:
         return redirect('dashboard')

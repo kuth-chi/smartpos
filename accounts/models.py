@@ -20,7 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     uuid = models.UUIDField(_('uuid'), unique=True, default=uuid.uuid4, editable=False)
     username = models.CharField(_('username'), unique=True, max_length=35, blank=True)
     email = models.EmailField(_('email'), max_length=25, blank=True)
-    primary_phone = models.CharField(max_length=12, blank=True, verbose_name=_('Primary phone'))
+    primary_phone = models.CharField(max_length=16, blank=True, verbose_name=_('Primary phone'))
     local_name = models.CharField(max_length=50, blank=True, verbose_name=_('Local name'), help_text=_("The name in your language"))
     first_name = models.CharField(max_length=50, blank=True, verbose_name=_('First name'))
     last_name = models.CharField(max_length=50, blank=True, verbose_name=_('Last name'))
@@ -36,6 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
+    unique_together = ("username", "email", "primary_phone")
     objects = UserAccountManager()
     
     # Add related_name for groups

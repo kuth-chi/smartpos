@@ -23,25 +23,25 @@ from django.conf.urls.static import static
 from .settings import IS_HEROKU_APP
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('hello.urls')),
     path('', include('accounts.urls'))
-    # Uncomment this and the entry in `INSTALLED_APPS` if you wish to use the Django admin feature:
-    # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/
-    # path("admin/", admin.site.urls),
 ]
 
 urlpatterns += i18n_patterns(
     path('', include('accounts.urls')),
-    # path("__reload__/", include("django_browser_reload.urls")),
-
-    # path('accounts/', include('django.contrib.auth.urls'))
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += [
         re_path(r'^rosetta/', include('rosetta.urls'))
     ]
+    
 if not IS_HEROKU_APP:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        
+    
+

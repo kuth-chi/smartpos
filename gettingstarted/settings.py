@@ -9,14 +9,24 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import environ
 import os
 import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from google.cloud import storage
+
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ENVIRON PATH
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Before using your Heroku app in production, make sure to review Django's deployment checklist:
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -34,7 +44,7 @@ SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     default=secrets.token_urlsafe(nbytes=64),
 )
-print(SECRET_KEY)
+# print(SECRET_KEY)
 
 # The `DYNO` env var is set on Heroku CI, but it's not a real Heroku app, so we have to
 # also explicitly exclude CI:
@@ -91,6 +101,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "gettingstarted.urls"
+# LOGIN URL
+LOGIN_URL = '/accounts/login/'
+AUTH_USER_MODEL = 'accounts.User'
 
 TEMPLATES = [
     {
@@ -204,23 +217,46 @@ else:
 
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 STATIC_URL = "static/"
+MEDIA_ROOT = os.path.join(BASE_DIR / "media")
+MEDIA_URL = "media/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR / "static"),
     #"/var/www/static/",
 ]
 
 
-STORAGES = {
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
-    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     # Enable WhiteNoise's GZip and Brotli compression of static assets:
+#     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
+# Configure GCS settings
+# Initialize the GCS client
+
+if IS_HEROKU_APP:
+    google_cloud_storage = storage.Client(project=env('PROJECT_ID'))
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": env('BUCKET_NAME'),
+                "location": env('LOCATIONS'),
+                "project_id": env('PROJECT_ID'),
+                "auto_create_bucket": True,
+                "default_acl": "publicRead",
+                "querystring_auth": False,
+                "file_overwrite": True,
+                "cache_control": "public, max-age=604800",
+                "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
+            },
+        },
+    }
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
-WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+# WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

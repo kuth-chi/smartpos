@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta class="meta-theme" name="color-scheme" content="light" data-other="dark"/>
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta class="meta-theme" name="color-scheme" content="light" data-other="dark"/>
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+      <title>
+          {% block title %} Home - EZ Account {% endblock %}
+      </title>
+    <!--
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-    <title>
-        {% block title %} Home - EZ Account {% endblock %}
-     </title>
-  <!--
-  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-  <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    {% include 'sources/style_head.html' %}
+  </head>
+  <body class="dark:bg-darkBlue2 dark:text-white font-mulish">
+    
+    {% block content %}{% endblock %}
 
-  {% include 'sources/style_head.html' %}
-</head>
-<body>
-{% block content %}{% endblock %}
-
-</body>
+  </body>
 </html>
