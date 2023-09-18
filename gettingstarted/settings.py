@@ -236,7 +236,7 @@ STATICFILES_DIRS = [
 # Initialize the GCS client
 
 if IS_HEROKU_APP:
-    google_cloud_storage = storage.Client(project=env('PROJECT_ID'))
+    google_cloud_storage = storage.Client(project=statup-394804)
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
@@ -249,7 +249,7 @@ if IS_HEROKU_APP:
                 "querystring_auth": False,
                 "file_overwrite": True,
                 "cache_control": "public, max-age=604800",
-                "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
+                # "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
             },
         },
     }
