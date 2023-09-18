@@ -221,40 +221,38 @@ STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
 
 
-STATIC_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME')) 
-MEDIA_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
+STATIC_URL = "https://storage.googleapis.com/{}/static/".format(env('BUCKET_NAME'))
+MEDIA_URL = "https://storage.googleapis.com/{}/media/".format(env('BUCKET_NAME'))
 
-
-    # STATIC_URL = "static/"
-    # MEDIA_URL = "media/"
+# STATIC_URL = "/static/"
+# MEDIA_URL = "/media/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / "static"),
-    os.path.join(BASE_DIR / "media"),
-    #"/var/www/static/",
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "media"),
+    # "/var/www/static/",
 ]
-
 
 # Configure GCS settings
 # Initialize the GCS client
-STORAGES = { 
-    "default": { 
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage", 
-        "OPTIONS": { 
-            "bucket_name": env('BUCKET_NAME'), 
-            "location": env('LOCATIONS'), 
-            "project_id": env('PROJECT_ID'), 
-            "auto_create_bucket": True, 
-            "default_acl": "publicRead", 
-            "querystring_auth": False, 
-            "file_overwrite": True, 
-            "cache_control": "public, max-age=604800", 
-            "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH')) 
-            }, 
-        }, 
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "OPTIONS": {
+            "bucket_name": env('BUCKET_NAME'),
+            "location": env('LOCATIONS'),
+            "project_id": env('PROJECT_ID'),
+            "auto_create_bucket": True,
+            "default_acl": "publicRead",
+            "querystring_auth": False,
+            "file_overwrite": True,
+            "cache_control": "public, max-age=604800",
+            "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
+        },
+    },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage", 
-        }, 
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
