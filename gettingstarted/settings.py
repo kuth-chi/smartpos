@@ -14,9 +14,7 @@ import os
 import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
-from google.cloud import storage
-from google.oauth2 import service_account
-from storages.backends.gcloud import GoogleCloudStorage
+
 
 
 env = environ.Env(
@@ -219,45 +217,30 @@ else:
 
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
-
-
-STATIC_URL = "https://storage.googleapis.com/{}/static/".format(env('BUCKET_NAME'))
-MEDIA_URL = "https://storage.googleapis.com/{}/media/".format(env('BUCKET_NAME'))
-
-# STATIC_URL = "/static/"
-# MEDIA_URL = "/media/"
+STATIC_URL = "static/"
+MEDIA_URL = "media/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "media"),
-    # "/var/www/static/",
+    os.path.join(BASE_DIR / "static"),
+    os.path.join(BASE_DIR / "media"),
+    #"/var/www/static/",
 ]
 
-# Configure GCS settings
-# Initialize the GCS client
 STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-        "OPTIONS": {
-            "bucket_name": env('BUCKET_NAME'),
-            "location": env('LOCATIONS'),
-            "project_id": env('PROJECT_ID'),
-            "auto_create_bucket": True,
-            "default_acl": "publicRead",
-            "querystring_auth": False,
-            "file_overwrite": True,
-            "cache_control": "public, max-age=604800",
-            "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
-        },
-    },
+    # Enable WhiteNoise's GZip and Brotli compression of static assets:
+    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
+
+    
+    
+
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
-# WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
