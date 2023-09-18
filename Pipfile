@@ -11,7 +11,7 @@ django = "==4.2.5"
 gunicorn = "==21.2.0"
 packaging = "==23.1"
 sqlparse = "==0.4.4"
-typing-extensions = "==4.7.1"
+typing-extensions = "==4.8.0"
 tzdata = "==2023.3"
 whitenoise = "==6.5.0"
 psycopg = {extras = ["binary", "pool"], version = "*"}
