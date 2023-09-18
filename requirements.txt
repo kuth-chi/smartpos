@@ -33,5 +33,5 @@ rsa==4.9
 sqlparse==0.4.4
 typing_extensions==4.7.1
 tzdata==2023.3
-urllib3==1.26.16
+urllib3==2.0.4
 whitenoise==6.5.0
