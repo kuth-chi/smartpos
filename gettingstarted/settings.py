@@ -234,36 +234,28 @@ STATICFILES_DIRS = [
     #"/var/www/static/",
 ]
 
-# STORAGES = {
-#     # Enable WhiteNoise's GZip and Brotli compression of static assets:
-#     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+
 # Configure GCS settings
 # Initialize the GCS client
-
-
-STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-        "OPTIONS": {
-            "bucket_name": env('BUCKET_NAME'),
-            "location": env('LOCATIONS'),
-            "project_id": env('PROJECT_ID'),
-            "auto_create_bucket": True,
-            "default_acl": "publicRead",
-            "querystring_auth": False,
-            "file_overwrite": True,
-            "cache_control": "public, max-age=604800",
-            "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH'))
-        },
-    },
+STORAGES = { 
+    "default": { 
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage", 
+        "OPTIONS": { 
+            "bucket_name": env('BUCKET_NAME'), 
+            "location": env('LOCATIONS'), 
+            "project_id": env('PROJECT_ID'), 
+            "auto_create_bucket": True, 
+            "default_acl": "publicRead", 
+            "querystring_auth": False, 
+            "file_overwrite": True, 
+            "cache_control": "public, max-age=604800", 
+            "credentials": os.path.join(BASE_DIR, env('CREDENTIALS_PATH')) 
+            }, 
+        }, 
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage", 
+        }, 
 }
-    
-    
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
