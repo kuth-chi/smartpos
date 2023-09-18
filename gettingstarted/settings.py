@@ -15,6 +15,8 @@ import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from google.cloud import storage
+from google.oauth2 import service_account
+from storages.backends.gcloud import GoogleCloudStorage
 
 
 env = environ.Env(
@@ -216,11 +218,19 @@ else:
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
-STATIC_URL = "static/"
 MEDIA_ROOT = os.path.join(BASE_DIR / "media")
-MEDIA_URL = "media/"
+
+if IS_HEROKU_APP:
+    STATIC_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
+    MEDIA_URL = "https://storage.googleapis.com/{}/".format(env('BUCKET_NAME'))
+    
+else:
+    STATIC_URL = "static/"
+    MEDIA_URL = "media/"
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR / "static"),
+    os.path.join(BASE_DIR / "media"),
     #"/var/www/static/",
 ]
 
@@ -253,6 +263,8 @@ if IS_HEROKU_APP:
             },
         },
     }
+    
+    
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
