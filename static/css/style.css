@@ -604,6 +604,30 @@ video {
   top: 2rem;
 }
 
+.top-0 {
+  top: 0px;
+}
+
+.top-10 {
+  top: 2.5rem;
+}
+
+.top-12 {
+  top: 3rem;
+}
+
+.left-0 {
+  left: 0px;
+}
+
+.right-0 {
+  right: 0px;
+}
+
+.left-auto {
+  left: auto;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -751,6 +775,10 @@ video {
 
 .max-w-screen-xl {
   max-width: 1280px;
+}
+
+.max-w-\[max-container-width\] {
+  max-width: max-container-width;
 }
 
 .transform {
@@ -964,6 +992,14 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+
+.bg-gray-700\/80 {
+  background-color: rgb(55 65 81 / 0.8);
+}
+
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
@@ -1146,6 +1182,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.no-underline {
+  text-decoration-line: none;
+}
+
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -1166,6 +1206,12 @@ video {
 
 .transition-all {
   transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-opacity {
+  transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -1630,6 +1676,11 @@ video {
   background-color: rgb(59 130 246 / 0.3);
 }
 
+.hover\:px-4:hover {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .hover\:text-black:hover {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -1746,6 +1797,10 @@ video {
   background-color: hsl(216 53% 9% / var(--tw-bg-opacity));
 }
 
+:is(.dark .dark\:bg-gray-700\/80) {
+  background-color: rgb(55 65 81 / 0.8);
+}
+
 :is(.dark .dark\:to-darkBlue) {
   --tw-gradient-to: hsl(217, 28%, 15%) var(--tw-gradient-to-position);
 }
@@ -1849,6 +1904,10 @@ video {
 
   .md\:top-40 {
     top: 10rem;
+  }
+
+  .md\:right-auto {
+    right: auto;
   }
 
   .md\:order-1 {
