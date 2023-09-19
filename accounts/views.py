@@ -4,9 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
-from accounts.utils import is_phone_number
 from .models import User
 from .forms import UserRegisterForm
+from .utils import is_phone_number
 
 
 @login_required
@@ -15,9 +15,6 @@ def dashboard_user(request):
 
 
 User = get_user_model()
-
-from .utils import is_phone_number
-
 def user_signup(request):
     """
     Handle user sign up.

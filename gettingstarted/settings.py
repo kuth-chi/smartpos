@@ -14,6 +14,7 @@ import os
 import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from google.oauth2 import service_account
 
 
 
@@ -100,6 +101,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.CustomUserModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 ROOT_URLCONF = "gettingstarted.urls"
 # LOGIN URL
 LOGIN_URL = '/accounts/login/'
@@ -154,11 +160,11 @@ if IS_HEROKU_APP:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": "daj0h80n2cdkmf",
-            "USER": "gaylxnavvsvxqd",
-            "PASSWORD": "8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008",
-            "HOST": "ec2-3-232-218-211.compute-1.amazonaws.com",
-            "PORT": "5432",
+            "NAME": env('NAME'),
+            "USER": env('USER'),
+            "PASSWORD": env('PASSWORD'),
+            "HOST": env('HOST'),
+            "PORT": env('PORT'),
         }
     }
 else:
@@ -226,14 +232,37 @@ STATICFILES_DIRS = [
     #"/var/www/static/",
 ]
 
-STORAGES = {
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
-    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     'default': {
+#         'BACKEND': 'django.core.files.storage.FileSystemStorage',
+#         'LOCATION': os.path.join(BASE_DIR, 'media'),
+#     },
+#     # Enable WhiteNoise's GZip and Brotli compression of static assets:
+#     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
+
+
+
+if IS_HEROKU_APP:
+    # Configure the Google Cloud Storage credentials
+    GOOGLE_CLOUD_STORAGE = {
+        'bucket_name': env("BUCKET_NAME"),
+        'credentials': service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, 'certs/secrets/key-storage-pos.json'))
+    }
+    # Configure the default storage
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    
+else: 
+    # Use FileSystemStorage for development environment
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+    # Enable WhiteNoise's GZip and Brotli compression of static assets
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     
     

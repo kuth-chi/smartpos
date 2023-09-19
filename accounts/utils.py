@@ -1,21 +1,20 @@
+from django.shortcuts import get_object_or_404
 import phonenumbers
 from phonenumbers.util import prnt
+from .models import AccountGallery
+
+
+# PROFILE IMAGE
+def get_user_profile_image(user):
+    profile_image = None
+    account_gallery = get_object_or_404(AccountGallery, uploaded_by=user, is_avatar=True)
+    if account_gallery.image:
+        profile_image = account_gallery.image.url
+    return profile_image
+
 
 # Validate Phone number
-
-
-
 def is_phone_number(value, is_email=False):
-    """
-    Check if the given value is a valid phone number or email address.
-
-    Parameters:
-    - value: A string representing the phone number or email address to be validated.
-    - is_email: A boolean indicating whether the value should be treated as an email address.
-
-    Returns:
-    - The input value if it is a valid phone number and is_email is False, or the input value if is_email is True, or None otherwise.
-    """
     if is_email:
         return value
 
