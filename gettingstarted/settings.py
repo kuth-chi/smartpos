@@ -232,37 +232,25 @@ STATICFILES_DIRS = [
     # "/var/www/static/",
 ]
 
-# STORAGES = {
-#     'default': {
-#         'BACKEND': 'django.core.files.storage.FileSystemStorage',
-#         'LOCATION': os.path.join(BASE_DIR, 'media'),
-#     },
-#     # Enable WhiteNoise's GZip and Brotli compression of static assets:
-#     # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'LOCATION': os.path.join(BASE_DIR, 'media'),
+    },
+    # Enable WhiteNoise's GZip and Brotli compression of static assets:
+    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
-if IS_HEROKU_APP:
-    # Configure the Google Cloud Storage credentials
-    GOOGLE_CLOUD_STORAGE = {
-        'bucket_name': 'smartpos.ez-startup.com',
-        
-        'credentials': service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, 'certs/secrets/key-storage-pos.json'))
-    }
-    # Configure the default storage
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    
-else:
-    # Use FileSystemStorage for development environment
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-    # Enable WhiteNoise's GZip and Brotli compression of static assets
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Use FileSystemStorage for development environment
+# DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
+# Enable WhiteNoise's GZip and Brotli compression of static assets
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
