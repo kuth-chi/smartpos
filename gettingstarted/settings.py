@@ -159,11 +159,11 @@ if IS_HEROKU_APP:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": env('NAME'),
-            "USER": env('USER'),
-            "PASSWORD": env('PASSWORD'),
-            "HOST": env('HOST'),
-            "PORT": env('PORT'),
+            "NAME": 'daj0h80n2cdkmf',
+            "USER": 'gaylxnavvsvxqd',
+            "PASSWORD": '8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008',
+            "HOST": 'ec2-3-232-218-211.compute-1.amazonaws.com',
+            "PORT": 5432,
         }
     }
 
