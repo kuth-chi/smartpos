@@ -17,7 +17,6 @@ from django.utils.translation import gettext_lazy as _
 from google.oauth2 import service_account
 
 
-
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -81,7 +80,7 @@ INSTALLED_APPS = [
     # USER APPS
     "hello",
     "accounts",
-    
+
     # THIRD_PARTY_APPS
     'rosetta',
 ]
@@ -138,24 +137,24 @@ if IS_HEROKU_APP:
     # automatically by Heroku when a database addon is attached to your Heroku app. See:
     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
     # https://github.com/jazzband/dj-database-url
-        # DATABASES = {
-        #     "default": {
-        #         "ENGINE": "django.db.backends.postgresql",
-        #         "NAME": "webdata",
-        #         "USER": "webdata",
-        #         "PASSWORD": "webdatabase",
-        #         "HOST": "database.ez-startup.com",
-        #         "PORT": "5432",
-        #         "OPTIONS": {
-        #
-        #             'sslmode': 'require',
-        #             'sslcert': os.path.join(BASE_DIR, 'certs/client-cert.pem'),
-        #             'sslkey': os.path.join(BASE_DIR, 'certs/client-key.pem'),
-        #             'sslrootcert': os.path.join(BASE_DIR, 'certs/server-ca.pem'),
-        #
-        #         }
-        #     }
-        # }
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql",
+    #         "NAME": "webdata",
+    #         "USER": "webdata",
+    #         "PASSWORD": "webdatabase",
+    #         "HOST": "database.ez-startup.com",
+    #         "PORT": "5432",
+    #         "OPTIONS": {
+    #
+    #             'sslmode': 'require',
+    #             'sslcert': os.path.join(BASE_DIR, 'certs/client-cert.pem'),
+    #             'sslkey': os.path.join(BASE_DIR, 'certs/client-key.pem'),
+    #             'sslrootcert': os.path.join(BASE_DIR, 'certs/server-ca.pem'),
+    #
+    #         }
+    #     }
+    # }
 
     DATABASES = {
         "default": {
@@ -167,6 +166,7 @@ if IS_HEROKU_APP:
             "PORT": env('PORT'),
         }
     }
+
 else:
     # When running locally in development or in CI, a sqlite database file will be used instead
     # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
@@ -215,7 +215,7 @@ ROSETTA_STORAGE_CLASS = 'rosetta.storage.SessionRosettaStorage'
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 if LANGUAGE_CODE == 'en':
     DATE_INPUT_FORMATS = ['%Y-%m-%d']
-else: 
+else:
     DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # Static files (CSS, JavaScript, Images)
@@ -229,7 +229,7 @@ MEDIA_URL = "media/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR / "static"),
     os.path.join(BASE_DIR / "media"),
-    #"/var/www/static/",
+    # "/var/www/static/",
 ]
 
 # STORAGES = {
@@ -245,18 +245,17 @@ STATICFILES_DIRS = [
 # }
 
 
-
-
 if IS_HEROKU_APP:
     # Configure the Google Cloud Storage credentials
     GOOGLE_CLOUD_STORAGE = {
-        'bucket_name': env("BUCKET_NAME"),
+        'bucket_name': 'smartpos.ez-startup.com',
+        
         'credentials': service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, 'certs/secrets/key-storage-pos.json'))
     }
     # Configure the default storage
     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
     
-else: 
+else:
     # Use FileSystemStorage for development environment
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -264,8 +263,6 @@ else:
     # Enable WhiteNoise's GZip and Brotli compression of static assets
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    
-    
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
