@@ -244,9 +244,7 @@ if IS_HEROKU_APP:
         # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-
-        },
-        
+        },     
     }
     
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
