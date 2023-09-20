@@ -14,7 +14,7 @@ import os
 import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
-from google.oauth2 import service_account
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 env = environ.Env(
@@ -83,6 +83,7 @@ INSTALLED_APPS = [
 
     # THIRD_PARTY_APPS
     'rosetta',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -137,32 +138,13 @@ if IS_HEROKU_APP:
     # automatically by Heroku when a database addon is attached to your Heroku app. See:
     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
     # https://github.com/jazzband/dj-database-url
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.postgresql",
-    #         "NAME": "webdata",
-    #         "USER": "webdata",
-    #         "PASSWORD": "webdatabase",
-    #         "HOST": "database.ez-startup.com",
-    #         "PORT": "5432",
-    #         "OPTIONS": {
-    #
-    #             'sslmode': 'require',
-    #             'sslcert': os.path.join(BASE_DIR, 'certs/client-cert.pem'),
-    #             'sslkey': os.path.join(BASE_DIR, 'certs/client-key.pem'),
-    #             'sslrootcert': os.path.join(BASE_DIR, 'certs/server-ca.pem'),
-    #
-    #         }
-    #     }
-    # }
-
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": 'daj0h80n2cdkmf',
-            "USER": 'gaylxnavvsvxqd',
-            "PASSWORD": '8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008',
-            "HOST": 'ec2-3-232-218-211.compute-1.amazonaws.com',
+            "NAME": env('ADB_NAME'),
+            "USER": env('ADB_USER'),
+            "PASSWORD": env('ADB_PASSWORD'),
+            "HOST": env('ADB_HOST'),
             "PORT": 5432,
         }
     }
@@ -213,36 +195,91 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 ROSETTA_STORAGE_CLASS = 'rosetta.storage.SessionRosettaStorage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-if LANGUAGE_CODE == 'en':
-    DATE_INPUT_FORMATS = ['%Y-%m-%d']
-else:
-    DATE_INPUT_FORMATS = ['%d-%m-%Y']
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
+
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
-MEDIA_ROOT = os.path.join(BASE_DIR / "media")
-STATIC_URL = "static/"
-MEDIA_URL = "media/"
+# Use AWS S3 storage for static and media files on Heroku
+# Static and Media settings
+if IS_HEROKU_APP:
+    # AWS S3 configuration
+    AWS_ACCESS_KEY_ID = 'AKIAVVKH7VVUMTNQINWO'
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3'
+    AWS_S3_REGION_NAME = 'us-east-1'  # Region
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_DEFAULT_ACL = "public-read"
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / "static"),
-    os.path.join(BASE_DIR / "media"),
-    # "/var/www/static/",
+    # Optional: Set custom storage classes (e.g., for different folders) 
+    STATIC_URL = "/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+        "https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/"
+    ]
+    MEDIA_ROOT = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/'
+    MEDIA_URL = "/media/"
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",  # Cache static assets for a day (optional)
+    }
+
+    # Use S3 for static files storage
+    STORAGES = {
+        'default': {
+            'BACKEND': 'storages.backends.s3.S3Storage',
+            'location': 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/',
+             'OPTIONS': {
+                 'access_key': f'{AWS_ACCESS_KEY_ID}',
+                 'secret_key': f'{AWS_SECRET_ACCESS_KEY}',
+                 'default_acl': "public-read",
+                 'gzip': True,
+                 'querystring_expire':86400,
+             }
+        },
+        # Enable WhiteNoise's GZip and Brotli compression of static assets:
+        # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+
+        },
+        
+    }
+    
+    WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+    
+else:
+    STORAGES = {
+        'default': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+            'LOCATION': [os.path.join(BASE_DIR, 'media'), os.path.join(BASE_DIR, 'static')],
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",   
+        },
+    }
+    # Use WhiteNoise for development environment
+    STATIC_URL = "static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+    # Media files
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+    ]
+   
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-STORAGES = {
-    'default': {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
-        'LOCATION': os.path.join(BASE_DIR, 'media'),
-    },
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
-    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# Other settings...
+
 
 
 
@@ -254,7 +291,7 @@ STORAGES = {
 
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
-WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

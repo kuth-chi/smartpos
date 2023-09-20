@@ -9,13 +9,6 @@ Django==4.2.5
 django-environ==0.11.2
 django-rosetta==0.9.9
 django-storages==1.14
-google-api-core==2.11.1
-google-auth==2.23.0
-google-cloud-core==2.3.3
-google-cloud-storage==2.10.0
-google-crc32c==1.5.0
-google-resumable-media==2.6.0
-googleapis-common-protos==1.60.0
 gunicorn==21.2.0
 idna==3.4
 packaging==23.1
@@ -33,5 +26,5 @@ rsa==4.9
 sqlparse==0.4.4
 typing_extensions==4.7.1
 tzdata==2023.3
-urllib3==2.0.4
+urllib3==1.26.16
 whitenoise==6.5.0

@@ -12,11 +12,11 @@
     </div>
     
     <main class="container">
-        <div class="w-full h-full top-8 flex flex-col justify-center items-center duration-300 transition-all ">
-            <div class="flex flex-row w-11/12 md:w-11/12 lg:w-5/6 h-4/5 md:h-4/5 justify-start md:justify-center items-center align-middle rounded-xl md:rounded-3xl bg-gray-300/5 p-4 md:p-16 container">
+        <div class="w-full h-full top-8 flex flex-col justify-center items-center duration-300 transition-all">
+            <div class="flex flex-row h-4/5 md:h-4/5 justify-start md:justify-center items-center align-middle rounded-xl md:rounded-3xl bg-gray-300/5 p-4 md:p-8 container">
                 <!-- IMAGE -->
-                <div class="hidden lg:block md:w-1/2 hover:drop-shadow-md hover:shadow-sky-500 text-center align-middle">
-                    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2800 2141" width="410" height="312">
+                <div class="hidden md:block align-middle text-center md:w-1/2 hover:drop-shadow-md hover:shadow-sky-500">
+                    <svg version="1.2" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2800 2141">
                         <title>EZ Account Image</title>
                         <defs>
                             <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -26,6 +26,7 @@
                                 <path d="m38.22 28.94h2723.35v2084.69h-2723.35z"/>
                             </clipPath>
                         </defs>
+                        
                         <style>
                             .s0 { fill: #193770 } 
                             .s1 { fill: #eaedf5 } 
@@ -135,17 +136,17 @@
                         <div class="w-full px-4 md:px-8 space-y-4">                              
                             <!-- NAME -->
                             <div class=" w-8/10 md:w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2 justify-center items-center">
-                                <input class="w-full h-fit md:w-1/2 py-2 px-4 border-2 border-sky-500/40 focus:border-sky-500/5 dark:bg-sky-900/10 rounded-md" id="first_name" type="text" name="first_name" placeholder="{% translate "First name" %}"/>
-                                <input class="w-full h-fit md:w-1/2 py-2 px-4 border-2 border-sky-500/40 focus:border-sky-500/5 dark:bg-sky-900/10 rounded-md" id="last_name" type="text" name="last_name" placeholder="{% translate "Last name" %}"/>
+                                <input class="w-full h-fit md:w-1/2 py-2 px-4 border-opacity-80 border-2 border-sky-500/80 dark:border-sky-500/40 dark:text-slate-200 focus:outline focus:outline-sky-500 focus:bg-transparent dark:bg-sky-900/10 rounded-md" id="first_name" type="text" name="first_name" placeholder="{% translate "First name" %}"/>
+                                <input class="w-full h-fit md:w-1/2 py-2 px-4 border-opacity-80 border-2 border-sky-500/80 dark:border-sky-500/40 dark:text-slate-200 focus:outline focus:outline-sky-500 focus:bg-transparent dark:bg-sky-900/10 rounded-md" id="last_name" type="text" name="last_name" placeholder="{% translate "Last name" %}"/>
                             </div>
                             
                             <!-- CREDENTAILS-->
                             
-                            <input class="w-full md:w-full py-2 px-4 border-2 border-sky-500/40 focus:border-sky-500/5 dark:bg-sky-900/10 rounded-md" id="phone_or_email" type="text" name="email" placeholder="{% translate "E-mail or Phone" %}"></input>
+                            <input class="w-full md:w-full py-2 px-4 border-opacity-80 border-2 border-sky-500/80 dark:border-sky-500/40 dark:text-slate-200 focus:outline focus:outline-sky-500 focus:bg-transparent dark:bg-sky-900/10 rounded-md" id="phone_or_email" type="text" name="email" placeholder="{% translate "E-mail or Phone" %}"></input>
                             
                             <div class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-2">
-                                <input class="w-full md:w-1/2 py-2 px-4 border-2 border-sky-500/40 focus:border-sky-500/5 dark:bg-sky-900/10 rounded-md" id="PasswordInputRegister" type="password" name="password1" placeholder="{% translate "Password" %}" required></input>
-                                <input class="w-full md:w-1/2 py-2 px-4 border-2 border-sky-500/40 focus:border-sky-500/5 dark:bg-sky-900/10 rounded-md" id="Password2InputRegister" type="password" name="password2" placeholder="{% translate "Password again" %}" required></input>
+                                <input class="w-full md:w-1/2 py-2 px-4 border-opacity-80 border-2 border-sky-500/80 dark:border-sky-500/40 dark:text-slate-200 focus:outline focus:outline-sky-500 focus:bg-transparent dark:bg-sky-900/10 rounded-md" id="PasswordInputRegister" type="password" name="password1" placeholder="{% translate "Password" %}" required></input>
+                                <input class="w-full md:w-1/2 py-2 px-4 border-opacity-80 border-2 border-sky-500/80 dark:border-sky-500/40 dark:text-slate-200 focus:outline focus:outline-sky-500 focus:bg-transparent dark:bg-sky-900/10 rounded-md" id="Password2InputRegister" type="password" name="password2" placeholder="{% translate "Password again" %}" required></input>
                             </div>
                         </div> 
                         <hr class="my-4 h-0">

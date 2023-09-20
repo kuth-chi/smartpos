@@ -63,6 +63,8 @@ def user_signup(request):
 
 
 # User login methods
+from django.contrib.sessions.models import Session
+
 def user_login(request):
     """
     Logs in a user.
@@ -85,6 +87,7 @@ def user_login(request):
         # Get the username and password from the POST request
         username = request.POST['username']
         password = request.POST['password']
+        remember_me = request.POST.get('remember_me') == 'on'
 
         # Authenticate the user
         user = authenticate(request, username=username, password=password)
@@ -93,6 +96,13 @@ def user_login(request):
         if user is not None:
             # Log the user in and set a session variable
             login(request, user)
+            
+            # Set session expiry based on 'remember me' checkbox
+            if remember_me:
+                request.session.set_expiry(0)  # Set session to never expire
+            else:
+                request.session.set_expiry(None)  # Use default session expiry time
+            
             messages.success(request, "You have logged in successfully")
             # Redirect to a success page (replace 'dashboard' with your URL)
             return redirect('dashboard')

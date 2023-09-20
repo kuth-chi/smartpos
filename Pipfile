@@ -18,9 +18,9 @@ psycopg = {extras = ["binary", "pool"], version = "*"}
 django-rosetta = "*"
 pillow = "*"
 phonenumbers = "*"
-google-cloud-storage = "*"
 django-environ = "*"
-django-storages = {extras = ["google"], version = "*"}
+django-storages = "*"
+boto3 = "*"
 
 [dev-packages]
 

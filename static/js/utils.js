@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Toggle the 'hidden' class to show/hide the dropdown 
     collapsibleDiv.classList.toggle('hidden');
     // Update the 'aria-expanded' attribute for accessibility
-    const expanded = collapsibleDiv.classList.contains('hidden') ? 'false' : 'true';
+    // const expanded = collapsibleDiv.classList.contains('hidden') ? 'false' : 'true';
     userMenuButton.setAttribute('aria-expanded', expanded);
   });
 });
