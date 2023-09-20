@@ -280,16 +280,10 @@ STATICFILES_FINDERS = [
 ]
 
 # Other settings...
-
-
-
-
 # Use FileSystemStorage for development environment
 # DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
 # Enable WhiteNoise's GZip and Brotli compression of static assets
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # Don't store the original (un-hashed filename) version of static files, to reduce slug size:
 # https://whitenoise.readthedocs.io/en/latest/django.html#WHITENOISE_KEEP_ONLY_HASHED_FILES
 
