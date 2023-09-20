@@ -141,10 +141,10 @@ if IS_HEROKU_APP:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": env('ADB_NAME'),
-            "USER": env('ADB_USER'),
-            "PASSWORD": env('ADB_PASSWORD'),
-            "HOST": env('ADB_HOST'),
+            "NAME": env('AWS_DB_NAME'),
+            "USER": env('AWS_DB_USER'),
+            "PASSWORD": env('AWS_DB_PASSWORD'),
+            "HOST": env('AWS_DB_HOST'),
             "PORT": 5432,
         }
     }
