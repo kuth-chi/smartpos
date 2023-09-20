@@ -233,8 +233,8 @@ if IS_HEROKU_APP:
             'BACKEND': 'storages.backends.s3.S3Storage',
             'location': 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/',
              'OPTIONS': {
-                 'access_key': f'{AWS_ACCESS_KEY_ID}',
-                 'secret_key': f'{AWS_SECRET_ACCESS_KEY}',
+                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
+                 'secret_key': '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',
                  'default_acl': "public-read",
                  'gzip': True,
                  'querystring_expire':86400,
