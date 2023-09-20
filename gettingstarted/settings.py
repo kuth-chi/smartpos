@@ -213,15 +213,6 @@ if IS_HEROKU_APP:
     AWS_S3_REGION_NAME = 'us-east-1'  # Region
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_DEFAULT_ACL = "public-read"
-
-    # Optional: Set custom storage classes (e.g., for different folders) 
-    STATIC_URL = "/static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    MEDIA_ROOT = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
-    MEDIA_URL = "/media/"
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'staticfiles'),
-    ]
     
     AWS_S3_OBJECT_PARAMETERS = {
         "CacheControl": "max-age=86400",  # Cache static assets for a day (optional)
@@ -231,7 +222,7 @@ if IS_HEROKU_APP:
     STORAGES = {
         'default': {
             'BACKEND': 'storages.backends.s3.S3Storage',
-            'location': 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/',
+            'location': 'media',
              'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
@@ -244,8 +235,19 @@ if IS_HEROKU_APP:
         # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            'location': 'staticfiles',
         },     
     }
+  
+    # Use S3 for static files storage
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+    ]
+
+    # Use S3 for media files storage
+    # DEFAULT_FILE_STORAGE = 'gettingstarted.settings.MediaStorage'  # Change to your project's settings path
+    # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
     
