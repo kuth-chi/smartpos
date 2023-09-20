@@ -221,7 +221,6 @@ if IS_HEROKU_APP:
     MEDIA_URL = "/media/"
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'staticfiles'),
-        "https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/"
     ]
     
     AWS_S3_OBJECT_PARAMETERS = {
