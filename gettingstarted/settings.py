@@ -143,7 +143,7 @@ if IS_HEROKU_APP:
             "ENGINE": "django.db.backends.postgresql",
             "NAME": env('AWS_DB_NAME'),
             "USER": env('AWS_DB_USER'),
-            "PASSWORD": env('AWS_DB_PASSWORD'),
+            "PASSWORD": '8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008',
             "HOST": env('AWS_DB_HOST'),
             "PORT": 5432,
         }
@@ -217,12 +217,13 @@ if IS_HEROKU_APP:
     # Optional: Set custom storage classes (e.g., for different folders) 
     STATIC_URL = "/static/"
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    MEDIA_ROOT = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
+    MEDIA_URL = "/media/"
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'staticfiles'),
-        "https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/"
+        "https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/"
     ]
-    MEDIA_ROOT = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/media/'
-    MEDIA_URL = "/media/"
+    
     AWS_S3_OBJECT_PARAMETERS = {
         "CacheControl": "max-age=86400",  # Cache static assets for a day (optional)
     }
