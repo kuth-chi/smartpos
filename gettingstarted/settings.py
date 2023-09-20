@@ -241,6 +241,7 @@ if IS_HEROKU_APP:
   
     # Use S3 for static files storage
     STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'staticfiles'),
     ]
