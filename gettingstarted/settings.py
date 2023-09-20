@@ -215,30 +215,26 @@ if IS_HEROKU_APP:
     AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
-    STATIC_DEFAULT_ACL = 'public-read'
-    STATIC_LOCATION = 'static'
-    STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/{STATIC_LOCATION}/'
-    STATICFILES_STORAGE = 'utils.storage_backends.StaticStorage'
+    # static files settings
+    # AWS_LOCATION = 'static'
+    # STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}/'
+    # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    # # public media settings
+    # PUBLIC_MEDIA_LOCATION = 'media'
+    # MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
+    # DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
     
-    PUBLIC_MEDIA_DEFAULT_ACL = 'public-read'
-    PUBLIC_MEDIA_LOCATION = 'media/public'
 
-    MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
-    DEFAULT_FILE_STORAGE = 'utils.storage_backends.PublicMediaStorage'
-
-    PRIVATE_MEDIA_DEFAULT_ACL = 'private'
-    PRIVATE_MEDIA_LOCATION = 'media/private'
-    PRIVATE_FILE_STORAGE = 'utils.storage_backends.PrivateMediaStorage'
-
-    # Use S3 for static files storage
+    # # Use S3 for static files storage
     STORAGES = {
         'default': {
             'BACKEND': 'storages.backends.s3.S3Storage',
-            'location': 'media',
              'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
                  'default_acl': "public-read",
+                 'region_name': 'us-east-1',
                  'gzip': True,
                  'querystring_expire':86400,
              }
@@ -247,22 +243,24 @@ if IS_HEROKU_APP:
         # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-            'location': 'staticfiles',
+            
         },     
     }
   
     # Use S3 for static files storage
-    # STATIC_URL = '/static/'
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    # STATICFILES_DIRS = [
-    #     os.path.join(BASE_DIR, 'staticfiles'),
-    # ]
+    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/media/'
+    MEDIA_ROOT = f'https://{AWS_S3_ENDPOINT_URL}/media/'
+    STATIC_URL = 'static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+    ]
 
     # Use S3 for media files storage
     # DEFAULT_FILE_STORAGE = 'gettingstarted.settings.MediaStorage'  # Change to your project's settings path
-    # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     
-    WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+    
+    # WHITENOISE_KEEP_ONLY_HASHED_FILES = True
     
 else:
     STORAGES = {
@@ -271,19 +269,20 @@ else:
             'LOCATION': [os.path.join(BASE_DIR, 'media'), os.path.join(BASE_DIR, 'static')],
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",   
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
     }
     # Use WhiteNoise for development environment
     STATIC_URL = "static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+   
 
     # Media files
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'staticfiles'),
-    ]
+    # STATICFILES_DIRS = [
+    #     os.path.join(BASE_DIR, 'staticfiles'),
+    # ]
    
 
 STATICFILES_FINDERS = [
