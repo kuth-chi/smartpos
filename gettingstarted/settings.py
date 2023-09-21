@@ -212,7 +212,7 @@ if IS_HEROKU_APP:
     AWS_STORAGE_BUCKET_NAME = 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3'
     AWS_DEFAULT_REGION = 'us-east-1'  # Region
     # AWS_DEFAULT_ACL = "public-read"
-    AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
 
