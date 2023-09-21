@@ -224,31 +224,37 @@ if IS_HEROKU_APP:
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
                  'default_acl': "public-read",
+                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
                  'region_name': 'us-east-1',
                  'gzip': True,
                  'querystring_expire':86400,
              }
         },
+        'media': {
+            'BACKEND': 'storages.backends.s3.S3Storage',
+            # ...
+        },
         # Enable WhiteNoise's GZip and Brotli compression of static assets:
         # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # "staticfiles": {
+        #     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
             
-        },     
+        # },     
     }
   
-    # Use S3 for static files storage
-    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/media/'
-    MEDIA_ROOT = f'https://{AWS_S3_ENDPOINT_URL}/media/'
-    STATIC_URL = 'static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'staticfiles'),
-    ]
+    # # Use S3 for static files storage
+    # MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/media/'
+    # # MEDIA_ROOT = f'https://{AWS_S3_ENDPOINT_URL}/media/'
+    # STATIC_URL = 'static/'
+    # # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    # STATICFILES_DIRS = [
+    #     os.path.join(BASE_DIR, 'staticfiles'),
+    # ]
 
     # Use S3 for media files storage
     # DEFAULT_FILE_STORAGE = 'gettingstarted.settings.MediaStorage'  # Change to your project's settings path
-    
+    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/media/'
+    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/static/'
     
     # WHITENOISE_KEEP_ONLY_HASHED_FILES = True
     
