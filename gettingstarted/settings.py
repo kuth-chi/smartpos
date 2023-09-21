@@ -211,9 +211,10 @@ if IS_HEROKU_APP:
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3'
     AWS_DEFAULT_REGION = 'us-east-1'  # Region
-    AWS_DEFAULT_ACL = "public-read"
+    AWS_DEFAULT_ACL = None
     AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
     
 
     # # Use S3 for static files storage
@@ -223,11 +224,13 @@ if IS_HEROKU_APP:
              'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
-                #  'default_acl': "bucket-owner-full-control",
+                 'default_acl': "bucket-owner-full-control",
                  'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
                  'region_name': 'us-east-1',
                  'gzip': True,
                  'querystring_expire':86400,
+                 'querystring_auth': False,
+                 'signature_version': 's3v4',
              },
              'CORSRules': [
                 {
@@ -242,13 +245,18 @@ if IS_HEROKU_APP:
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             'OPTIONS': {
-                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
-                 'secret_key': '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',
-                #  'default_acl': "public-read",
-                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-                 'region_name': 'us-east-1',
-                 'gzip': True,
-                 'querystring_expire':86400,
+                'access_key': 'AKIAVVKH7VVUMTNQINWO',
+                'secret_key': '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',
+                'default_acl': "public-read",
+                'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
+                'region_name': 'us-east-1',
+                'gzip': True,
+                'use_ssl': True,
+                'querystring_expire':86400,
+                'querystring_auth': False,
+                'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
+                'endpoint_url': f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/',
+                'signature_version': 's3v4', 
              },
             'CORSRules': [
                 {
