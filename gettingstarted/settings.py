@@ -219,7 +219,7 @@ if IS_HEROKU_APP:
     # # Use S3 for static files storage
     STORAGES = {
         'default': {
-            'BACKEND': 'storages.',
+            'BACKEND': 'storages.backends.s3.S3Storage',
              'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
