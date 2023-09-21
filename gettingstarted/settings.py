@@ -243,7 +243,7 @@ if IS_HEROKU_APP:
                 'file_overwrite': True,
                 'url_protocol': 'https:',
                 'signature_version': 's3v4', 
-                'default_acl': 'public-read',
+                # 'default_acl': 'public-read',
                 'querystring_expire':3600,
                 'querystring_auth': False,
                 'endpoint_url': None,  # Add your custom S3 URL here if needed
@@ -274,7 +274,7 @@ if IS_HEROKU_APP:
                 'verify': None,
                 'file_overwrite': True,
                 'url_protocol': 'https:',
-                'default_acl': 'public-read',
+                # 'default_acl': 'public-read',
                 'signature_version': 's3v4', 
                 'querystring_expire':3600,
                 'querystring_auth': False,
