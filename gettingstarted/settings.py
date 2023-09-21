@@ -15,6 +15,7 @@ import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from storages.backends.s3boto3 import S3Boto3Storage
+from botocore.exceptions import NoCredentialsError
 
 
 env = environ.Env(
@@ -216,6 +217,34 @@ if IS_HEROKU_APP:
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
     PUBLIC_URL = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
+    
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=env('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=env('AWS_SECRET_ACCESS_KEY'),
+        region_name=env('AWS_REGION_NAME'),
+    )
+    
+    cors_configuration = {
+        'CORSRules': [
+            {
+                'AllowedOrigins': ['*'],  # Allow requests from any origin (change as needed)
+                'AllowedMethods': ['GET'],  # Allow only GET requests (customize as needed)
+            }
+        ]
+    }
+    
+    try:
+        s3_client.put_bucket_cors(
+            Bucket=env('AWS_STORAGE_BUCKET_NAME'),
+            CORSConfiguration=cors_configuration
+        )
+        print(f'CORS configuration applied to {AWS_STORAGE_BUCKET_NAME}')
+    except NoCredentialsError:
+        print('AWS credentials not found or invalid.')
+    except Exception as e:
+        print(f'An error occurred: {str(e)}')
+    
     # Use the public URL provided by Bucketeer for static and media URLs
     STATIC_URL = f'{PUBLIC_URL}/static/'
     STATIC_ROOT = f'{PUBLIC_URL}/static/'
