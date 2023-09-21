@@ -207,29 +207,19 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 # Static and Media settings
 if IS_HEROKU_APP:
     # AWS S3 configuration
-    AWS_ACCESS_KEY_ID = 'AKIAVVKH7VVUMTNQINWO'
-    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3'
-    AWS_S3_REGION_NAME = 'us-east-1'  # Region
+    AWS_DEFAULT_REGION = 'us-east-1'  # Region
     AWS_DEFAULT_ACL = "public-read"
     AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    
-    # static files settings
-    # AWS_LOCATION = 'static'
-    # STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}/'
-    # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-    # # public media settings
-    # PUBLIC_MEDIA_LOCATION = 'media'
-    # MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
-    # DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
     
 
     # # Use S3 for static files storage
     STORAGES = {
         'default': {
-            'BACKEND': 'storages.backends.s3.S3Storage',
+            'BACKEND': 'storages.',
              'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
@@ -266,7 +256,11 @@ else:
     STORAGES = {
         'default': {
             'BACKEND': 'django.core.files.storage.FileSystemStorage',
-            'LOCATION': [os.path.join(BASE_DIR, 'media'), os.path.join(BASE_DIR, 'static')],
+            'LOCATION': [
+                os.path.join(BASE_DIR, 'media'), 
+                os.path.join(BASE_DIR, 'static')
+                         
+            ],
         },
         "staticfiles": {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -278,7 +272,7 @@ else:
    
 
     # Media files
-    MEDIA_URL = "/media/"
+    MEDIA_URL = "media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     # STATICFILES_DIRS = [
     #     os.path.join(BASE_DIR, 'staticfiles'),

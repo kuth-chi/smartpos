@@ -19,8 +19,8 @@ django-rosetta = "*"
 pillow = "*"
 phonenumbers = "*"
 django-environ = "*"
-django-storages = "*"
 boto3 = "*"
+django-storages = {extras = ["s3"], version = "*"}
 
 [dev-packages]
 
