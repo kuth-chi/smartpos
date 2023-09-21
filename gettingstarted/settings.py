@@ -211,18 +211,22 @@ if IS_HEROKU_APP:
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3'
     AWS_DEFAULT_REGION = 'us-east-1'  # Region
-    # AWS_DEFAULT_ACL = None
+    AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
     PUBLIC_URL = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
+    # Use the public URL provided by Bucketeer for static and media URLs
+    STATIC_URL = f'{PUBLIC_URL}/static/'
+    STATIC_ROOT = f'{PUBLIC_URL}/static/'
+    MEDIA_URL = f'{PUBLIC_URL}media/'
+    MEDIA_ROOT = f'{PUBLIC_URL}media/'
     
 
     # # Use S3 for static files storage
     STORAGES = {
         'default': {
             'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-            'LOCATION': 'media',
              'OPTIONS': {
                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
                 'secret_key': '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',
@@ -239,7 +243,6 @@ if IS_HEROKU_APP:
         
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-            'LOCATION': 'static',
             'OPTIONS': {
                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
                 'secret_key': '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',
@@ -255,8 +258,6 @@ if IS_HEROKU_APP:
         },     
     }
   
-    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}public/media/'
-    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}public/static/' 
     
    
     
@@ -308,4 +309,3 @@ STATICFILES_FINDERS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

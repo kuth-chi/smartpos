@@ -21,6 +21,7 @@ phonenumbers = "*"
 django-environ = "*"
 boto3 = "*"
 django-storages = {extras = ["s3"], version = "*"}
+awscli = "*"
 
 [dev-packages]
 
