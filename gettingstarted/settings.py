@@ -215,6 +215,7 @@ if IS_HEROKU_APP:
     AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
+    PUBLIC_URL = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
     
 
     # # Use S3 for static files storage
@@ -234,14 +235,6 @@ if IS_HEROKU_APP:
                 'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
                 'signature_version': 's3v4', 
              },
-             'CORSRules': [
-                {
-                    'AllowedHeaders': ['Authorization'],
-                    'AllowedMethods': ['GET', 'POST', 'PUT', 'DELETE'],	
-                    'AllowedOrigins': ['*'],
-                    'MaxAgeSeconds': 3000,
-                },
-            ],
         },
         
         "staticfiles": {
@@ -259,19 +252,12 @@ if IS_HEROKU_APP:
                 'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
                 'signature_version': 's3v4', 
              },
-            'CORSRules': [
-                {
-                    'AllowedHeaders': ['Authorization'],
-                    'AllowedMethods': ['GET', 'POST', 'PUT', 'DELETE'],
-                    'AllowedOrigins': ['*'],
-                    'MaxAgeSeconds': 3000,
-                },
-            ],
         },     
     }
   
-    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}media/'
-    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}static/'  
+    MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}public/media/'
+    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}public/static/' 
+    
    
     
 else:
