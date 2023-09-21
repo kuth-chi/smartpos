@@ -220,10 +220,10 @@ if IS_HEROKU_APP:
     # # AWS S3 Configuration
     # AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     # AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-    # AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     # AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
     # AWS_S3_REGION_NAME = 'us-east-1'  # Use the appropriate region
-    # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
 
     # # Use S3 for static files storage
@@ -272,6 +272,8 @@ if IS_HEROKU_APP:
              },
         },     
     }
+    
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
   
 
 else:
