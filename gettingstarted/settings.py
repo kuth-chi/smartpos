@@ -274,19 +274,17 @@ if IS_HEROKU_APP:
     }
     
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATIC_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    MEDIA_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
   
 
 else:
     STORAGES = {
         'default': {
             'BACKEND': 'django.core.files.storage.FileSystemStorage',
-            'LOCATION': [
-                os.path.join(BASE_DIR, 'media'), 
-                os.path.join(BASE_DIR, 'static')
-                         
-            ],
         },
-        "staticfiles": {
+        'staticfiles': {
             # Enable WhiteNoise's GZip and Brotli compression of static assets:
             # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -294,7 +292,7 @@ else:
     }
     # Use WhiteNoise for development environment
     STATIC_URL = "static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
    
 
     # Media files
