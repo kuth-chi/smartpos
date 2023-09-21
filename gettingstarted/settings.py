@@ -238,13 +238,18 @@ if IS_HEROKU_APP:
                 'location': 'staticfiles',
                 'gzip': True,
                 'use_ssl': True,
-                'verify': False,
+                'verify': None,
                 'file_overwrite': True,
                 'url_protocol': 'https:',
                 'signature_version': 's3v4', 
                 'default_acl': 'public-read',
                 'querystring_expire':3600,
                 'querystring_auth': False,
+                'endpoint_url': None,  # Add your custom S3 URL here if needed
+                'addressing_style': None,  # Possible values: 'virtual' or 'path'
+                'proxies': None,  # Dictionary of proxy servers if using a proxy
+                'transfer_config': None,  # Customize transfer config options if needed
+                'custom_domain': None, 
                 'gzip_content_types': (
                     'text/css','text/javascript',
                     'application/javascript',
@@ -265,13 +270,18 @@ if IS_HEROKU_APP:
                 'location': 'media',
                 'gzip': True,
                 'use_ssl': True,
-                'verify': False,
+                'verify': None,
                 'file_overwrite': True,
                 'url_protocol': 'https:',
                 'default_acl': 'public-read',
                 'signature_version': 's3v4', 
                 'querystring_expire':3600,
                 'querystring_auth': False,
+                'endpoint_url': None,  # Add your custom S3 URL here if needed
+                'addressing_style': None,  # Possible values: 'virtual' or 'path'
+                'proxies': None,  # Dictionary of proxy servers if using a proxy
+                'transfer_config': None,  # Customize transfer config options if needed
+                'custom_domain': None, 
                 'gzip_content_types': (
                     'text/css',
                     'text/javascript',
