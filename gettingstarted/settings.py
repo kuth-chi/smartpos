@@ -221,6 +221,7 @@ if IS_HEROKU_APP:
     STORAGES = {
         'default': {
             'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'LOCATION': 'media',
              'OPTIONS': {
                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
                 'secret_key': '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',
@@ -245,6 +246,7 @@ if IS_HEROKU_APP:
         
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            'LOCATION': 'static',
             'OPTIONS': {
                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
                 'secret_key': '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',
