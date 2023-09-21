@@ -208,84 +208,70 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 # Static and Media settings
 if IS_HEROKU_APP:
     # AWS S3 configuration
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
-    PUBLIC_URL = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
-    # Use the public URL provided by Bucketeer for static and media URLs
-    STATIC_URL = f'{PUBLIC_URL}/static/'
-    STATIC_ROOT = f'{PUBLIC_URL}/static/'
-    MEDIA_URL = f'{PUBLIC_URL}media/'
-    MEDIA_ROOT = f'{PUBLIC_URL}media/'
+    # AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
+    # PUBLIC_URL = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
+    # # Use the public URL provided by Bucketeer for static and media URLs
+    # STATIC_URL = f'{PUBLIC_URL}/static/'
+    # STATIC_ROOT = f'{PUBLIC_URL}/static/'
+    # MEDIA_URL = f'{PUBLIC_URL}media/'
+    # MEDIA_ROOT = f'{PUBLIC_URL}media/'
     
-    # AWS S3 Configuration
-    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
-    AWS_S3_REGION_NAME = 'us-east-1'  # Use the appropriate region
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    # # AWS S3 Configuration
+    # AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    # AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    # AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    # AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
+    # AWS_S3_REGION_NAME = 'us-east-1'  # Use the appropriate region
+    # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
-    # Create an S3 client
-    s3 = boto3.client(
-        's3',
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_S3_REGION_NAME,
-    )
-
-    # Define custom storage classes for media and static files
-    class MediaStorage(S3Boto3Storage):
-        location = 'media'  # Change as needed
-        default_acl = 'public-read'
-
-    class StaticStorage(S3Boto3Storage):
-        location = 'static'  # Change as needed
-        default_acl = 'public-read'
-
-    # Use custom storage classes for media and static files
-    DEFAULT_FILE_STORAGE = 'gettingstarted.settings.MediaStorage'
-    STATICFILES_STORAGE = 'gettingstarted.settings.StaticStorage'
-
-    # Configure media and static URLs
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-    
 
     # # Use S3 for static files storage
-    # STORAGES = {
-    #     'default': {
-    #         'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-    #          'OPTIONS': {
-    #             'access_key': 'AKIAVVKH7VVUMTNQINWO',
-    #             'secret_key': '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',
-    #             'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-    #             'region_name': 'us-east-1',
-    #             'gzip': True,
-    #             'use_ssl': True,
-    #             'querystring_expire':86400,
-    #             'querystring_auth': False,
-    #             'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
-    #             'signature_version': 's3v4', 
+    STORAGES = {
+        'default': {
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+             'OPTIONS': {
+                'access_key': 'AKIAVVKH7VVUMTNQINWO',
+                'secret_key': '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',
+                'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
+                'region_name': 'us-east-1',
+                'gzip': True,
+                'use_ssl': True,
+                'querystring_expire':86400,
+                'querystring_auth': False,
+                'gzip_content_types': (
+                    'text/css','text/javascript',
+                    'application/javascript',
+                    'application/x-javascript',
+                    'image/svg+xml'
+                ),
+                'signature_version': 's3v4', 
              
-    #          },
-    #     },
+             },
+        },
         
-    #     "staticfiles": {
-    #         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    #         'OPTIONS': {
-    #             'access_key': 'AKIAVVKH7VVUMTNQINWO',
-    #             'secret_key': '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',
-    #             'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-    #             'region_name': 'us-east-1',
-    #             'gzip': True,
-    #             'use_ssl': True,
-    #             'querystring_expire':86400,
-    #             'querystring_auth': False,
-    #             'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
-    #             'signature_version': 's3v4', 
-    #          },
-    #     },     
-    # }
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            'OPTIONS': {
+                'access_key': 'AKIAVVKH7VVUMTNQINWO',
+                'secret_key': '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',
+                'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
+                'region_name': 'us-east-1',
+                'gzip': True,
+                'use_ssl': True,
+                'querystring_expire':86400,
+                'querystring_auth': False,
+                'gzip_content_types': (
+                    'text/css',
+                    'text/javascript',
+                    'application/javascript',
+                    'application/x-javascript',
+                    'image/svg+xml'
+                ),
+                'signature_version': 's3v4', 
+             },
+        },     
+    }
   
 
 else:
