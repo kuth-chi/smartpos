@@ -235,9 +235,15 @@ if IS_HEROKU_APP:
                 'secret_key': 'Gfvu+0ql+gYFAxisqmrVpeU3VA6GBH5qXRFICs4V',
                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
                 'region_name': 'us-east-1',
+                'location': 'staticfiles',
                 'gzip': True,
                 'use_ssl': True,
-                'querystring_expire':86400,
+                'verify': False,
+                'file_overwrite': True,
+                'url_protocol': 'https:',
+                'signature_version': 's3v4', 
+                'default_acl': 'public-read',
+                'querystring_expire':3600,
                 'querystring_auth': False,
                 'gzip_content_types': (
                     'text/css','text/javascript',
@@ -245,7 +251,6 @@ if IS_HEROKU_APP:
                     'application/x-javascript',
                     'image/svg+xml'
                 ),
-                'signature_version': 's3v4', 
              
              },
         },
@@ -257,9 +262,15 @@ if IS_HEROKU_APP:
                 'secret_key': 'Gfvu+0ql+gYFAxisqmrVpeU3VA6GBH5qXRFICs4V',
                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
                 'region_name': 'us-east-1',
+                'location': 'media',
                 'gzip': True,
                 'use_ssl': True,
-                'querystring_expire':86400,
+                'verify': False,
+                'file_overwrite': True,
+                'url_protocol': 'https:',
+                'default_acl': 'public-read',
+                'signature_version': 's3v4', 
+                'querystring_expire':3600,
                 'querystring_auth': False,
                 'gzip_content_types': (
                     'text/css',
@@ -268,7 +279,6 @@ if IS_HEROKU_APP:
                     'application/x-javascript',
                     'image/svg+xml'
                 ),
-                'signature_version': 's3v4', 
              },
         },     
     }
