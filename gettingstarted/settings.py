@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import environ
-import os
+import os, boto3
 import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
@@ -231,7 +231,7 @@ if IS_HEROKU_APP:
              }
         },
         "staticfiles": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
@@ -240,8 +240,21 @@ if IS_HEROKU_APP:
                  'region_name': 'us-east-1',
                  'gzip': True,
                  'querystring_expire':86400,
-             }
-            
+             },
+            'CORSRules': [
+                {
+                    'AllowedHeaders': [
+                        'Authorization',
+                    ],
+                    'AllowedMethods': [
+                        'GET',
+                    ],
+                    'AllowedOrigins': [
+                        '*',
+                    ],
+                    'MaxAgeSeconds': 3000,
+                },
+            ],
         },     
     }
   
