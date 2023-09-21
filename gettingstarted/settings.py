@@ -220,17 +220,18 @@ if IS_HEROKU_APP:
     # # Use S3 for static files storage
     STORAGES = {
         'default': {
-            'BACKEND': 'storages.backends.s3.S3Storage',
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
              'OPTIONS': {
-                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
-                 'secret_key': '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',
-                #  'default_acl': "bucket-owner-full-control",
-                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-                 'region_name': 'us-east-1',
-                 'gzip': True,
-                 'querystring_expire':86400,
-                 'querystring_auth': False,
-                 'signature_version': 's3v4',
+                'access_key': 'AKIAVVKH7VVUMTNQINWO',
+                'secret_key': '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',
+                'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
+                'region_name': 'us-east-1',
+                'gzip': True,
+                'use_ssl': True,
+                'querystring_expire':86400,
+                'querystring_auth': False,
+                'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
+                'signature_version': 's3v4', 
              },
              'CORSRules': [
                 {
@@ -247,7 +248,6 @@ if IS_HEROKU_APP:
             'OPTIONS': {
                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
                 'secret_key': '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',
-                # 'default_acl': "public-read",
                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
                 'region_name': 'us-east-1',
                 'gzip': True,
@@ -255,13 +255,12 @@ if IS_HEROKU_APP:
                 'querystring_expire':86400,
                 'querystring_auth': False,
                 'gzip_content_types': ('text/css','text/javascript','application/javascript','application/x-javascript','image/svg+xml'),
-                'endpoint_url': f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/',
                 'signature_version': 's3v4', 
              },
             'CORSRules': [
                 {
                     'AllowedHeaders': ['Authorization'],
-                    'AllowedMethods': ['GET'],
+                    'AllowedMethods': ['GET', 'POST', 'PUT', 'DELETE'],
                     'AllowedOrigins': ['*'],
                     'MaxAgeSeconds': 3000,
                 },
@@ -270,8 +269,7 @@ if IS_HEROKU_APP:
     }
   
     MEDIA_URL = f'https://{AWS_S3_ENDPOINT_URL}media/'
-    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}static/'
-    
+    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}static/'  
    
     
 else:
