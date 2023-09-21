@@ -223,26 +223,13 @@ if IS_HEROKU_APP:
              'OPTIONS': {
                  'access_key': 'AKIAVVKH7VVUMTNQINWO',
                  'secret_key': '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',
-                 'default_acl': "public-read",
+                 'default_acl': "bucket-owner-full-control",
                  'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
                  'region_name': 'us-east-1',
                  'gzip': True,
                  'querystring_expire':86400,
              }
         },
-        'media': {
-            'BACKEND': 'storages.backends.s3.S3Storage',
-            'OPTIONS': {
-                 'access_key': 'AKIAVVKH7VVUMTNQINWO',
-                 'secret_key': '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',
-                 'default_acl': "public-read",
-                 'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-                 'region_name': 'us-east-1',
-                 'gzip': True,
-                 'querystring_expire':86400,
-             }
-        },
-        
         "staticfiles": {
             "BACKEND": "storages.backends.s3.S3Storage",
             'OPTIONS': {
