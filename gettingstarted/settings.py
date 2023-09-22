@@ -219,12 +219,20 @@ if IS_HEROKU_APP:
     # MEDIA_ROOT = f'{PUBLIC_URL}media/'
     
     # # AWS S3 Configuration
-    # AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-    # AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     # AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
     # AWS_S3_REGION_NAME = 'us-east-1'  # Use the appropriate region
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+    # Configure AWS credentials
+    aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
+    aws_secret_access_key = f'{AWS_SECRET_ACCESS_KEY}'
+
+    # Create an S3 client
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
 
 
     # # Use S3 for static files storage
