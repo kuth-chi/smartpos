@@ -229,7 +229,7 @@ if IS_HEROKU_APP:
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400'
     }
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
     AWS_LOCATION = 'static'
     AWS_QUERYSTRING_AUTH = False
     AWS_HEADERS = {
@@ -254,7 +254,7 @@ if IS_HEROKU_APP:
                     "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
                     "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
                     "region_name": f'{AWS_S3_REGION_NAME}',
-                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/',
+                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3{AWS_S3_REGION_NAME}.amazonaws.com/public/',
                     "querystring_auth": False,
                     "signature_version": "s3v4",
                     "default_acl": "public-read",
@@ -271,13 +271,13 @@ if IS_HEROKU_APP:
                 "BACKEND": "storages.backends.s3.S3Storage",
                 "OPTIONS": {
                     "location": 'staticfiles',
-                    # "base_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/',
+                    "base_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/',
                     # Authentication Settings
                     "access_key": f'{AWS_ACCESS_KEY_ID}',
                     "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
                     "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
                     "region_name": f'{AWS_S3_REGION_NAME}',
-                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/',
+                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
                     "querystring_auth": False,
                     "signature_version": "s3v4",
                     "default_acl": "public-read",
@@ -289,9 +289,9 @@ if IS_HEROKU_APP:
                 },
             },
     }
-    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{AWS_LOCATION}/'
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
-    # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/'
+    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
+    # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
     # MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
     # STATICFILES_DIRS = [
     #     os.path.join(BASE_DIR, 'staticfiles'),
@@ -303,40 +303,31 @@ else:
     STORAGES = {
         'default': {
             'BACKEND': 'django.core.files.storage.FileSystemStorage',
-            "OPTIONS": {
-                "location": 'media',
-                "base_url": "/media/"
-                
-            }
+            'OPTIONS': {
+                'location': str(BASE_DIR / 'media'),
+                'base_url': '/media/',
+            },
         },
         'staticfiles': {
-            # Enable WhiteNoise's GZip and Brotli compression of static assets:
-            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-            # "OPTIONS": {
-            #     "location": 'static',
-            #     "base_url": os.path.join(BASE_DIR, "static")
-                
-            # }
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
         },
     }
-    # # Use WhiteNoise for development environment
-    STATIC_URL = "static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-   
 
-    # Media files
+    STATIC_URL = '/static/'
+    STATIC_ROOT = str(BASE_DIR / 'staticfiles')
+
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'staticfiles'),
-        
+        str(BASE_DIR / 'static'),
     ]
+
+    STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ]
+   
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
    
 
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
 
 # Other settings...
 # Use FileSystemStorage for development environment
