@@ -254,7 +254,7 @@ if IS_HEROKU_APP:
         'default': {
             'BACKEND': 'storages.backends.s3.S3Storage',
             "OPTIONS": {
-                "location": '/media',
+                "location": 'media',
                 "access_key": f'{AWS_ACCESS_KEY_ID}',
                 "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
                 "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
@@ -275,7 +275,7 @@ if IS_HEROKU_APP:
             # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
-                "location": '/staticfiles',
+                "location": 'staticfiles',
                 # Authentication Settings
                 "access_key": f'{AWS_ACCESS_KEY_ID}',
                 "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
