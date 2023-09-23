@@ -251,50 +251,52 @@ if IS_HEROKU_APP:
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/1.11/howto/static-files/
     STORAGES = {
-            'default': {
-                'BACKEND': 'storages.backends.s3.S3Storage',
-                "OPTIONS": {
-                    "location": '/media',
-                    "base_url": '/media/',
-                    "access_key": f'{AWS_ACCESS_KEY_ID}',
-                    "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
-                    "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
-                    "region_name": f'{AWS_S3_REGION_NAME}',
-                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3{AWS_S3_REGION_NAME}.amazonaws.com/public/',
-                    "querystring_auth": False,
-                    "signature_version": "s3v4",
-                    "default_acl": "public-read",
-                    "use_ssl": True,
-                    "querystring_expire": 3600,
-                    'object_parameters': {
-                            'CacheControl' : 'max-age=86400'
-                    }, 
-                }
+        'default': {
+            'BACKEND': 'storages.backends.s3.S3Storage',
+            "OPTIONS": {
+                "location": '/media',
+                "access_key": f'{AWS_ACCESS_KEY_ID}',
+                "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
+                "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
+                "region_name": f'{AWS_S3_REGION_NAME}',
+                "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
+                "querystring_auth": False,
+                "signature_version": "s3v4",
+                "default_acl": "public-read",
+                "use_ssl": True,
+                "querystring_expire": 3600,
+                'object_parameters': {
+                        'CacheControl' : 'max-age=86400'
+                }, 
+            }
+        },
+        'staticfiles': {
+            # Enable WhiteNoise's GZip and Brotli compression of static assets:
+            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "location": '/staticfiles',
+                # Authentication Settings
+                "access_key": f'{AWS_ACCESS_KEY_ID}',
+                "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
+                "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
+                "region_name": f'{AWS_S3_REGION_NAME}',
+                "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
+                "querystring_auth": False,
+                "signature_version": "s3v4",
+                "default_acl": "public-read",
+                "use_ssl": True,
+                "querystring_expire": 3600,
+                'object_parameters': {
+                        'CacheControl' : 'max-age=86400'
+                }, 
             },
-            'staticfiles': {
-                # Enable WhiteNoise's GZip and Brotli compression of static assets:
-                # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-                "BACKEND": "storages.backends.s3.S3Storage",
-                "OPTIONS": {
-                    "location": '/staticfiles',
-                    "base_url": '/staticfiles/',
-                    # Authentication Settings
-                    "access_key": f'{AWS_ACCESS_KEY_ID}',
-                    "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
-                    "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
-                    "region_name": f'{AWS_S3_REGION_NAME}',
-                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
-                    "querystring_auth": False,
-                    "signature_version": "s3v4",
-                    "default_acl": "public-read",
-                    "use_ssl": True,
-                    "querystring_expire": 3600,
-                    'object_parameters': {
-                            'CacheControl' : 'max-age=86400'
-                    }, 
-                },
-            },
+        },
     }
+
+    # Set the AWS_S3_CUSTOM_DOMAIN for URLs
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+
     # STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
     # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
     # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
