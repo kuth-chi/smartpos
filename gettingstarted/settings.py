@@ -295,7 +295,16 @@ if IS_HEROKU_APP:
     }
 
     # Set the AWS_S3_CUSTOM_DOMAIN for URLs
+    STATICFILES_DIRS = [
+        str(BASE_DIR / 'static'),
+    ]
+
+    STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ]
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
+
 
     # STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
     # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
