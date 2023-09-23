@@ -249,7 +249,8 @@ if IS_HEROKU_APP:
             'default': {
                 'BACKEND': 'storages.backends.s3.S3Storage',
                 "OPTIONS": {
-                    "location": 'media',
+                    "location": '/media',
+                    "base_url": '/media/',
                     "access_key": f'{AWS_ACCESS_KEY_ID}',
                     "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
                     "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
@@ -270,8 +271,8 @@ if IS_HEROKU_APP:
                 # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
                 "BACKEND": "storages.backends.s3.S3Storage",
                 "OPTIONS": {
-                    "location": 'staticfiles',
-                    "base_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/',
+                    "location": '/staticfiles',
+                    "base_url": '/staticfiles/',
                     # Authentication Settings
                     "access_key": f'{AWS_ACCESS_KEY_ID}',
                     "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
@@ -289,8 +290,8 @@ if IS_HEROKU_APP:
                 },
             },
     }
-    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
+    # STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
+    # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
     # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
     # MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
     # STATICFILES_DIRS = [
