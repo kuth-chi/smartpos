@@ -250,30 +250,15 @@ if IS_HEROKU_APP:
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
     
-    STORAGES = {
-        'default': {
-            'BACKEND': 'gettingstarted.storage_backends.PublicMediaStorage',
-            'OPTIONS': {
-                'location': 'media/public'
-            },
-        },
-        'staticfiles': {
-            # Enable WhiteNoise's GZip and Brotli compression of static assets:
-            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-            "BACKEND": "gettingstarted.storage_backends.StaticStorage",
-            'OPTIONS': {
-                'location': 'static'
-            },
-        },
-        'privatefiles': {
-            # Enable WhiteNoise's GZip and Brotli compression of static assets:
-            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-            "BACKEND": "gettingstarted.storage_backends.PrivateMediaStorage",
-            'OPTIONS': {
-                'location': 'private'
-            },
-        },
-    }
+    AWS_STATIC_LOCATION = 'static'
+    STATICFILES_STORAGE = 'gettingstarted.storage_backends.StaticStorage'
+    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+
+    AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+    DEFAULT_FILE_STORAGE = 'gettingstarted.storage_backends.PublicMediaStorage'
+
+    AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+    PRIVATE_FILE_STORAGE = 'gettingstarted.storage_backends.PrivateMediaStorage'
 
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static'),
@@ -288,6 +273,9 @@ if IS_HEROKU_APP:
 
     # AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
     # PRIVATE_FILE_STORAGE = 'gettingstarted.storage_backends.PrivateMediaStorage'
+    # STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, 'static')
+    # MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, 'media/public')
+
   
 
 else:
