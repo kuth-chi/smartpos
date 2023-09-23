@@ -210,6 +210,11 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 # Use AWS S3 storage for static and media files on Heroku
 # Static and Media settings
 if IS_HEROKU_APP:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+
     # AWS S3 configuration
     # AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
