@@ -11,7 +11,7 @@ from .utils import is_phone_number
 
 @login_required
 def dashboard_user(request):
-    return render(request, 'auth/dash/dashboard.html')
+    return render(request, 'auth/dash/index.html')
 
 
 User = get_user_model()

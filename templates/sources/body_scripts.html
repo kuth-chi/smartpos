@@ -1,4 +1,8 @@
 {% load static %}
 
-<script type="text/javascript" src="{% static 'vendors/bootstrap5/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/utils.js' %}"></script>
+{% comment %} <script type="text/javascript" src="{% static 'vendors/bootstrap5/js/bootstrap.min.js' %}"></script> {% endcomment %}
+{% comment %} <script type="text/javascript" src="{% static 'js/utils.js' %}"></script> {% endcomment %}
+<script type="module" src="{% static 'js/main.js' %}"></script>
+<!-- Flowbite -->
+<script src=".node_modules/flowbite/dist/flowbite.min.js"></script>
+<script src=".node_modules/flowbite/dist/datepicker.js"></script>

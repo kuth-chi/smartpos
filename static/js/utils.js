@@ -1,31 +1,62 @@
+// Fullscreen Toggle
+export function toggleFullScreen() {
+  const fullScreenToggle = document.getElementById('FullScreenToggle');
+  const fullScreenIcon = document.getElementById('FullScreen');
+  const minScreenIcon = document.getElementById('MinimizeScreen');
 
-document.addEventListener('DOMContentLoaded', function () {
-  const userMenuButton = document.getElementById('user-menu-button');;
-  const collapsibleDiv = document.getElementById('navbar-user');
-
-  userMenuButton.addEventListener('click', function () {
-    // Toggle the 'hidden' class to show/hide the dropdown 
-    collapsibleDiv.classList.toggle('hidden');
-    // Update the 'aria-expanded' attribute for accessibility
-    // const expanded = collapsibleDiv.classList.contains('hidden') ? 'false' : 'true';
-    userMenuButton.setAttribute('aria-expanded', expanded);
+  fullScreenToggle.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+          // Exit full screen
+          document.exitFullscreen();
+          fullScreenIcon.classList.remove('hidden');
+          minScreenIcon.classList.add('hidden');
+      } else {
+          // Enter full screen
+          document.documentElement.requestFullscreen();
+          fullScreenIcon.classList.add('hidden');
+          minScreenIcon.classList.remove('hidden');
+      }
   });
-});
+}
 
-document.addEventListener('DOMContentLoaded', function () {
+
+// ToogleMenus
+export function toggleUserMenu () {
+  document.addEventListener('DOMContentLoaded', function () {
+    const userMenuButton = document.getElementById('user-menu-button');
+    const collapsibleDiv = document.getElementById('navbar-user');
+
+    userMenuButton.addEventListener('click', function () {
+      // Toggle the 'hidden' class to show/hide the dropdown 
+      collapsibleDiv.classList.toggle('hidden');
+      
+      // Update the 'aria-expanded' attribute for accessibility
+      const expanded = collapsibleDiv.classList.contains('hidden') ? 'false' : 'true';
+      userMenuButton.setAttribute('aria-expanded', expanded);
+    });
+  });
+};
+
+
+
+// Dropdown menu
+export function profileDropdownMenu () {
+  document.addEventListener('DOMContentLoaded', function(){
     const userDropdownButton = document.getElementById('dropdown-button');
     const userDropdown = document.getElementById('user-dropdown');
     
-    userDropdownButton.addEventListener('click', function () {
-      // Toggle the 'hidden' class to show/hide the dropdown
-      userDropdown.classList.toggle('hidden');
-      
-  
-      // Update the 'aria-expanded' attribute for accessibility
-      const expanded = collapsibleDiv.classList.contains('hidden') ? 'false' : 'true';
-      userDropdownButton.setAttribute('aria-expanded', expanded);
-    });
+    if (userDropdownButton) {
+      userDropdownButton.addEventListener('click', function () {
+        // Toggle the 'hidden' class to show/hide the dropdown
+        userDropdown.classList.toggle('hidden');
+
+        // Update the 'aria-expanded' attribute for accessibility
+        const expanded = userDropdown.classList.contains('hidden') ? 'false' : 'true';
+        userDropdownButton.setAttribute('aria-expanded', expanded);
+      });
+    }
   });
+};
 
 
  // Get references to the button and the collapsible div
@@ -33,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Dark mode
-  document.addEventListener('DOMContentLoaded', function () {
+  export function toggleDarkMode () {
+    document.addEventListener('DOMContentLoaded', function () {
     const themeToggle = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-light-icon');
     const lightIcon = document.getElementById('theme-toggle-dark-icon');
@@ -87,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('themePreference', 'light');
         }
     });
-});
+  });
+}
+
 
 

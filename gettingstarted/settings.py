@@ -18,6 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from storages.backends.s3boto3 import S3Boto3Storage
 from botocore.exceptions import NoCredentialsError
 
+PROJECT_VERSION = '0.0.1'
 
 env = environ.Env(
     # set casting, default value
@@ -64,7 +65,7 @@ if not IS_HEROKU_APP:
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.50.87", "192.168.0.1"]
 
 # Application definition
 
@@ -84,6 +85,7 @@ INSTALLED_APPS = [
     "accounts",
 
     # THIRD_PARTY_APPS
+    'compressor',
     'rosetta',
     'storages',
 ]
@@ -124,6 +126,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'accounts.context_processors.project_version',
             ],
         },
     },
@@ -259,51 +262,23 @@ if IS_HEROKU_APP:
                 'proxies': None,  # Dictionary of proxy servers if using a proxy
                 'transfer_config': None,  # Customize transfer config options if needed
                 'custom_domain': None, 
-                'gzip_content_types': (
-                    'text/css','text/javascript',
-                    'application/javascript',
-                    'application/x-javascript',
-                    'image/svg+xml'
-                ),
              
              },
         },
         
-        "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-            'OPTIONS': {
-                'access_key': 'AKIAVVKH7VVUMTNQINWO',
-                'secret_key': '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',
-                'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-                'region_name': 'us-east-1',
-                'location': 'staticfiles',
-                'gzip': True,
-                'use_ssl': True,
-                'verify': None,
-                'file_overwrite': True,
-                'url_protocol': 'https:',
-                # 'default_acl': 'public-read',
-                'signature_version': 's3v4', 
-                'querystring_expire':3600,
-                'querystring_auth': False,
-                'endpoint_url': None,  # Add your custom S3 URL here if needed
-                'addressing_style': None,  # Possible values: 'virtual' or 'path'
-                'proxies': None,  # Dictionary of proxy servers if using a proxy
-                'transfer_config': None,  # Customize transfer config options if needed
-                'custom_domain': None, 
-                'gzip_content_types': (
-                    'text/css',
-                    'text/javascript',
-                    'application/javascript',
-                    'application/x-javascript',
-                    'image/svg+xml'
-                ),
-             },
-        },     
+        'staticfiles': {
+            # Enable WhiteNoise's GZip and Brotli compression of static assets:
+            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
     }
     
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-    STATIC_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATIC_URL = "static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+        os.path.join(BASE_DIR, 'node_modules'),
+    ]
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     MEDIA_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
   
@@ -327,9 +302,10 @@ else:
     # Media files
     MEDIA_URL = "media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    # STATICFILES_DIRS = [
-    #     os.path.join(BASE_DIR, 'staticfiles'),
-    # ]
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'staticfiles'),
+        os.path.join(BASE_DIR, 'node_modules'),
+    ]
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
    
 
@@ -337,6 +313,10 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
+
+COMPRESS_ROOT = os.path.join(BASE_DIR / 'static')
+COMPRESS_ENABLED = True
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 # Other settings...
 # Use FileSystemStorage for development environment

@@ -11,8 +11,8 @@
         <div class="w-full overflow-hidden">
         {% include 'web/layout/navbar.html' %}
         </div>
-    <main class="z-auto">
-        <div class="bg-gray-300/5 w-full h-full p-2 md:p-16 md:top-40 flex flex-col justify-center items-center duration-300 transition-all container rounded-xl md:rounded-3xl ">
+    <main class="-z-50 container">
+        <div class="bg-gray-300/5 w-full h-full p-2 md:p-16 md:top-40 flex flex-col justify-center items-center duration-300 transition-all rounded-xl md:rounded-3xl ">
             <div class="flex flex-row w-11/12 md:w-11/12 lg:w-5/6 h-4/5 md:h-4/5 justify-start md:justify-center items-center align-middle p-1">
                 <!-- IMAGE -->
                 <div class="hidden md:block md:w-1/2">
@@ -40,8 +40,10 @@
                                 <a href="#" class="text-sky-600 font-sm">{% translate 'Forgot password'%}</a>
                             </div>
                         <input type="hidden" name="next" value="{{ next }}">
-                    <button class="md:w-3/5 py-2 px-4 bg-sky-500/80 hover:bg-sky-500 rounded-md text-slate-800 hover:text-slate-200 dark:text-slate-200 duration-200" type="submit" id="LoginBtn">{% translate "Login" %}</button>
+                        <button class="md:w-3/5 py-2 px-4 bg-sky-500/80 hover:bg-sky-500 rounded-md text-slate-800 hover:text-slate-200 dark:text-slate-200 duration-200" type="submit" id="LoginBtn">{% translate "Login" %}
+                        </button>
                     </form>
+
                     <div class="flex flex-col justify-center items-center space-y-4 mt-4">
                         <div class="flex flex-col md:flex-row">
                             <p class="dark:text-slate-400/70 text-slate-800">{% translate "Haven't an account?" %} <a title="{% translate 'Register a new account' %}" href="{% url 'user_signup' %}" class="font-bold text-blue-500 dark:text-blue-500"> {% translate "Register now" %}</a></p>

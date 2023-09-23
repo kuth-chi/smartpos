@@ -1,0 +1,100 @@
+{% load static %}
+{% load i18n %}
+
+{% block content  %}
+<!-- Side Navigation -->
+    <div class="flex flex-col h-full w-full shadow-md justify-between items-start divide-y-2 divide-blue-800/50
+        dark:bg-darkBlue bg-white" 
+        id="sidenavMenu
+        ">
+        <!-- Main -->
+        <div class="space-y-4 divide-y-2 divide-blue-800/50 w-full">
+            <!-- Brand Decoration -->
+            <div class="flex flex-col w-full items-center justify-center mt-8 space-y-4">
+                <img class="w-20 h-20 rounded-lg ring-2 ring-sky-500 dark:ring-gray-400 p-1" src="{% static '/favicon.png' %}" alt="Logo">
+                
+                <div>
+                    <div class="text-gray-800 text-lg font-semibold
+                        dark:text-sky-400 dark:ring-sky-300 uppercase">
+                        {% translate "EZ Startup" %}
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="subpixel-antialiased text-gray-500 dark:text-sky-700">@username</p>
+                        <span>
+                            <svg class="w-4 h-4 text-blue-600 dark:text-blue-300 animate-pulse drop-shadow-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 21">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6.072 10.072 2 2 6-4m3.586 4.314.9-.9a2 2 0 0 0 0-2.828l-.9-.9a2 2 0 0 1-.586-1.414V5.072a2 2 0 0 0-2-2H13.8a2 2 0 0 1-1.414-.586l-.9-.9a2 2 0 0 0-2.828 0l-.9.9a2 2 0 0 1-1.414.586H5.072a2 2 0 0 0-2 2v1.272a2 2 0 0 1-.586 1.414l-.9.9a2 2 0 0 0 0 2.828l.9.9a2 2 0 0 1 .586 1.414v1.272a2 2 0 0 0 2 2h1.272a2 2 0 0 1 1.414.586l.9.9a2 2 0 0 0 2.828 0l.9-.9a2 2 0 0 1 1.414-.586h1.272a2 2 0 0 0 2-2V13.8a2 2 0 0 1 .586-1.414Z"/>
+                            </svg>
+                        </span>
+                    </div>                    
+                </div>
+                <ul class="flex flex-row justify-center w-full space-x-4">
+                    <li class="text-sky-400" target="_blank" title="{% translate "Social profile" %}">
+                        <svg class="w-6 h-6 text-gray-600 ring-1 ring-sky-600 p-1 rounded-full
+                            hover:bg-blue-600/80 hover:text-slate-100 
+                            dark:text-sky-600 dark:hover:bg-blue-600/80 dark:hover:text-sky-100 " 
+                            aria-hidden="true" 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            fill="currentColor" viewBox="0 0 8 19">
+                            <path fill-rule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clip-rule="evenodd"/>
+                        </svg>
+                    </li>
+                    <li class="text-sky-400" target="_blank" title="{% translate "Social profile" %}">
+                        <svg class="w-6 h-6 text-gray-600 ring-1 ring-sky-600 p-1 rounded-full
+                        hover:bg-red-600/80 hover:text-slate-100 
+                        dark:text-sky-600 dark:hover:bg-red-600/80 dark:hover:text-rose-100" 
+                        aria-hidden="true" 
+                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                        <path fill-rule="evenodd" d="M19.7 3.037a4.26 4.26 0 0 0-.789-1.964 2.84 2.84 0 0 0-1.984-.84c-2.767-.2-6.926-.2-6.926-.2s-4.157 0-6.928.2a2.836 2.836 0 0 0-1.983.84A4.225 4.225 0 0 0 .3 3.038a30.148 30.148 0 0 0-.2 3.206v1.5c.01 1.071.076 2.142.2 3.206.094.712.363 1.39.784 1.972.604.536 1.38.837 2.187.848 1.583.15 6.731.2 6.731.2s4.161 0 6.928-.2a2.844 2.844 0 0 0 1.985-.84 4.27 4.27 0 0 0 .787-1.965c.124-1.064.19-2.135.2-3.206V6.243a30.672 30.672 0 0 0-.202-3.206ZM8.008 9.59V3.97l5.4 2.819-5.4 2.8Z" clip-rule="evenodd"/>
+                      </svg>
+                    </li>
+                    <li class="text-sky-400" target="_blank" title="{% translate "Social profile" %}">
+                        <svg class="w-6 h-6 text-gray-600 ring-1 ring-sky-600 p-1 rounded-full
+                        hover:bg-gray-950/80 hover:text-slate-100 
+                        dark:text-sky-600 dark:hover:bg-gray-950/80 dark:hover:text-rose-100" 
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" d="M12.186 8.672 18.743.947h-2.927l-5.005 5.9-4.44-5.9H0l7.434 9.876-6.986 8.23h2.927l5.434-6.4 4.82 6.4H20L12.186 8.672Zm-2.267 2.671L8.544 9.515 3.2 2.42h2.2l4.312 5.719 1.375 1.828 5.731 7.613h-2.2l-4.699-6.237Z"/>
+                      </svg>
+                    </li>
+                </ul>   
+            </div>
+    
+            <!-- Menu -->
+            <div class="flex flex-col items-start justify-start">
+                <div class="text-sky-500">Home</div>
+                <div class="text-sky-500">Dashboard</div>
+                <div class="text-sky-500">Security</div>
+                <div class="text-sky-500">Device</div>
+                <div class="text-sky-500">Settings</div>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <button class="bottom-0 w-full py-4" id="MinimizeBtn"> 
+            <div class="flex items-center justify-end relative">
+                {% comment %} <svg class="w-8 h-8 p-2 text-gray-800 dark:text-white rounded-full
+                        dark:hover:ring-1 dark:hover:ring-sky-500"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 8 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
+                </svg> {% endcomment %}
+                <svg class="absolute w-8 h-8 p-2 text-gray-900 bg-gray-400/80 -right-4 bottom-0
+                    hover:scale-105 hover:bg-darkBlue/50
+                    dark:text-sky-300 rounded-full dark:hover:ring-1 dark:hover:ring-sky-500 dark:hover:drop-shadow-md dark:hover:bg-darkBlue/90 dark:bg-gray-900 dark:hover:scale-105"
+                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"/>
+                </svg>
+            </div>
+        </button>
+    </div>
+{% endblock  %}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const minimiseMenu = document.getElementById('sidenavMenu')
+        const minimizeBtn = document.getElementById('minimizeBtn')
+
+    });
+
+</script>

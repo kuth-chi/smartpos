@@ -4,6 +4,7 @@ module.exports = {
   content: [
     './templates/**/*.{html,js}',
     './templates/**/*.{html,js}',
+    './node_modules/flowbite/**/*.js',
   ],
   theme: {
     extend: {
@@ -26,9 +27,17 @@ module.exports = {
           accentCyan: 'hsl(176, 68%, 64%)',
           accentBlue: 'hsl(198, 60%, 50%)',
           lightRed: 'hsl(0, 100%, 63%)',
+          "light-gray": "#303640",
+							seconds: "rgba(6, 252, 63, 1)",
+							minutes: "rgba(252, 230, 0, 1)",
+							hours: "rgba(253, 41, 112, 1)",
         },
     },
   },
-  plugins: [],
+  plugins: [require('flowbite/plugin')
+    ({
+      charts: true,
+  }),
+],
 }
 

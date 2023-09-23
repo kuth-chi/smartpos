@@ -8,6 +8,8 @@ charset-normalizer==3.2.0
 dj-config-url==0.1.1
 dj-database-url==2.1.0
 Django==4.2.5
+django-appconf==1.0.5
+django-compressor==4.4
 django-environ==0.11.2
 django-rosetta==0.9.9
 django-storages==1.14
@@ -25,7 +27,9 @@ psycopg-pool==3.1.7
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
 python-dateutil==2.8.2
+rcssmin==1.1.1
 requests==2.31.0
+rjsmin==1.2.1
 rsa==4.9
 s3transfer==0.6.2
 six==1.16.0
