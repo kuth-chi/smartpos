@@ -225,9 +225,17 @@ if IS_HEROKU_APP:
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    # AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
+    AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
     # AWS_S3_REGION_NAME = 'us-east-1'  # Use the appropriate region
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl' : 'max-age=86400'
+    }
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_LOCATION = 'static'
+    AWS_QUERYSTRING_AUTH = False
+    AWS_HEADERS = {
+        'Access-Control-Allow-Origin': '*',
+    }
 
     # Configure AWS credentials
     aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
@@ -236,51 +244,50 @@ if IS_HEROKU_APP:
     # Create an S3 client
     s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
-
-
-    # # Use S3 for static files storage
+    # Static files (CSS, JavaScript, Images)
+    # https://docs.djangoproject.com/en/1.11/howto/static-files/
+   
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    
     STORAGES = {
         'default': {
-            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-             'OPTIONS': {
-                'access_key': 'AKIAVVKH7VVUMTNQINWO',
-                'secret_key': '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',
-                'bucket_name': 'bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3',
-                'region_name': 'us-east-1',
-                'location': 'media',
-                'gzip': True,
-                'use_ssl': True,
-                'verify': None,
-                'file_overwrite': True,
-                'url_protocol': 'https:',
-                'signature_version': 's3v4', 
-                # 'default_acl': 'public-read',
-                'querystring_expire':3600,
-                'querystring_auth': False,
-                'endpoint_url': None,  # Add your custom S3 URL here if needed
-                'addressing_style': None,  # Possible values: 'virtual' or 'path'
-                'proxies': None,  # Dictionary of proxy servers if using a proxy
-                'transfer_config': None,  # Customize transfer config options if needed
-                'custom_domain': None, 
-             
-             },
+            'BACKEND': 'gettingstarted.storage_backends.PublicMediaStorage',
+            'OPTIONS': {
+                'location': 'media/public'
+            },
         },
-        
         'staticfiles': {
             # Enable WhiteNoise's GZip and Brotli compression of static assets:
             # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            "BACKEND": "gettingstarted.storage_backends.StaticStorage",
+            'OPTIONS': {
+                'location': 'static'
+            },
+        },
+        'privatefiles': {
+            # Enable WhiteNoise's GZip and Brotli compression of static assets:
+            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+            "BACKEND": "gettingstarted.storage_backends.PrivateMediaStorage",
+            'OPTIONS': {
+                'location': 'private'
+            },
         },
     }
-    
-    STATIC_URL = "static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'staticfiles'),
+        os.path.join(BASE_DIR, 'static'),
         os.path.join(BASE_DIR, 'node_modules'),
     ]
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-    MEDIA_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    # AWS_STATIC_LOCATION = 'static'
+    # STATICFILES_STORAGE = 'gettingstarted.storage_backends.StaticStorage'
+    # STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+
+    # # AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+    # # DEFAULT_FILE_STORAGE = 'gettingstarted.storage_backends.PublicMediaStorage'
+
+    # AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+    # PRIVATE_FILE_STORAGE = 'gettingstarted.storage_backends.PrivateMediaStorage'
   
 
 else:
