@@ -85,7 +85,6 @@ INSTALLED_APPS = [
     "accounts",
 
     # THIRD_PARTY_APPS
-    'compressor',
     'rosetta',
     'storages',
 ]
@@ -226,7 +225,7 @@ if IS_HEROKU_APP:
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
-    # AWS_S3_REGION_NAME = 'us-east-1'  # Use the appropriate region
+    AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl' : 'max-age=86400'
     }
@@ -246,60 +245,74 @@ if IS_HEROKU_APP:
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/1.11/howto/static-files/
-   
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-    
-    AWS_STATIC_LOCATION = 'static'
-    STATICFILES_STORAGE = 'gettingstarted.storage_backends.StaticStorage'
-    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
-    AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-    DEFAULT_FILE_STORAGE = 'gettingstarted.storage_backends.PublicMediaStorage'
-
-    AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-    PRIVATE_FILE_STORAGE = 'gettingstarted.storage_backends.PrivateMediaStorage'
-
+    STORAGES = {
+            'default': {
+                'BACKEND': 'storages.backends.s3.S3Storage',
+            },
+            'staticfiles': {
+                # Enable WhiteNoise's GZip and Brotli compression of static assets:
+                # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+                "BACKEND": "storages.backends.s3.S3Storage",
+                "OPTIONS": {
+                    # "location": "static",
+                    # "base_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/',
+                    # Authentication Settings
+                    "access_key": f'{AWS_ACCESS_KEY_ID}',
+                    "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
+                    "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
+                    "region_name": f'{AWS_S3_REGION_NAME}',
+                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/',
+                    "querystring_auth": False,
+                    "signature_version": "s3v4",
+                    "default_acl": "public-read",
+                    "use_ssl": True,
+                    "querystring_expire": 3600,
+                    'object_parameters': {
+                            'CacheControl' : 'max-age=86400'
+                    } 
+                }
+            },
+    }
+    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/'
+    STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
+    MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-        os.path.join(BASE_DIR, 'node_modules'),
+        os.path.join(BASE_DIR, 'staticfiles'),
+        
     ]
-    # AWS_STATIC_LOCATION = 'static'
-    # STATICFILES_STORAGE = 'gettingstarted.storage_backends.StaticStorage'
-    # STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
-    # # AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-    # # DEFAULT_FILE_STORAGE = 'gettingstarted.storage_backends.PublicMediaStorage'
-
-    # AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-    # PRIVATE_FILE_STORAGE = 'gettingstarted.storage_backends.PrivateMediaStorage'
-    # STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, 'static')
-    # MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, 'media/public')
-
   
 
 else:
     STORAGES = {
         'default': {
             'BACKEND': 'django.core.files.storage.FileSystemStorage',
+            "OPTIONS": {
+                "location": 'media',
+                "base_url": "/media/"
+                
+            }
         },
         'staticfiles': {
             # Enable WhiteNoise's GZip and Brotli compression of static assets:
             # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            # "OPTIONS": {
+            #     "location": 'static',
+            #     "base_url": os.path.join(BASE_DIR, "static")
+                
+            # }
         },
     }
-    # Use WhiteNoise for development environment
+    # # Use WhiteNoise for development environment
     STATIC_URL = "static/"
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
    
 
     # Media files
-    MEDIA_URL = "media/"
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'staticfiles'),
-        os.path.join(BASE_DIR, 'node_modules'),
+        
     ]
     WHITENOISE_KEEP_ONLY_HASHED_FILES = True
    
@@ -308,10 +321,6 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
-COMPRESS_ROOT = os.path.join(BASE_DIR / 'static')
-COMPRESS_ENABLED = True
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 # Other settings...
 # Use FileSystemStorage for development environment

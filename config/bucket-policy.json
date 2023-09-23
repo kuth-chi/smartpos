@@ -1,12 +1,22 @@
+
 {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "PublicRead",
+            "Sid": "VisualEditor0",
             "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:*",
-            "Resource": "arn:aws:s3:::bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3/*"
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObjectAcl",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject",
+                "s3:PutObjectAcl"
+            ],
+            "Resource": [
+                "arn:aws:s3:::bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3/*",
+                "arn:aws:s3:::bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3"
+            ]
         }
     ]
 }
