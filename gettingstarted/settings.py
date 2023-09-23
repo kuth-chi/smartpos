@@ -224,10 +224,10 @@ if IS_HEROKU_APP:
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    AWS_DEFAULT_ACL = 'public-read'  # Adjust permissions as needed
+    AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
     AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl' : 'max-age=86400'
+        'CacheControl': 'max-age=86400'
     }
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_LOCATION = 'static'
@@ -236,25 +236,41 @@ if IS_HEROKU_APP:
         'Access-Control-Allow-Origin': '*',
     }
 
-    # Configure AWS credentials
-    aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
-    aws_secret_access_key = f'{AWS_SECRET_ACCESS_KEY}'
+    # # Configure AWS credentials
+    # aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
+    # aws_secret_access_key = f'{AWS_SECRET_ACCESS_KEY}'
 
-    # Create an S3 client
-    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    # # Create an S3 client
+    # s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/1.11/howto/static-files/
     STORAGES = {
             'default': {
                 'BACKEND': 'storages.backends.s3.S3Storage',
+                "OPTIONS": {
+                    "location": 'media',
+                    "access_key": f'{AWS_ACCESS_KEY_ID}',
+                    "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
+                    "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
+                    "region_name": f'{AWS_S3_REGION_NAME}',
+                    "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/',
+                    "querystring_auth": False,
+                    "signature_version": "s3v4",
+                    "default_acl": "public-read",
+                    "use_ssl": True,
+                    "querystring_expire": 3600,
+                    'object_parameters': {
+                            'CacheControl' : 'max-age=86400'
+                    }, 
+                }
             },
             'staticfiles': {
                 # Enable WhiteNoise's GZip and Brotli compression of static assets:
                 # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
                 "BACKEND": "storages.backends.s3.S3Storage",
                 "OPTIONS": {
-                    # "location": "static",
+                    "location": 'staticfiles',
                     # "base_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/',
                     # Authentication Settings
                     "access_key": f'{AWS_ACCESS_KEY_ID}',
@@ -269,14 +285,14 @@ if IS_HEROKU_APP:
                     "querystring_expire": 3600,
                     'object_parameters': {
                             'CacheControl' : 'max-age=86400'
-                    } 
-                }
+                    }, 
+                },
             },
     }
-    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/'
-    STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/'
+    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{AWS_LOCATION}/'
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
-    MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
+    # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/public/{AWS_LOCATION}/'
+    # MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
     # STATICFILES_DIRS = [
     #     os.path.join(BASE_DIR, 'staticfiles'),
         
