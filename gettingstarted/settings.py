@@ -91,6 +91,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
     # Django doesn't support serving static assets in a production-ready way, so we use the
     # excellent WhiteNoise package to do so instead. The WhiteNoise middleware must be listed
     # after Django's `SecurityMiddleware` so that security redirects are still performed.
@@ -273,7 +274,7 @@ if IS_HEROKU_APP:
         'staticfiles': {
             # Enable WhiteNoise's GZip and Brotli compression of static assets:
             # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
                 "location": 'staticfiles',
                 # Authentication Settings
@@ -296,7 +297,7 @@ if IS_HEROKU_APP:
 
     # Set the AWS_S3_CUSTOM_DOMAIN for URLs
     STATICFILES_DIRS = [
-        str(BASE_DIR / 'static'),
+        os.path.join(BASE_DIR / 'static'),
     ]
 
     STATICFILES_FINDERS = [
@@ -304,18 +305,15 @@ if IS_HEROKU_APP:
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     ]
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
-    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/static/"
-    MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/media/"
+    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/static/"
+    MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/media/"
 
 
     # STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
     # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
-    # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
-    # MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
-    # STATICFILES_DIRS = [
-    #     os.path.join(BASE_DIR, 'staticfiles'),
-        
-    # ]
+    STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
+    MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/media/'
+
   
 
 else:
@@ -333,13 +331,15 @@ else:
         },
     }
 
-    STATIC_URL = '/static/'
-    STATIC_ROOT = str(BASE_DIR / 'staticfiles')
+    STATIC_URL = 'static/'
+    STATIC_URL = 'media/'
+    STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR / 'media')
 
     STATICFILES_DIRS = [
-        str(BASE_DIR / 'static'),
-        str(BASE_DIR / 'node_modules/flowbite/dist/'),
-        str(BASE_DIR / 'node_modules/apexcharts/dist/'),
+        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'node_modules/flowbite/dist/'),
+        os.path.join(BASE_DIR, 'node_modules/apexcharts/dist/'),
     ]
 
     STATICFILES_FINDERS = [

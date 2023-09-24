@@ -1356,6 +1356,16 @@ input:checked + .toggle-bg {
   margin-bottom: 2rem;
 }
 
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -1584,6 +1594,10 @@ input:checked + .toggle-bg {
 
 .w-72 {
   width: 18rem;
+}
+
+.w-auto {
+  width: auto;
 }
 
 .max-w-lg {
@@ -2404,6 +2418,11 @@ input:checked + .toggle-bg {
 .ring-gray-700 {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(55 65 81 / var(--tw-ring-opacity));
+}
+
+.ring-gray-400 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(156 163 175 / var(--tw-ring-opacity));
 }
 
 .blur {
@@ -3526,6 +3545,10 @@ input:checked + .toggle-bg {
 
   .md\:order-3 {
     order: 3;
+  }
+
+  .md\:order-1 {
+    order: 1;
   }
 
   .md\:mr-0 {
