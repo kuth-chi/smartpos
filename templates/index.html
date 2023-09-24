@@ -4,76 +4,88 @@
 
 {% block content %}
 
-<div class="dark:bg-darkBlue2 w-full overflow-hidden h-full flex flex-col justify-normal top-0">
+<div class="dark:bg-darkBlue2 w-full h-screen overflow-hidden flex flex-col justify-normal top-0">
   <!-- header -->
   <div class="w-full shadow-md">
     {% include 'web/layout/navbar.html' %}
   </div>
-  <main class="w-full flex flex-col lg:flex-row gap-8 lg:gap-10 justify-center items-center text-slate-800 dark:text-sky-300 mt-6 md:mt-40">
-    <article
-        class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
-        style="--p: 20; --c: rgba(253, 41, 112, 1)"
-      >
-      <span
-        class="absolute inset-0 w-full h-full before:absolute before:inset-0 before:w-7 before:h-7 before:left-[4.5rem] lg:before:left-24 before:-top-4 before:bg-hours before:rounded-full transition-all duration-500 dot"
-        id="dot-hour"
-      ></span>
-      <h3
-        class="font-bold text-base lg:text-lg xl:text-xl flex flex-col gap-1 lg:gap-3"
-      >
+  <div class="w-full flex justify-center align-middle">
+    <main class="w-full flex flex-wrap md:flex-row gap-8 md:gap-10 justify-center text-slate-800 dark:text-sky-300 mt-6 md:mt-40 items-center">
+      <article
+          class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[#191919] dark:border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
+          style="--p: 20; --c: rgba(253, 41, 112, 1)"
+        >
         <span
-          class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
-          id="hour"
+          class="absolute inset-0 w-full h-auto before:absolute before:inset-0 before:w-7 before:h-7 before:left-[4.5rem] lg:before:left-24 before:-top-4 before:bg-hours before:rounded-full transition-all duration-500 dot"
+          id="dot-hour"
         ></span>
+        <h3
+          class="font-bold text-base lg:text-lg xl:text-xl flex flex-col gap-1 lg:gap-3"
+        >
+          <span
+            class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+            id="hour"
+          ></span>
 
-        <span>{% translate "HOURS" %}</span>
-      </h3>
-    </article>
-    <article
-      class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
-      style="--p: 20; --c: rgba(252, 230, 0, 1)"
-      >
-      <span
-        class="absolute inset-0 w-full h-full before:absolute before:inset-0 before:w-7 before:h-7 before:left-[4.5rem] lg:before:left-24 before:-top-4 before:bg-minutes before:rounded-full transition-all duration-500 dot"
-        id="dot-minute"
-      ></span>
-      <h3
-        class="font-bold text-base lg:text-lg xl:text-xl flex flex-col gap-1 lg:gap-3"
-      >
+          <span>{% translate "HOURS" %}</span>
+        </h3>
+      </article>
+      <article
+        class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[#191919] dark:border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
+        style="--p: 20; --c: rgba(252, 230, 0, 1)"
+        >
         <span
-          class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
-          id="minutes"
+          class="absolute inset-0 w-full h-full before:absolute before:inset-0 before:w-7 before:h-7 before:left-[4.5rem] lg:before:left-24 before:-top-4 before:bg-minutes before:rounded-full transition-all duration-500 dot"
+          id="dot-minute"
         ></span>
+        <h3
+          class="font-bold text-base lg:text-lg xl:text-xl flex flex-col gap-1 lg:gap-3"
+        >
+          <span
+            class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+            id="minutes"
+          ></span>
 
-        <span>{% translate "MINUTES" %}</span>
-      </h3>
-    </article>
-    <article
-      class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
-      style="--p: 20; --c: rgba(6, 252, 63, 1)"
-      >
-      <span
-        class="absolute inset-0 w-full h-full before:absolute before:inset-0 before:w-7 before:h-7 before:left-[4.5rem] lg:before:left-24 before:-top-4 before:bg-seconds before:rounded-full transition-all duration-500 dot"
-        id="dot-second"
-      ></span>
-      <h3
-        class="font-bold text-base lg:text-lg xl:text-xl flex flex-col gap-1 lg:gap-3"
-      >
+          <span>{% translate "MINUTES" %}</span>
+        </h3>
+      </article>
+      <article
+        class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[rgb(66,66,66)] dark:border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
+        style="--p: 20; --c: rgba(6, 252, 63, 1)"
+        >
         <span
-          class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
-          id="seconds"
+          class="absolute inset-0 w-full h-full before:absolute before:inset-0 before:w-7 before:h-7 before:left-[4.5rem] lg:before:left-24 before:-top-4 before:bg-seconds before:rounded-full transition-all duration-500 dot"
+          id="dot-second"
         ></span>
+        <h3
+          class="font-bold text-base lg:text-lg xl:text-xl flex flex-col gap-1 lg:gap-3"
+        >
+          <span
+            class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+            id="seconds"
+          ></span>
 
-        <span>{% translate "SECONDS" %}</span>
-      </h3>
-    </article>
-    <article
-      class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl lg:relative absolute right-5"
-      id="ampm"
-      >
-       {% translate "PM" %}
-    </article>
-  </main>
+          <span>{% translate "SECONDS" %}</span>
+        </h3>
+      </article>
+      <article
+        class="text-4xl md:text-5xl lg:text-6xl xl:text-9xl lg:relative float-right"
+        id="ampm"
+        >
+        {% translate "PM" %}
+      </article>
+    </main>
+  </div>
 </div>
+{% endblock %}
 
+{% block javascript %}
+  <script type="module">
+    import { ClockTiming } from "{% static 'js/clock.js' %}";
+    import { toggleDarkMode, toggleUserMenu, profileDropdownMenu } from "{% static 'js/utils.js' %}";
+    ClockTiming();
+    toggleDarkMode();
+    toggleUserMenu();
+    profileDropdownMenu();
+  </script>
 {% endblock %}

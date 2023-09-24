@@ -329,6 +329,7 @@ else:
         },
         'staticfiles': {
             'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+            'location': str(BASE_DIR / 'static'),
         },
     }
 
@@ -337,6 +338,8 @@ else:
 
     STATICFILES_DIRS = [
         str(BASE_DIR / 'static'),
+        str(BASE_DIR / 'node_modules/flowbite/dist/'),
+        str(BASE_DIR / 'node_modules/apexcharts/dist/'),
     ]
 
     STATICFILES_FINDERS = [

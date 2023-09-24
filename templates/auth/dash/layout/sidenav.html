@@ -90,11 +90,18 @@
     </div>
 {% endblock  %}
 
+
+
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
+        // Call the toggleFullScreen function when the button is clicked
+        const fullScreenToggle = document.getElementById('FullScreenToggle');
+        fullScreenToggle.addEventListener('click', toggleFullScreen);
+    });
+    {% comment %} document.addEventListener('DOMContentLoaded', function () {
         const minimiseMenu = document.getElementById('sidenavMenu')
         const minimizeBtn = document.getElementById('minimizeBtn')
 
-    });
+    }); {% endcomment %}
 
 </script>

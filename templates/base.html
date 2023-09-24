@@ -7,20 +7,23 @@
       <meta class="meta-theme" name="color-scheme" content="light" data-other="dark"/>
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+      <!-- Set the theme color for iOS -->
+      <meta name="apple-mobile-web-app-status-bar-style" content="dark:darkBlue bg-transparent">
       <title>
-          {% block title %} Home - EZ Account {% endblock %}
+          {% block title %} 
+           Home page - EZ Startup
+          {% endblock %}
       </title>
       {% include 'sources/links_head.html' %}
       {% include 'sources/style_head.html' %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   </head>
-  <body class="bg-gray-200 dark:bg-darkBlue2 font-mulish">
+  <body class="bg-gray-50 dark:bg-darkBlue2 font-mulish">
     
     {% block content %}
     {% endblock %}
 
     <!-- text/javascript -->
-    {% include 'sources/body_scripts.html' %}
-
+    {% include 'sources/body_scripts.html'%}
   </body>
 </html>
