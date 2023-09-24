@@ -16,5 +16,9 @@ db.sqlite3
 # NPM
 node_modules
 
+# Include the node_modules/flowbite directory
+!/node_modules/flowbite/dist/
+!/node_modules/apexcharts/dist/
+
 # Project Files
 .env
