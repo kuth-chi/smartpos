@@ -304,7 +304,8 @@ if IS_HEROKU_APP:
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     ]
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
-    STATIC_URL=f"{AWS_S3_CUSTOM_DOMAIN}"
+    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 
     # STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
