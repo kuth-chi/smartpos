@@ -298,6 +298,8 @@ if IS_HEROKU_APP:
     # Set the AWS_S3_CUSTOM_DOMAIN for URLs
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR / 'static'),
+        os.path.join(BASE_DIR, 'node_modules/flowbite/dist/'),
+        os.path.join(BASE_DIR, 'node_modules/apexcharts/dist/'),
     ]
 
     STATICFILES_FINDERS = [
@@ -307,13 +309,18 @@ if IS_HEROKU_APP:
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
     STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/static/"
     MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/media/"
-
-
-    # STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/'
-    # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
     STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
     MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/media/'
+    # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+    # Static files (CSS, JavaScript, etc.)
+    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # The local directory where collected static files will be stored
+
+    # Media files (user uploaded files)
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The local directory where uploaded media files will be stored
   
 
 else:
