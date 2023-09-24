@@ -1,7 +1,7 @@
 import { toggleDarkMode, toggleUserMenu, profileDropdownMenu, toggleFullScreen } from "./utils.js";
 import {ClockTiming } from "./clocking.js";
 
-ClockTiming
+ClockTiming();
 toggleDarkMode();
 toggleUserMenu();
 profileDropdownMenu();
