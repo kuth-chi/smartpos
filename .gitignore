@@ -14,7 +14,7 @@ db.sqlite3
 .DS_Store
 
 # NPM
-node_modules
+/node_modules
 
 # Include the node_modules/flowbite directory
 !/node_modules/flowbite/dist/
