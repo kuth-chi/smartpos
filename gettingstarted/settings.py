@@ -152,11 +152,11 @@ if IS_HEROKU_APP:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
+            "HOST": env('AWS_RDS_DB_HOST'),
             "NAME": env('AWS_RDS_DB_NAME'),
             "USER": env('AWS_RDS_DB_USER'),
             "PASSWORD": env('AWS_RDS_DB_PASSWORD'),
-            "HOST": env('AWS_RDS_DB_HOST'),
-            "PORT": 5432,
+            "PORT": env("AWS_RDS_DB_PORT"),
         }
     }
 
