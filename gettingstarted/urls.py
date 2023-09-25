@@ -26,7 +26,6 @@ from .settings import IS_HEROKU_APP
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('hello.urls')),
     path('', include('accounts.urls'))
 ]
 

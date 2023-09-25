@@ -140,6 +140,11 @@ class AccountGallery(models.Model):
     """
     Make user uploaded into account gallery
     """
+    
+    def __init__(self, *args, **kwargs):
+        super(AccountGallery, self).__init__(*args, **kwargs)
+        self.is_cover = False
+        
     uuid = models.UUIDField(verbose_name=_(
         "UUID"), default=uuid.uuid4, editable=False, unique=True)
     is_avatar = models.BooleanField(
@@ -153,7 +158,10 @@ class AccountGallery(models.Model):
         auto_now_add=True, verbose_name="Uploaded Date")
     uploaded_by = models.ForeignKey(
         User, related_name="user_gallery", blank=True, null=True, on_delete=models.CASCADE)
-
+    
+    
+    # Fix with import Manager
+    objects = models.Manager()
     def __str__(self):
         if self.alt_image:
             return self.alt_image
@@ -206,6 +214,13 @@ class SettingUser(models.Model):
 
 
 class ActiveDevice(models.Model):
+    """
+    Represents an active device.
+    
+    This class stores information about a device that is currently active.
+    It contains fields such as the device's name, operating system, browser,
+    IP address, and latitude.
+    """
     name = models.CharField(max_length=100, blank=True,
                             verbose_name=_('Device\'s Name'))
     os = models.CharField(max_length=100, blank=True,

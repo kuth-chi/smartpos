@@ -87,7 +87,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # USER APPS
-    "hello",
     "accounts",
 
     # THIRD_PARTY_APPS
@@ -155,7 +154,7 @@ if IS_HEROKU_APP:
             "ENGINE": "django.db.backends.postgresql",
             "NAME": env('AWS_DB_NAME'),
             "USER": env('AWS_DB_USER'),
-            "PASSWORD": '8123ca82a28b07f2e08a6428916a9ebd7d9129d328f3ca5769bf815f33a27008',
+            "PASSWORD": env('AWS_DB_PASSWORD'),
             "HOST": env('AWS_DB_HOST'),
             "PORT": 5432,
         }
@@ -230,9 +229,9 @@ if IS_HEROKU_APP:
     # MEDIA_ROOT = f'{PUBLIC_URL}media/'
     # SECURITY WARNING: don't run with debug turned on in production!
     CSRF_COOKIE_SECURE = True
-    # SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
-    # SECURE_HSTS_SECONDS = 36000
+    SECURE_HSTS_SECONDS = 36000
     
     # # AWS S3 Configuration
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
