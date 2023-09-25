@@ -25,6 +25,7 @@
                         <h3 class="text-2xl text-blue-500 dark:text-sky-500 font-bold py-8  md:text-4xl">{% translate "Account Login" %}</h3>
                         
                         <form class=" w-full flex flex-col space-y-4 justify-center items-center" method="POST" action="{% url 'user_login' %}">
+                            <input type="hidden" name="next" value="{{ next }}">
                             {% csrf_token %}
                             
                                 <input class="w-fit md:w-3/5 py-2 px-4 border-2 border-sky-500/40 dark:bg-sky-900/10 dark:text-slate-200 rounded-md" id="UsernameInputLogin" type="text" name="username" placeholder="{% translate "Username or e-mail" %}"></input>
@@ -40,7 +41,7 @@
                                     </div>
                                     <a href="#" class="text-sky-600 font-sm">{% translate 'Forgot password'%}</a>
                                 </div>
-                            <input type="hidden" name="next" value="{{ next }}">
+                            
                             <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
                                 focus:ring-4 focus:outline-none focus:ring-blue-300 
                                 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80"  

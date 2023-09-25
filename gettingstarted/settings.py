@@ -63,7 +63,7 @@ if not IS_HEROKU_APP:
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["web-ez-startup-d2bfd26940d7.herokuapp.com", "smartpos.ez-startup.com", "ec2-3-232-218-211.compute-1.amazonaws.com"]
 else:
     ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.50.87", "192.168.0.1"]
 
@@ -91,12 +91,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
     # Django doesn't support serving static assets in a production-ready way, so we use the
     # excellent WhiteNoise package to do so instead. The WhiteNoise middleware must be listed
     # after Django's `SecurityMiddleware` so that security redirects are still performed.
     # See: https://whitenoise.readthedocs.io
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -109,6 +109,10 @@ AUTHENTICATION_BACKENDS = [
     'accounts.authentication.CustomUserModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
 
 ROOT_URLCONF = "gettingstarted.urls"
 # LOGIN URL
@@ -211,10 +215,6 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 # Use AWS S3 storage for static and media files on Heroku
 # Static and Media settings
 if IS_HEROKU_APP:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 31536000
 
     # AWS S3 configuration
     # AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
