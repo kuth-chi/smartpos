@@ -9,9 +9,12 @@ from .forms import UserRegisterForm
 from .utils import is_phone_number
 
 
-@login_required
+
 def dashboard_user(request):
-    return render(request, 'auth/dash/index.html')
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    else:
+        return render(request, 'auth/dash/index.html')
 
 
 User = get_user_model()

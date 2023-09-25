@@ -63,9 +63,15 @@ if not IS_HEROKU_APP:
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["web-ez-startup-d2bfd26940d7.herokuapp.com", "smartpos.ez-startup.com", "ec2-3-232-218-211.compute-1.amazonaws.com"]
+    ALLOWED_HOSTS = [
+        "web-ez-startup-d2bfd26940d7.herokuapp.com", 
+        "smartpos.ez-startup.com", 
+        "ec2-3-232-218-211.compute-1.amazonaws.com", 
+        '127.0.0.1', 
+        'localhost'
+    ]
 else:
-    ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.50.87", "192.168.0.1"]
+    ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -109,10 +115,7 @@ AUTHENTICATION_BACKENDS = [
     'accounts.authentication.CustomUserModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 31536000
+   
 
 ROOT_URLCONF = "gettingstarted.urls"
 # LOGIN URL
@@ -225,6 +228,11 @@ if IS_HEROKU_APP:
     # STATIC_ROOT = f'{PUBLIC_URL}/static/'
     # MEDIA_URL = f'{PUBLIC_URL}media/'
     # MEDIA_ROOT = f'{PUBLIC_URL}media/'
+    # SECURITY WARNING: don't run with debug turned on in production!
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 36000
     
     # # AWS S3 Configuration
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
