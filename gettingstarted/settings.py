@@ -230,9 +230,9 @@ if IS_HEROKU_APP:
     # MEDIA_ROOT = f'{PUBLIC_URL}media/'
     # SECURITY WARNING: don't run with debug turned on in production!
     CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
+    # SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 36000
+    # SECURE_HSTS_SECONDS = 36000
     
     # # AWS S3 Configuration
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
