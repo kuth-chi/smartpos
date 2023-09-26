@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import environ
 import os
 import boto3
 import secrets
@@ -18,7 +19,7 @@ from decouple import Config
 from storages.backends.s3boto3 import S3Boto3Storage
 from botocore.exceptions import NoCredentialsError
 
-PROJECT_VERSION = '0.0.1'
+
 
 env = environ.Env(
     # set casting, default value
@@ -56,6 +57,10 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 # SECURITY WARNING: don't run with debug turned on in production!
 if not IS_HEROKU_APP:
     DEBUG = True
+
+# Version Release number    
+RELEASE_DATE = '2023-09-26'    
+PROJECT_VERSION = '0.0.1'
 
 # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
 # validation of the Host header in the incoming HTTP request. On other platforms you may need
