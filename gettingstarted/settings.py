@@ -20,7 +20,6 @@ from storages.backends.s3boto3 import S3Boto3Storage
 from botocore.exceptions import NoCredentialsError
 
 
-
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -55,20 +54,21 @@ SECRET_KEY = os.environ.get(
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# if not IS_HEROKU_APP:
+if not IS_HEROKU_APP:
+    DEBUG = True
+# if IS_HEROKU_APP:
+#     DEBUG = config("DEBUG")
+# else:
 #     DEBUG = True
-if IS_HEROKU_APP:
-    DEBUG = config("DEBUG")
-else:
-    DEBUG = True 
-    
+
 
 # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
 # validation of the Host header in the incoming HTTP request. On other platforms you may need
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*", "ez-startup.com", "smartpos.ez-startup.com", "smartpos-75c3b5a34d2f.herokuapp.com"]
+    ALLOWED_HOSTS = ["*", "ez-startup.com", "smartpos.ez-startup.com",
+                     "smartpos-75c3b5a34d2f.herokuapp.com"]
 else:
     ALLOWED_HOSTS = ["*"]
 
@@ -115,7 +115,7 @@ AUTHENTICATION_BACKENDS = [
     'accounts.authentication.CustomUserModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
-   
+
 
 ROOT_URLCONF = "gettingstarted.urls"
 # LOGIN URL
@@ -209,8 +209,6 @@ ROSETTA_STORAGE_CLASS = 'rosetta.storage.SessionRosettaStorage'
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -222,7 +220,7 @@ if IS_HEROKU_APP:
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 36000
-    
+
     # # AWS S3 Configuration
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
@@ -255,7 +253,7 @@ if IS_HEROKU_APP:
                 "use_ssl": True,
                 "querystring_expire": 3600,
                 'object_parameters': {
-                        'CacheControl' : 'max-age=86400'
+                    'CacheControl': 'max-age=86400'
                 }
             }
         },
@@ -265,19 +263,19 @@ if IS_HEROKU_APP:
     }
 
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
-    
+
     # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     # Static files (CSS, JavaScript, etc.)
     STATIC_URL = 'static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400'
     }
-  
+
 
 else:
     STORAGES = {
@@ -292,9 +290,9 @@ else:
     STATIC_URL = 'static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_URL = 'media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The local directory where uploaded media files will be stored
-   
-    
+    # The local directory where uploaded media files will be stored
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -308,9 +306,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
-   
+
 WHITENOISE_KEEP_ONLY_HASHED_FILES = True
-   
 
 
 # Other settings...
@@ -329,7 +326,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 LOGGING = {
-# ...
+    # ...
     "handlers": {
         "file": {
             "class": "logging.FileHandler",
