@@ -245,17 +245,16 @@ if IS_HEROKU_APP:
     }
 
     # # Configure AWS credentials
-    # aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
-    # aws_secret_access_key = f'{AWS_SECRET_ACCESS_KEY}'
-
+    aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
+    aws_secret_access_key = f'{AWS_SECRET_ACCESS_KEY}'
     # # Create an S3 client
-    # s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/1.11/howto/static-files/
     STORAGES = {
         'default': {
-            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
                 "location": 'media',
                 "access_key": f'{AWS_ACCESS_KEY_ID}',
@@ -263,27 +262,21 @@ if IS_HEROKU_APP:
                 "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
                 "region_name": f'{AWS_S3_REGION_NAME}',
                 "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
-                "querystring_auth": False,
+                "querystring_auth": True,
+                "url_protocol ": "https:",
                 "signature_version": "s3v4",
                 "default_acl": "public-read",
                 "use_ssl": True,
                 "querystring_expire": 3600,
                 'object_parameters': {
                         'CacheControl' : 'max-age=86400'
-                }, 
+                }
             }
         },
         'staticfiles': {
             'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
         }
     }
-
-    # Set the AWS_S3_CUSTOM_DOMAIN for URLs
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR / 'static'),
-        os.path.join(BASE_DIR, 'node_modules/flowbite/dist/'),
-        os.path.join(BASE_DIR, 'node_modules/apexcharts/dist/'),
-    ]
 
     STATICFILES_FINDERS = [
         'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -298,44 +291,38 @@ if IS_HEROKU_APP:
     # Static files (CSS, JavaScript, etc.)
     STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/static/"
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # The local directory where collected static files will be stored
-
-    # Media files (user uploaded files)
-    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/media/"
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The local directory where uploaded media files will be stored
   
 
 else:
     STORAGES = {
         'default': {
             'BACKEND': 'django.core.files.storage.FileSystemStorage',
-            'OPTIONS': {
-                'location': str(BASE_DIR / 'media'),
-                'base_url': '/media/',
-            },
         },
         'staticfiles': {
             'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-            'location': str(BASE_DIR / 'static'),
         },
     }
 
     STATIC_URL = 'static/'
-    STATIC_URL = 'media/'
     STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
-    STATIC_ROOT = os.path.join(BASE_DIR / 'media')
-
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-        os.path.join(BASE_DIR, 'node_modules/flowbite/dist/'),
-        os.path.join(BASE_DIR, 'node_modules/apexcharts/dist/'),
-    ]
-
-    STATICFILES_FINDERS = [
-        'django.contrib.staticfiles.finders.FileSystemFinder',
-        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    ]
    
-    WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+    
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'node_modules/flowbite/dist/'),
+    os.path.join(BASE_DIR, 'node_modules/apexcharts/dist/'),
+]
+
+# GENERAL
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The local directory where uploaded media files will be stored
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+   
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
    
 
 
