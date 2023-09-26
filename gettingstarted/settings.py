@@ -275,7 +275,7 @@ if IS_HEROKU_APP:
     # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     # Static files (CSS, JavaScript, etc.)
-    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/static/"
+    STATIC_URL = 'static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
