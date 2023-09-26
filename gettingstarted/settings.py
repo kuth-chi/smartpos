@@ -245,7 +245,7 @@ if IS_HEROKU_APP:
     # https://docs.djangoproject.com/en/1.11/howto/static-files/
     STORAGES = {
         'default': {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
                 "location": 'media',
                 "access_key": f'{AWS_ACCESS_KEY_ID}',
@@ -265,7 +265,7 @@ if IS_HEROKU_APP:
             }
         },
         'staticfiles': {
-            'BACKEND': 'storages.backends.s3.S3Storage',
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
         }
     }
 
