@@ -57,7 +57,10 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 # SECURITY WARNING: don't run with debug turned on in production!
 # if not IS_HEROKU_APP:
 #     DEBUG = True
-DEBUG = config("DEBUG") 
+if IS_HEROKU_APP:
+    DEBUG = config("DEBUG")
+else:
+    DEBUG = True 
     
 
 # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
@@ -215,16 +218,6 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 # Static and Media settings
 if IS_HEROKU_APP:
 
-    # AWS S3 configuration
-    # AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    # AWS_S3_SIGNATURE_VERSION = env('S3_SIGNATURE_VERSION', default='s3v4')
-    # PUBLIC_URL = 'https://bucketeer-8c8c929a-3664-4540-b0b0-c7ea9765fbb3.s3.amazonaws.com/public/'
-    # # Use the public URL provided by Bucketeer for static and media URLs
-    # STATIC_URL = f'{PUBLIC_URL}/static/'
-    # STATIC_ROOT = f'{PUBLIC_URL}/static/'
-    # MEDIA_URL = f'{PUBLIC_URL}media/'
-    # MEDIA_ROOT = f'{PUBLIC_URL}media/'
-    # SECURITY WARNING: don't run with debug turned on in production!
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
@@ -333,3 +326,14 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+LOGGING = {
+# ...
+    "handlers": {
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "general.log",
+        },
+    },
+}

@@ -17,14 +17,10 @@ def dashboard_user(request):
 
 
 User = get_user_model()
-def user_signup(request):
-    """
-    Handle user sign up.
-    ...
-    """
 
+def user_signup(request):
     if request.user.is_authenticated:
-        # for authenticated user, send them to dashboard
+        # For an authenticated user, send them to the dashboard
         return redirect('dashboard')
 
     if request.method == 'POST':
@@ -45,15 +41,19 @@ def user_signup(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             user.save()
-            login(request, user)
-            # Add message
-            messages.success(request, _('Registration successful.'))
-            # Redirect to success page
-            return redirect('dashboard')  # redirect to dashboard
 
-        # Add message for registration failure
-        error_message = _(
-            "Invalid registration data. Please check the form for the following errors:")
+            # Explicitly specify the authentication backend
+            user = authenticate(request, username=user.email, password=form.cleaned_data['password1'], backend='accounts.authentication.CustomUserModelBackend')
+            if user is not None:
+                login(request, user)
+
+            # Add a success message
+            messages.success(request, _('Registration successful.'))
+            # Redirect to the success page
+            return redirect('dashboard')
+
+        # Add a message for registration failure
+        error_message = _("Invalid registration data. Please check the form for the following errors:")
         for field, errors in form.errors.items():
             error_message += f"\n{field}: {', '.join(errors)}"
         messages.error(request, error_message)

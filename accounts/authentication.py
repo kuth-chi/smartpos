@@ -21,6 +21,7 @@ class CustomUserModelBackend(ModelBackend):
         if request.is_secure():
             # Enforce SSL-based authentication.
             if user.check_password(password):
+                user.backend = f'{self.__module__}.{self.__class__.__name__}'  # Set the backend attribute
                 return user
         else:
             # Non-SSL authentication (insecure).
