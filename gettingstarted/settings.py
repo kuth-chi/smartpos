@@ -234,21 +234,12 @@ if IS_HEROKU_APP:
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400'
-    }
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
     AWS_LOCATION = 'static'
     AWS_QUERYSTRING_AUTH = False
     AWS_HEADERS = {
         'Access-Control-Allow-Origin': '*',
     }
-
-    # # Configure AWS credentials
-    aws_access_key_id = f'{AWS_ACCESS_KEY_ID}'
-    aws_secret_access_key = f'{AWS_SECRET_ACCESS_KEY}'
-    # # Create an S3 client
-    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -274,23 +265,23 @@ if IS_HEROKU_APP:
             }
         },
         'staticfiles': {
-            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'BACKEND': 'storages.backends.s3.S3Storage',
         }
     }
 
-    STATICFILES_FINDERS = [
-        'django.contrib.staticfiles.finders.FileSystemFinder',
-        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    ]
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
-    # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
     
     # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     # Static files (CSS, JavaScript, etc.)
-    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # The local directory where collected static files will be stored
+    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400'
+    }
   
 
 else:
@@ -305,6 +296,8 @@ else:
 
     STATIC_URL = 'static/'
     STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
+    MEDIA_URL = 'media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The local directory where uploaded media files will be stored
    
     
 
@@ -315,8 +308,7 @@ STATICFILES_DIRS = [
 ]
 
 # GENERAL
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The local directory where uploaded media files will be stored
+
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
