@@ -274,27 +274,8 @@ if IS_HEROKU_APP:
             }
         },
         'staticfiles': {
-            # Enable WhiteNoise's GZip and Brotli compression of static assets:
-            # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-            "OPTIONS": {
-                "location": 'staticfiles',
-                # Authentication Settings
-                "access_key": f'{AWS_ACCESS_KEY_ID}',
-                "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
-                "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
-                "region_name": f'{AWS_S3_REGION_NAME}',
-                "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
-                "querystring_auth": False,
-                "signature_version": "s3v4",
-                "default_acl": "public-read",
-                "use_ssl": True,
-                "querystring_expire": 3600,
-                'object_parameters': {
-                        'CacheControl' : 'max-age=86400'
-                }, 
-            },
-        },
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+        }
     }
 
     # Set the AWS_S3_CUSTOM_DOMAIN for URLs
@@ -309,15 +290,13 @@ if IS_HEROKU_APP:
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     ]
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
-    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/static/"
-    MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/media/"
-    STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
-    MEDIA_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/media/'
+    # STATIC_ROOT = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazon.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/'
+    
     # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     # Static files (CSS, JavaScript, etc.)
-    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCATION}/"
+    STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/public/{AWS_STORAGE_BUCKET_NAME}/static/"
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # The local directory where collected static files will be stored
 
     # Media files (user uploaded files)
