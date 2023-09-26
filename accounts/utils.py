@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 import phonenumbers
-from phonenumbers.util import prnt
 from .models import AccountGallery
 
 

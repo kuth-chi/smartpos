@@ -9,12 +9,12 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import environ
 import os
 import boto3
 import secrets
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from decouple import Config
 from storages.backends.s3boto3 import S3Boto3Storage
 from botocore.exceptions import NoCredentialsError
 
@@ -29,8 +29,7 @@ env = environ.Env(
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ENVIRON PATH
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
+config = Config(os.path.join(BASE_DIR, 'env'))
 # Before using your Heroku app in production, make sure to review Django's deployment checklist:
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -88,6 +87,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # USER APPS
     "accounts",
+    "web",
 
     # THIRD_PARTY_APPS
     'rosetta',
@@ -153,8 +153,8 @@ if IS_HEROKU_APP:
         "default": {
             "ENGINE": "django.db.backends.postgresql",
             "HOST": "posdatabase.cqk0zl3xt0rr.us-east-1.rds.amazonaws.com",
-            "NAME": env('AWS_RDS_DB_NAME'),
-            "USER": env('AWS_RDS_DB_USER'),
+            "NAME": config('AWS_RDS_DB_NAME'),
+            "USER": config('AWS_RDS_DB_USER'),
             "PASSWORD": "w2ftI7xa89XeeonNr5ac",
             "PORT": 5432,
         }
@@ -234,9 +234,9 @@ if IS_HEROKU_APP:
     SECURE_HSTS_SECONDS = 36000
     
     # # AWS S3 Configuration
-    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
     AWS_S3_OBJECT_PARAMETERS = {
