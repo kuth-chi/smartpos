@@ -58,25 +58,15 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 if not IS_HEROKU_APP:
     DEBUG = True
 
-
-# Version Release number    
-RELEASE_DATE = '2023-09-26'    
-PROJECT_VERSION = '0.0.1'
-
 # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
 # validation of the Host header in the incoming HTTP request. On other platforms you may need
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = [
-        "web-ez-startup-d2bfd26940d7.herokuapp.com", 
-        "smartpos.ez-startup.com", 
-        "ec2-3-232-218-211.compute-1.amazonaws.com", 
-        '127.0.0.1', 
-        'localhost'
-    ]
-else:
     ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -157,7 +147,7 @@ if IS_HEROKU_APP:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "HOST": "posdatabase.cqk0zl3xt0rr.us-east-1.rds.amazonaws.com",
+            "HOST": config("AWS_RDS_DB_HOST"),
             "NAME": config('AWS_RDS_DB_NAME'),
             "USER": config('AWS_RDS_DB_USER'),
             "PASSWORD": "w2ftI7xa89XeeonNr5ac",
