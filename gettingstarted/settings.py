@@ -58,6 +58,7 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 if not IS_HEROKU_APP:
     DEBUG = True
 
+print(DEBUG)
 # Version Release number    
 RELEASE_DATE = '2023-09-26'    
 PROJECT_VERSION = '0.0.1'
@@ -137,7 +138,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'accounts.context_processors.project_version',
             ],
         },
     },
