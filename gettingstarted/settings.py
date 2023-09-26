@@ -221,7 +221,7 @@ if IS_HEROKU_APP:
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 36000
 
-    # # AWS S3 Configuration
+        # # AWS S3 Configuration
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
@@ -234,40 +234,10 @@ if IS_HEROKU_APP:
         'Access-Control-Allow-Origin': '*',
     }
 
-    # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/1.11/howto/static-files/
-    # STORAGES = {
-    #     'default': {
-    #         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    #         "OPTIONS": {
-    #             "location": 'media',
-    #             "access_key": f'{AWS_ACCESS_KEY_ID}',
-    #             "secret_key": f'{AWS_SECRET_ACCESS_KEY}',
-    #             "bucket_name": f'{AWS_STORAGE_BUCKET_NAME}',
-    #             "region_name": f'{AWS_S3_REGION_NAME}',
-    #             "endpoint_url": f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/',
-    #             "querystring_auth": True,
-    #             "url_protocol ": "https:",
-    #             "signature_version": "s3v4",
-    #             "default_acl": "public-read",
-    #             "use_ssl": True,
-    #             "querystring_expire": 3600,
-    #             'object_parameters': {
-    #                 'CacheControl': 'max-age=86400'
-    #             }
-    #         }
-    #     },
-    #     'staticfiles': {
-    #         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-    #     }
-    # }
+    # AWS_S3_CUSTOM_DOMAIN should not have the "/public/{AWS_STORAGE_BUCKET_NAME}" part
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
 
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/public/{AWS_STORAGE_BUCKET_NAME}'
-
-    # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-    # Static files (CSS, JavaScript, etc.)
+    # Default and static files storage settings
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -275,8 +245,10 @@ if IS_HEROKU_APP:
         'CacheControl': 'max-age=86400'
     }
 
+    # Using S3 for file storage
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3ManifestStaticStorage'
+
     
 
 else:
