@@ -63,9 +63,9 @@ if not IS_HEROKU_APP:
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["*", "ez-startup.com", "smartpos.ez-startup.com", "smartpos-75c3b5a34d2f.herokuapp.com"]
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
