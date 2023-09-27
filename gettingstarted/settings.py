@@ -250,19 +250,22 @@ if IS_HEROKU_APP:
                 "verify": True,
             },
         },
-        "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        },
+        # "staticfiles": {
+        #     "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        # },
         "rosetta_storage_class": {
             "BACKEND": "rosetta.storage.CacheRosettaStorage",
         }
     }
-
-    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
+    
+    STATIC_URL = 'static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
-    MEDIA_ROOT = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
-    # https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+    # STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+    # MEDIA_ROOT = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+    # # https://docs.djangoproject.com/en/1.11/howto/static-files/
     
 
 else:
