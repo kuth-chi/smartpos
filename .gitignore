@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 venv/
 
+
 # Django files
 db.sqlite3
 
@@ -10,6 +11,7 @@ db.sqlite3
 .DS_Store
 
 # NPM
+node_modules/
 
 
 # Include the node_modules/flowbite directory

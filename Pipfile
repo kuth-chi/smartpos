@@ -15,7 +15,6 @@ dj-config-url = "==0.1.1"
 dj-database-url = "==2.1.0"
 django = "==4.2.5"
 django-rosetta = "==0.9.9"
-django-storages = "==1.14"
 gunicorn = "*"
 idna = "==3.4"
 jmespath = "==1.0.1"
@@ -41,6 +40,7 @@ urllib3 = "==1.26.16"
 whitenoise = "==6.5.0"
 python-decouple = "*"
 django-environ = "*"
+django-storages = {extras = ["s3"], version = "*"}
 
 [dev-packages]
 
