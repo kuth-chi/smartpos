@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from .models import User
 from .forms import UserRegisterForm
 from .utils import is_phone_number
+from django.db.models import Q
 
 
 
@@ -68,36 +69,31 @@ def user_signup(request):
 from django.contrib.sessions.models import Session
 
 def user_login(request):
-    """
-    Logs in a user.
-
-    This function takes a request object as a parameter and checks if the user is already authenticated. If the user is authenticated, it redirects them to the dashboard page. If the user is not authenticated, it checks if the request method is POST and authenticates the user based on the provided username and password. 
-
-    Parameters:
-    - request: The request object containing the user's login information.
-
-    Returns:
-    - Redirects to the dashboard page if the user is authenticated.
-    - Renders the login page if the user is not authenticated or the request method is not POST.
-    """
-    # Function implementation...
-
+    # Check if the user is already authenticated
     if request.user.is_authenticated:
         return redirect('dashboard')
-
+    
     elif request.method == 'POST':
-        # Get the username and password from the POST request
-        username = request.POST['username']
+        # Get the username/email/primary_phone and password from the POST request
+        username_or_email_or_phone = request.POST['username_or_email_or_phone']
         password = request.POST['password']
         remember_me = request.POST.get('remember_me') == 'on'
 
-        # Authenticate the user
-        user = authenticate(request, username=username, password=password)
+        # Check if the input matches any of the user's username, email, or primary phone
+        user = None
+        try:
+            user = User.objects.get(
+                Q(username=username_or_email_or_phone) | 
+                Q(email=username_or_email_or_phone) | 
+                Q(primary_phone=username_or_email_or_phone)
+            )
+        except User.DoesNotExist:
+            pass
 
-        # Check if authentication was successful
-        if user is not None:
+        # Authenticate the user
+        if user is not None and user.check_password(password):
             # Log the user in and set a session variable
-            login(request, user)
+            login(request, user, backend='accounts.authentication.CustomUserModelBackend')
             
             # Set session expiry based on 'remember me' checkbox
             if remember_me:
@@ -108,7 +104,6 @@ def user_login(request):
             messages.success(request, "You have logged in successfully")
             # Redirect to a success page (replace 'dashboard' with your URL)
             return redirect('dashboard')
-
         else:
             # Authentication failed, show an error message
             error_message = "Invalid login credentials. Please try again."

@@ -14,7 +14,7 @@
     
     <main class="max-w-screen-xl bg-transparent">
         <div class="flex justify-center p-2 md:p-16 ">
-            <div class="flex flex-row h-4/5 md:h-4/5 justify-start md:justify-center items-center align-middle rounded-xl md:rounded-3xl bg-gray-300/5 p-4 md:p-8 container">
+            <div class="flex flex-row h-4/5  md:space-x-6 md:h-4/5 justify-start md:justify-center items-center align-middle rounded-xl md:rounded-3xl bg-gray-300/5 p-4 md:p-8 container">
                 <!-- IMAGE -->
                 <div class="hidden md:block align-middle text-center md:w-1/2 hover:drop-shadow-md hover:shadow-sky-500">
                     <svg version="1.2" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2800 2141">
@@ -161,8 +161,12 @@
                             </ul>
                         {% endif %}
                         
-                        <button class="md:w-3/5 py-2 px-4 bg-sky-500/50 hover:bg-sky-500 rounded-md duration-200 text-slate-800 dark:text-slate-100" type="submit" id="RegisterBtn">{% translate "Register" %}</button>
-                        
+                        <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2
+                                focus:ring-4 focus:outline-none focus:ring-blue-300 
+                                dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80"  
+                                id="LoginBtn">
+                                {% translate "Register" %}
+                            </button>
                     </form>
                     <div class="flex flex-col justify-center items-center space-y-4 mt-4">
                         <div class="flex flex-col md:flex-row">
@@ -170,6 +174,7 @@
                                 <a title="{% translate 'Login now' %}" href="{% url 'user_login' %}" class="font-bold text-sky-500 hover:outline-1 rounded-lg"> {% translate "Login now" %}</a>
                             </p>
                         </div>
+                        
     
                         <!-- SEPARATOR -->
                         <div class="inline-flex items-center justify-center w-full">

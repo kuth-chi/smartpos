@@ -30,8 +30,8 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
 
-    re_path('', include('accounts.urls')),
-    re_path('', include('web.urls')),
+    re_path('', include('accounts.urls'), name='accounts'),
+    re_path('', include('web.urls'), name='web'),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

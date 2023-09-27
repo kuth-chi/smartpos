@@ -9,135 +9,136 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-17 16:27+0700\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2023-09-27 22:03+0000\n"
+"Last-Translator: Admin Manager <kuthchi@outlook.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Translated-Using: django-rosetta 0.9.9\n"
 
 #: .\accounts\forms.py:15 .\templates\auth\login.html:32
 #: .\templates\auth\register.html:147
 msgid "Password"
-msgstr ""
+msgstr "ពាក្យសម្ងាត់"
 
 #: .\accounts\forms.py:16
 msgid "Password confirmation"
-msgstr ""
+msgstr "បញ្ជាក់ពាក្យសម្ងាត់"
 
 #: .\accounts\models.py:16
 msgid "Female"
-msgstr ""
+msgstr "ស្រី"
 
 #: .\accounts\models.py:17
 msgid "Male"
-msgstr ""
+msgstr "ប្រុស"
 
 #: .\accounts\models.py:18
 msgid "Other"
-msgstr ""
+msgstr "ផ្សេងៗ"
 
 #: .\accounts\models.py:20
 msgid "uuid"
-msgstr ""
+msgstr "UUID"
 
 #: .\accounts\models.py:21
 msgid "username"
-msgstr ""
+msgstr "ឈ្មោះអ្នកប្រើប្រាស"
 
 #: .\accounts\models.py:22
 msgid "email"
-msgstr ""
+msgstr "សារអេឡិចត្រូនិច"
 
 #: .\accounts\models.py:23
 msgid "Primary phone"
-msgstr ""
+msgstr "លេខទូរស័ព្ទទីមួយ"
 
 #: .\accounts\models.py:24
 msgid "Local name"
-msgstr ""
+msgstr "ឈ្មោះក្នុងស្រុក"
 
 #: .\accounts\models.py:24
 msgid "The name in your language"
-msgstr ""
+msgstr "ឈ្មោះជាភាសារបស់អ្នក"
 
 #: .\accounts\models.py:25 .\templates\auth\register.html:138
 msgid "First name"
-msgstr ""
+msgstr "នាមខ្លួន"
 
 #: .\accounts\models.py:26 .\templates\auth\register.html:139
 msgid "Last name"
-msgstr ""
+msgstr "នាមត្រកូល"
 
 #: .\accounts\models.py:27
 msgid "Date of Birth"
-msgstr ""
+msgstr "ថ្ងៃកំណើត"
 
 #: .\accounts\models.py:28
 msgid "Describe your self"
-msgstr ""
+msgstr "ពត៌នាអំពីអ្នក"
 
 #: .\accounts\models.py:30
 msgid "Gender"
-msgstr ""
+msgstr "ភេទ"
 
 #: .\accounts\models.py:44
 msgid "groups"
-msgstr ""
+msgstr "ក្រុម"
 
 #: .\accounts\models.py:52
 msgid "user permissions"
-msgstr ""
+msgstr "ការអនុញ្ញាតរបស់អ្នកប្រើប្រាស់"
 
 #: .\accounts\models.py:73
 msgid "Passport"
-msgstr ""
+msgstr "លិខិតឆ្លងដែន"
 
 #: .\accounts\models.py:74
 msgid "National Identity"
-msgstr ""
+msgstr "អត្តសញ្ញាណ​ជាតិ"
 
 #: .\accounts\models.py:75
 msgid "Other Identity"
-msgstr ""
+msgstr "អត្តសញ្ញាណផ្សេងទៀត។"
 
 #: .\accounts\models.py:79
 msgid "Reviewing"
-msgstr ""
+msgstr "ការពិនិត្យឡើងវិញ"
 
 #: .\accounts\models.py:80
 msgid "Rejected"
-msgstr ""
+msgstr "ច្រានចោល"
 
 #: .\accounts\models.py:81
 msgid "Verified"
-msgstr ""
+msgstr "ផ្ទៀងផ្ទាត់"
 
 #: .\accounts\models.py:85
 msgid "type"
-msgstr ""
+msgstr "ប្រភេទ"
 
 #: .\accounts\models.py:86
 msgid "first_name"
-msgstr ""
+msgstr "ឈ្មោះដំបូង"
 
 #: .\accounts\models.py:87
 msgid "last_name"
-msgstr ""
+msgstr "នាមត្រកូល"
 
 #: .\accounts\models.py:88
 msgid "date of birth"
-msgstr ""
+msgstr "ថ្ងៃខែ​ឆ្នាំ​កំណើត"
 
 #: .\accounts\models.py:89
 msgid "social_reference"
-msgstr ""
+msgstr "ឯកសារយោងសង្គម"
 
 #: .\accounts\models.py:89
 msgid "provide link of your profiles for more reference information"
-msgstr ""
+msgstr "ផ្តល់តំណភ្ជាប់នៃទម្រង់របស់អ្នកសម្រាប់ព័ត៌មានយោងបន្ថែម"
 
 #: .\accounts\models.py:90
 msgid "status"

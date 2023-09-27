@@ -169,22 +169,22 @@
                         aria-labelledby="language-selector">
                         <ul class="py-2 font-medium" role="menu">
                           <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" 
+                            <a href="{% url 'change_language' 'en' %}?next={{ request.path }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" 
                               role="menuitem"
                               data-lang="en">
                               <div class="inline-flex items-center">
                                 <span class="fi fi-us fis h-3.5 w-3.5 rounded-full mr-2"></span>
-                                English (US)
+                                {% translate "English" %}
                               </div>
                             </a>
                           </li>
                           <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" 
+                            <a href="{% url 'change_language' 'km' %}?next={{ request.path }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" 
                               role="menuitem"
                               data-lang="km">
                               <div class="inline-flex items-center">
                                 <span class="fi fi-kh fis h-3.5 w-3.5 rounded-full mr-2"></span>
-                                Khmer (KH)
+                                  {% translate "Khmer" %}
                               </div>
                             </a>
                           </li>

@@ -113,14 +113,14 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.authentication.CustomUserModelBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'accounts.authentication.CustomUserModelBackend',
 ]
 
 
 ROOT_URLCONF = "gettingstarted.urls"
 # LOGIN URL
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = 'accounts:login'
 AUTH_USER_MODEL = 'accounts.User'
 
 TEMPLATES = [

@@ -28,16 +28,16 @@
                             <input type="hidden" name="next" value="{{ next }}">
                             {% csrf_token %}
                             
-                                <input class="w-fit md:w-3/5 py-2 px-4 border-2 border-sky-500/40 dark:bg-sky-900/10 dark:text-slate-200 rounded-md" id="UsernameInputLogin" type="text" name="username" placeholder="{% translate "Username or e-mail" %}"></input>
+                                <input class="w-fit md:w-3/5 py-2 px-4 border-2 border-sky-500/40 dark:bg-sky-900/10 dark:text-slate-200 rounded-md" id="UsernameInputLogin" id="UsernameInputLogin" type="text" name="username_or_email_or_phone"  placeholder="{% translate "Username or e-mail" %}"></input>
                                 {% if error_message %}
                                     <div class="text-red-500 dark:text-red-400">{{ error_message }}</div>
                                 {% endif %}
                                 <input class="w-fit md:w-3/5 py-2 px-4 border-2 border-sky-500/40 dark:bg-sky-900/10 dark:text-slate-200 rounded-md" id="PasswordInputLogin" type="password" name="password" placeholder="{% translate "Password" %}"></input>
                             
                                 <div class="w-fit md:w-3/5 flex justify-between ">
-                                    <div class="flex flex-row items-center"> <!-- Added 'items-center' class to vertically align checkbox and label -->
-                                        <input id="link-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 border-sky-500 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="link-checkbox" class="ml-2 text-sm text-gray-900 dark:text-sky-500/80"> {% translate "Remember" %}</label>
+                                    <div class="flex flex-row items-center"> 
+                                        <input type="checkbox" name="remember_me" id="remember_me" class="w-5 h-5 text-blue-600 mr-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="remember_me" class="text-gray-700 dark:text-sky-600">{% translate "Remember Me" %}</label>
                                     </div>
                                     <a href="#" class="text-sky-600 font-sm">{% translate 'Forgot password'%}</a>
                                 </div>
