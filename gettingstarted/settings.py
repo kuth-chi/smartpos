@@ -238,29 +238,40 @@ if IS_HEROKU_APP:
     }
 
     # Static files (CSS, JavaScript, Images)
+    # STORAGES = {
+    #     "default": {
+    #         "BACKEND": "storages.backends.s3.S3Storage",
+    #         "OPTIONS": {
+    #             "access_key": f"{AWS_ACCESS_KEY_ID}",
+    #             "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
+    #             "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
+    #             "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
+    #             "use_ssl": True,
+    #             "verify": True,
+    #         },
+    #     },
+    #     # "staticfiles": {
+    #     #     "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    #     # },
+    #     "rosetta_storage_class": {
+    #         "BACKEND": "rosetta.storage.CacheRosettaStorage",
+    #     }
+    # }
+    
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Additional directories containing static files.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')     # Location for collected static files.
+
     STORAGES = {
         "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {
-                "access_key": f"{AWS_ACCESS_KEY_ID}",
-                "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
-                "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
-                "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
-                "use_ssl": True,
-                "verify": True,
+                "location": STATIC_ROOT,  # Use the STATIC_ROOT directory.
+                "base_url": STATIC_URL,   # Use the STATIC_URL prefix.
             },
         },
-        # "staticfiles": {
-        #     "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        # },
-        "rosetta_storage_class": {
-            "BACKEND": "rosetta.storage.CacheRosettaStorage",
-        }
     }
     
-    STATIC_URL = 'static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
     # STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     # MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
