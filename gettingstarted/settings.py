@@ -215,66 +215,66 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # Use AWS S3 storage for static and media files on Heroku
 # Static and Media settings
-if IS_HEROKU_APP:
+# if IS_HEROKU_APP:
 
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 36000
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#     CSRF_COOKIE_SECURE = True
+#     SESSION_COOKIE_SECURE = True
+#     SECURE_SSL_REDIRECT = True
+#     SECURE_HSTS_SECONDS = 36000
+#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # # AWS S3 Configuration
-    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-    AWS_LOCATION = 'static'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    # AWS_QUERYSTRING_AUTH = False
-    AWS_HEADERS = {
-        'Access-Control-Allow-Origin': '*',
-    }
+#     # # AWS S3 Configuration
+#     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+#     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+#     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+#     AWS_DEFAULT_ACL = 'public-read'
+#     AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
+#     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+#     AWS_LOCATION = 'static'
+#     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+#     # AWS_QUERYSTRING_AUTH = False
+#     AWS_HEADERS = {
+#         'Access-Control-Allow-Origin': '*',
+#     }
 
-    # Static files (CSS, JavaScript, Images)
-    # STORAGES = {
-    #     "default": {
-    #         "BACKEND": "storages.backends.s3.S3Storage",
-    #         "OPTIONS": {
-    #             "access_key": f"{AWS_ACCESS_KEY_ID}",
-    #             "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
-    #             "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
-    #             "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
-    #             "use_ssl": True,
-    #             "verify": True,
-    #         },
-    #     },
-    #     # "staticfiles": {
-    #     #     "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    #     # },
-    #     "rosetta_storage_class": {
-    #         "BACKEND": "rosetta.storage.CacheRosettaStorage",
-    #     }
-    # }
+#     # Static files (CSS, JavaScript, Images)
+#     # STORAGES = {
+#     #     "default": {
+#     #         "BACKEND": "storages.backends.s3.S3Storage",
+#     #         "OPTIONS": {
+#     #             "access_key": f"{AWS_ACCESS_KEY_ID}",
+#     #             "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
+#     #             "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
+#     #             "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
+#     #             "use_ssl": True,
+#     #             "verify": True,
+#     #         },
+#     #     },
+#     #     # "staticfiles": {
+#     #     #     "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+#     #     # },
+#     #     "rosetta_storage_class": {
+#     #         "BACKEND": "rosetta.storage.CacheRosettaStorage",
+#     #     }
+#     # }
     
-    STORAGES = {
-        "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-        "rosetta_storage_class": {
-            "BACKEND": "rosetta.storage.CacheRosettaStorage",
+#     STORAGES = {
+#         "default": {
+#             "BACKEND": "django.core.files.storage.FileSystemStorage",
+#         },
+#         "staticfiles": {
+#             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#         },
+#         "rosetta_storage_class": {
+#             "BACKEND": "rosetta.storage.CacheRosettaStorage",
             
-        }
-    }
+#         }
+#     }
 
-    STATIC_URL = 'static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATIC_URL = 'media/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'media')
+#     STATIC_URL = 'static/'
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     STATIC_URL = 'media/'
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'media')
     
     # STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -283,24 +283,24 @@ if IS_HEROKU_APP:
     # # https://docs.djangoproject.com/en/1.11/howto/static-files/
     
 
-else:
-    STORAGES = {
-        "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-        "rosetta_storage_class": {
-            "BACKEND": "rosetta.storage.CacheRosettaStorage",
-            
-        }
+# else:
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+    "rosetta_storage_class": {
+        "BACKEND": "rosetta.storage.CacheRosettaStorage",
+        
     }
+}
 
-    STATIC_URL = 'static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATIC_URL = 'media/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
