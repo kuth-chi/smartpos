@@ -293,15 +293,17 @@ else:
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
+        # "staticfiles": {
+        #     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # },
         "rosetta_storage_class": {
             "BACKEND": "rosetta.storage.CacheRosettaStorage",
             
         }
     }
 
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'media/'
