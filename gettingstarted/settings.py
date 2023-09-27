@@ -258,19 +258,21 @@ if IS_HEROKU_APP:
     #     }
     # }
     
-    STATIC_URL = '/static/'
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Additional directories containing static files.
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')     # Location for collected static files.
-
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
-            "OPTIONS": {
-                "location": STATIC_ROOT,  # Use the STATIC_ROOT directory.
-                "base_url": STATIC_URL,   # Use the STATIC_URL prefix.
-            },
         },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+        "rosetta_storage_class": {
+            "BACKEND": "rosetta.storage.CacheRosettaStorage",
+            
+        }
     }
+
+    STATIC_URL = 'static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     
     # STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
