@@ -273,6 +273,8 @@ if IS_HEROKU_APP:
 
     STATIC_URL = 'static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = 'media/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'media')
     
     # STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -297,6 +299,8 @@ else:
 
     STATIC_URL = 'static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = 'media/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
