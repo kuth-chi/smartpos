@@ -1,15 +1,7 @@
 from django.shortcuts import get_object_or_404
-import phonenumbers
 from .models import AccountGallery
+import phonenumbers
 
-
-# PROFILE IMAGE
-def get_user_profile_image(user):
-    profile_image = None
-    account_gallery = get_object_or_404(AccountGallery, uploaded_by=user, is_avatar=True)
-    if account_gallery.image:
-        profile_image = account_gallery.image.url
-    return profile_image
 
 
 # Validate Phone number
@@ -25,4 +17,13 @@ def is_phone_number(value, is_email=False):
     except phonenumbers.NumberParseException:
         pass  # Invalid phone number format
 
+    return None
+
+
+
+def get_user_profile_image(user):
+    account_gallery = AccountGallery.objects.filter(uploaded_by=user, is_avatar=True).first()
+
+    if account_gallery and account_gallery.image:
+        return account_gallery.image.url
     return None

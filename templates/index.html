@@ -4,13 +4,10 @@
 
 {% block content %}
 
-<div class="dark:bg-darkBlue2 w-full h-screen overflow-hidden flex flex-col justify-normal top-0">
+<div class="antialiased bg-gray-50 dark:bg-gray-900">
   <!-- header -->
-  <div class="w-full shadow-md">
-    {% include 'web/layout/navbar.html' %}
-  </div>
-  <div class="w-full flex justify-center align-middle">
-    <main class="w-full flex flex-wrap md:flex-row gap-8 md:gap-10 justify-center text-slate-800 dark:text-sky-300 mt-6 md:mt-40 items-center">
+  <main class="p-4 md:ml-64 h-auto pt-20">
+    <div class="w-full flex flex-wrap md:flex-row gap-8 md:gap-10 justify-center text-slate-800 dark:text-sky-300 mt-6 md:mt-40 items-center">
       <article
           class="relative w-48 h-48 lg:w-56 lg:h-56 xl:w-60 xl:h-60 inline-grid place-content-center text-center border-8 border-[#191919] dark:border-[#191919] rounded-full before:rounded-full after:rounded-full after:absolute before:absolute before:-inset-2 pie no-round"
           style="--p: 20; --c: rgba(253, 41, 112, 1)"
@@ -74,12 +71,8 @@
         >
         {% translate "PM" %}
       </article>
-    </main>
-  </div>
-  <div class="w-full">
-    <p>{% translate "Version" %} : {{ PROJECT_VERSION }}</p>
-
-  </div>
+    </div>
+  </main>
 </div>
 {% endblock %}
 

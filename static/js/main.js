@@ -5,10 +5,3 @@ ClockTiming();
 toggleDarkMode();
 toggleUserMenu();
 profileDropdownMenu();
-
-
-
-
-
-
-

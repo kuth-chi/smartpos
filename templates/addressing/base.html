@@ -1,0 +1,33 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta class="meta-theme" name="color-scheme" content="light" data-other="dark"/>
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+      <title>
+          {% block title %} {{ title_page }} {% endblock %}
+      </title>
+      {% include 'sources/links_head.html' %}
+      {% include 'sources/style_head.html' %}
+  </head>   
+  <body class="bg-gray-200 dark:bg-darkBlue2 font-mulish h-screen mb-16 md:mb-0">
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
+        {% include "web/layout/navbar.html" %}
+    </nav>
+    <main class="p-4 h-auto pt-20">
+      {% block content %}
+
+      {% endblock %}
+    </main>
+
+      <!-- text/javascript -->
+      {% include 'sources/body_scripts.html'%}
+      {% block javascript %}
+      {% endblock  %}
+  </body>
+</html>

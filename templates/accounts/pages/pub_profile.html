@@ -1,0 +1,8 @@
+{% extends "accounts/index.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{{ title_page }} | {{ request.user.first_name }} {{ request.user.first_name }}{% endblock  %}
+
+{% block content %}
+<div class="text-red-500">Pub Profile is Working</div>
+{% endblock %}

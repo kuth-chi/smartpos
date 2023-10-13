@@ -25,13 +25,19 @@ from .settings import IS_HEROKU_APP
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),   
+    path('admin/', admin.site.urls),
+    path('', include('accounts.urls', namespace="accounts_app")),
+    path('', include('web.urls', namespace="web_app")),
+    path('', include('organizations.urls', namespace="org_app")),
+    path('', include('addressing.urls', namespace="addressing_app")),   
 ]
 
 urlpatterns += i18n_patterns(
 
-    re_path('', include('accounts.urls'), name='accounts'),
-    re_path('', include('web.urls'), name='web'),
+    re_path('', include('accounts.urls', 'accounts')),
+    re_path('', include('web.urls', 'web')),
+    re_path('', include('organizations.urls', 'organizations')),
+    re_path('', include('addressing.urls', 'addressing')),
 )
 
 if 'rosetta' in settings.INSTALLED_APPS:

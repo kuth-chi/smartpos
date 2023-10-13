@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{{ title_page }}{% endblock  %}
+
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12 mt-20 md:mb-0">
+    <div class="text-center pb-12">
+        <h2 class="text-base font-bold text-slate-800 dark:text-slate-200">
+            Connect people today.
+        </h2>
+        <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-slate-800 dark:text-slate-200">
+            Check our awesome members on us
+        </h1>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        {% for profile in profiles %}
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4">
+                <div class="flex flex-col items-center">
+                    {% if profile.avatar %}
+                    <img class="w-52 aspect-square rounded-full mb-3 object-cover shadow-lg" src="{{ profile.avatar.url }}" alt="{{ profile.first_name }} {{ profile.last_name }}"/>
+                    {% else %}
+                    <img class="w-52 aspect-square rounded-full mb-3 object-cover shadow-lg" src="{% static "img/no_image.jpg" %}" alt="{{ profile.first_name }} {{ profile.last_name }}"/>
+                    {% endif %}
+                    <h5 class="mb-1 text-base md:text-xl font-medium text-gray-900 dark:text-white">{{ profile.first_name }} {{ profile.last_name }}</h5>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">{{ profile.username }}</span>
+                    <div class="flex mt-4 space-x-3 md:mt-6">
+                        <a href="{% url 'web:pub_profile' profile.uuid %}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><span>View</span></a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

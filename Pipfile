@@ -41,6 +41,15 @@ whitenoise = "==6.5.0"
 python-decouple = "*"
 django-environ = "*"
 django-storages = {extras = ["s3"], version = "*"}
+djangorestframework = "*"
+django-filter = "*"
+markdown = "*"
+pyyaml = "*"
+pygments = "*"
+django-guardian = "*"
+install = "*"
+qrcode = "*"
+timedelta = "*"
 
 [dev-packages]
 

@@ -1,0 +1,45 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta class="meta-theme" name="color-scheme" content="light" data-other="dark"/>
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="cyan" />
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+      <title>
+          {% block title %} {{ title_page }} {% endblock %}
+      </title>
+      {% include 'sources/links_head.html' %}
+      {% include 'sources/style_head.html' %}
+  </head>
+  <body class="bg-gray-200 dark:bg-darkBlue2 font-mulish h-screen mb-16 md:mb-0">
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
+        {% include "web/layout/navbar.html" %}
+    </nav>
+
+      <!-- SIDENAV -->
+    <aside  
+      id="logo-sidebar"
+      aria-label="Sidebar" 
+      class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"> 
+        {% include "accounts/layout/aside.html" %}    
+    </aside>
+
+      <!-- Display Page Content HERE --> 
+    <main class="p-0 md:p-4 md:ml-64 h-auto pt-20">
+    {% block content %}
+    {% endblock  %}
+    </main>
+     
+    
+    
+    <!-- text/javascript -->
+    {% include 'sources/body_scripts.html' %}
+    {% block javascript %}
+    {% endblock  %}
+
+  </body>
+</html>

@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
@@ -11,19 +12,27 @@
       <meta name="apple-mobile-web-app-status-bar-style" content="dark:darkBlue bg-transparent">
       <title>
           {% block title %} 
-           Home page - EZ Startup
+           {% translate "Home page" %} - EZ Startup
           {% endblock %}
       </title>
       {% include 'sources/links_head.html' %}
       {% include 'sources/style_head.html' %}
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      
   </head>
-  <body class="bg-gray-50 dark:bg-darkBlue2 font-mulish">
+  <body class="bg-gray-200 dark:bg-darkBlue2 font-mulish h-screen mb-16 md:mb-0">
+    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
+        {% include "web/layout/navbar.html" %}
+    </nav>
     
-    {% block content %}
-    {% endblock %}
+      {% block content %}
+
+      {% endblock %}
+
 
     <!-- text/javascript -->
     {% include 'sources/body_scripts.html'%}
+    {% block javascript %}
+
+    {% endblock  %}
   </body>
 </html>

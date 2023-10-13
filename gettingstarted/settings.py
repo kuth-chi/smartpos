@@ -88,12 +88,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # USER APPS
-    "accounts",
-    "web",
+    "accounts.apps.AccountsConfig",
+    "web.apps.WebConfig",
+    "biz.apps.BizConfig",
+    "organizations.apps.OrganizationsConfig",
+    "addressing.apps.AddressingConfig",
+    
 
     # THIRD_PARTY_APPS
     'rosetta',
     'storages',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -166,11 +171,12 @@ else:
     # When running locally in development or in CI, a sqlite database file will be used instead
     # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -194,11 +200,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 LANGUAGES = [
     ('en', _('English')),
@@ -209,6 +212,7 @@ ROSETTA_STORAGE_CLASS = 'rosetta.storage.SessionRosettaStorage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -358,3 +362,5 @@ LOGGING = {
     },
 }
 
+# Custom 404 error handler view
+handler404 = 'web.views.custom_404_view'
