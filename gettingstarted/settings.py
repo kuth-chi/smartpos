@@ -264,18 +264,21 @@ if IS_HEROKU_APP:
 
     # Set the default storage backend for media and static files
     STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
-            "OPTIONS": {
-                "access_key": f"{AWS_ACCESS_KEY_ID}",
-                "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
-                "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
-                "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
-                "use_ssl": True,
-                "verify": True,
-                
-            },
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": f"{AWS_ACCESS_KEY_ID}",
+            "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
+            "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
+            "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
+            "use_ssl": True,
+            "verify": True,
         },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+        "rosetta_storage_class": {
+            "BACKEND": "rosetta.storage.CacheRosettaStorage",
+        }
     }
 
     # Static and Media URL settings
