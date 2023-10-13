@@ -184,7 +184,7 @@ class AccountGallery(models.Model):
     
     def __init__(self, *args, **kwargs):
         super(AccountGallery, self).__init__(*args, **kwargs)
-        self.is_cover = False
+        self.is_cover_set = False
         
     uuid = models.UUIDField(verbose_name=_(
         "UUID"), default=uuid.uuid4, editable=False, unique=True)
@@ -230,10 +230,10 @@ class AccountGallery(models.Model):
 
     def set_covered_image(self):
         existing_user_cover = AccountGallery.objects.filter(
-            uploaded_by=self.uploaded_by, is_cover=True).count()
+            uploaded_by=self.uploaded_by, is_cover_set=True).count()
         if existing_user_cover >= 7:
             raise ValidationError("Maximum set images allowed is hit")
-        self.is_cover = True
+        self.is_cover_set = True
         self.save()
 
 
