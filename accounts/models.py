@@ -24,9 +24,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('username'), unique=True, max_length=35, blank=True)
     email = models.EmailField(_('email'), max_length=25, blank=True)
     # website = models.URLField(blank=True, null=True, verbose_name=_('Website'))
-    avatar = models.ImageField(
-        upload_to="media/user/images/avatar/", blank=True, verbose_name=_("Avatar")
-    )
+    # avatar = models.ImageField(
+    #     upload_to="media/user/images/avatar/", blank=True, verbose_name=_("Avatar")
+    # )
     primary_phone = models.CharField(
         max_length=16, blank=True, verbose_name=_('Primary phone'))
     local_name = models.CharField(max_length=50, blank=True, verbose_name=_(
