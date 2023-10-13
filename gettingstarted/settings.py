@@ -228,20 +228,6 @@ if IS_HEROKU_APP:
     SECURE_HSTS_SECONDS = 36000
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # AWS S3 Configuration
-    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-    AWS_LOCATION = 'static'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    AWS_QUERYSTRING_AUTH = False
-    AWS_HEADERS = {
-        'Access-Control-Allow-Origin': '*',
-    }
-
     # Static files (CSS, JavaScript, Images)
     # STORAGES = {
     #     "default": {
@@ -277,8 +263,20 @@ if IS_HEROKU_APP:
     }
 
     # Set the default storage backend for media and static files
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "access_key": f"{AWS_ACCESS_KEY_ID}",
+                "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
+                "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
+                "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
+                "use_ssl": True,
+                "verify": True,
+                
+            },
+        },
+    }
 
     # Static and Media URL settings
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
