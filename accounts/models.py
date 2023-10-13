@@ -23,10 +23,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         _('username'), unique=True, max_length=35, blank=True)
     email = models.EmailField(_('email'), max_length=25, blank=True)
-    # website = models.URLField(blank=True, null=True, verbose_name=_('Website'))
-    # avatar = models.ImageField(
-    #     upload_to="media/user/images/avatar/", blank=True, verbose_name=_("Avatar")
-    # )
+    website = models.URLField(blank=True, null=True, verbose_name=_('Website'))
+    avatar = models.ImageField(
+        upload_to="media/user/images/avatar/", blank=True, verbose_name=_("Avatar")
+    )
     primary_phone = models.CharField(
         max_length=16, blank=True, verbose_name=_('Primary phone'))
     local_name = models.CharField(max_length=50, blank=True, verbose_name=_(
@@ -43,8 +43,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True, blank=True, verbose_name='Recover Email')
     gender = models.CharField(
         max_length=10, default="O", choices=GENDER_CHOICE, verbose_name=_('Gender'))
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_('Updated at'))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
     last_login = models.DateTimeField(auto_now=True)
     joined_on = models.DateTimeField(auto_now_add=True)
     is_public = models.BooleanField(default=False)
