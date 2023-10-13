@@ -23,7 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         _('username'), unique=True, max_length=35, blank=True)
     email = models.EmailField(_('email'), max_length=25, blank=True)
-    website = models.URLField(blank=True, null=True, verbose_name=_('Website'))
+    # website = models.URLField(blank=True, null=True, verbose_name=_('Website'))
     avatar = models.ImageField(
         upload_to="media/user/images/avatar/", blank=True, verbose_name=_("Avatar")
     )
