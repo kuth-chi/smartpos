@@ -228,27 +228,6 @@ if IS_HEROKU_APP:
     SECURE_HSTS_SECONDS = 36000
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # Static files (CSS, JavaScript, Images)
-    # STORAGES = {
-    #     "default": {
-    #         "BACKEND": "storages.backends.s3.S3Storage",
-    #         "OPTIONS": {
-    #             "access_key": f"{AWS_ACCESS_KEY_ID}",
-    #             "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
-    #             "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
-    #             "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
-    #             "use_ssl": True,
-    #             "verify": True,
-    #         },
-    #     },
-    #     # "staticfiles": {
-    #     #     "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    #     # },
-    #     "rosetta_storage_class": {
-    #         "BACKEND": "rosetta.storage.CacheRosettaStorage",
-    #     }
-    # }
-    # AWS settings
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
@@ -284,9 +263,11 @@ if IS_HEROKU_APP:
         }
     }
 
-
+    # Update DEFAULT_FILE_STORAGE to use S3 for media files
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    # Remove the following line since STATICFILES_STORAGE is defined in STORAGES
+    # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     # Static and Media URL settings
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
@@ -297,6 +278,7 @@ if IS_HEROKU_APP:
 
     # Media root directory, you should create this directory if it doesn't exist
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 
     # # https://docs.djangoproject.com/en/1.11/howto/static-files/
