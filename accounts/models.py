@@ -322,6 +322,9 @@ class Location(models.Model):
     longitude = models.FloatField(default=0.0, verbose_name=_('Longitude'))
     updated_date = models.DateTimeField(_('update at'), auto_now=True)
     created_date = models.DateTimeField(_('submitted at'), auto_now_add=True)
+    
+    def __str__(self):
+        return self.latitude + ", " + self.longitude
         
 class UserAddress(models.Model):
     ADDRESS_CHOICES = (
