@@ -228,7 +228,7 @@ if IS_HEROKU_APP:
     SECURE_HSTS_SECONDS = 36000
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-#     # # AWS S3 Configuration
+    # AWS S3 Configuration
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
@@ -262,15 +262,33 @@ if IS_HEROKU_APP:
     #         "BACKEND": "rosetta.storage.CacheRosettaStorage",
     #     }
     # }
-        
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # AWS settings
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_REGION_NAME = 'ap-southeast-1'  # Use the appropriate region
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+    AWS_LOCATION = 'static'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_QUERYSTRING_AUTH = False
+    AWS_HEADERS = {
+        'Access-Control-Allow-Origin': '*',
+    }
 
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    # Set the default storage backend for media and static files
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+    # Static and Media URL settings
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    # settings.py
+
+    # Static root directory, you should create this directory if it doesn't exist
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Media root directory, you should create this directory if it doesn't exist
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
     # # https://docs.djangoproject.com/en/1.11/howto/static-files/
