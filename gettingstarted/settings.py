@@ -269,6 +269,9 @@ if IS_HEROKU_APP:
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    # settings.py
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
     # # https://docs.djangoproject.com/en/1.11/howto/static-files/
     
