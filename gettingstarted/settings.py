@@ -263,23 +263,30 @@ if IS_HEROKU_APP:
     }
 
     # Set the default storage backend for media and static files
+    # Set the default storage backend for media and static files
     STORAGES = {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "access_key": f"{AWS_ACCESS_KEY_ID}",
-            "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
-            "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
-            "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
-            "use_ssl": True,
-            "verify": True,
+        "default": {  # Define a default backend for media files, or use an appropriate name
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "access_key": f"{AWS_ACCESS_KEY_ID}",
+                "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
+                "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
+                "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
+                "use_ssl": True,
+                "verify": True,
+            },
         },
-        "staticfiles": {
+        "staticfiles": {  # Define a backend for static files
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
         "rosetta_storage_class": {
             "BACKEND": "rosetta.storage.CacheRosettaStorage",
         }
     }
+
+
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     # Static and Media URL settings
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
