@@ -107,7 +107,7 @@
     <!-- Country -->
     <div class=" relative border-2 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-64 md:h-64">
       
-      <img class="absolute z-0 rounded-lg aspect-video opacity-100 dark:opacity-50 w-full object-cover" src="{{ random_one_country.flag.url }}" alt="{{ random_one_country.name }} flag"></img>
+      <img class="absolute z-0 rounded-lg aspect-video opacity-100 dark:opacity-50 w-full object-cover" src="{% if random_one_country.flag %}{{ random_one_country.flag.url }} {% else %} {% static 'img/no_image.jpg' %} {% endif %}" alt="{{ random_one_country.name }} flag"></img>
       <div class="absolute text-gray-800 dark:text-sky-100 pl-2.5 pt-2">
         <h3 class="text-2xl">{{ random_one_country.name }}<h3>
         <p class="text-normal text-gray-600 dark:text-gray-300">{% translate "Province(s): " %}{{ count_provinces_by_country }}</p>
@@ -116,7 +116,7 @@
       <div class="absolute text-xl text-gray-800 dark:text-sky-100 pl-2.5 bottom-2">
           <div class="flex -space-x-4 rounded-full bg-gray-400 dark:bg-darkBlue p-2">
             {% for country in countries|slice:"0:5" %}
-                <img class="w-10 h-10 object-cover border-2 border-white rounded-full dark:border-gray-800 hover:z-50 transition-all duration-300" src="{{ country.flag.url }}" alt="{{ country.name }}">  
+                <img class="w-10 h-10 object-cover border-2 border-white rounded-full dark:border-gray-800 hover:z-50 transition-all duration-300" src="{% if country.flag %} {{ country.flag.url }} {% else %} {% static 'img/no_image.jpg' %} {% endif %}" alt="{{ country.name }}">  
             {% endfor %}
             <a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white dark:text-white bg-blue-800 border-2 border-white rounded-full hover:bg-blue-600 dark:border-sky-900" href="{% url 'addressing:countries' %}">+<span id="countCountry"></span></a> 
         </div>

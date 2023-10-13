@@ -263,35 +263,12 @@ if IS_HEROKU_APP:
     #     }
     # }
     
-    STORAGES = {
-        "BACKEND": "storages.backends.s3.S3Storage",
-            "OPTIONS": {
-                "access_key": f"{AWS_ACCESS_KEY_ID}",
-                "secret_key": f"{AWS_SECRET_ACCESS_KEY}",
-                "bucket_name": f"{AWS_STORAGE_BUCKET_NAME}",
-                "endpoint_url": f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com",
-                "use_ssl": True,
-                "verify": True,
-            },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-        "rosetta_storage_class": {
-            "BACKEND": "rosetta.storage.CacheRosettaStorage",
-            
-        }
-    }
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-    # STATIC_URL = '/static/'
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # STATIC_URL = 'media/'
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'media')
-
-    
-    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/{AWS_LOCATION}/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
-    MEDIA_ROOT = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
     # # https://docs.djangoproject.com/en/1.11/howto/static-files/
     
 
