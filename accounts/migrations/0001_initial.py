@@ -358,7 +358,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "is_cover",
+                    "is_cover_set",
                     models.BooleanField(default=False, verbose_name="Is cover"),
                 ),
                 (
