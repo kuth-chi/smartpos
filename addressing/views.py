@@ -93,18 +93,22 @@ def GeoIndexView(request):
         provinces = Province.objects.all()
         total_provinces = provinces.count()
         random_province = provinces.order_by('?').first()
+        if random_province:
+            province_id = random_province.id
+        else:
+            province_id = None
         # Count address in last 28 day
         count_address_28_days_before_last_28_days = UserAddress.objects.filter(
-            state=random_province.id,
+            state=province_id,
             created_date__gte=start_before_28_days,
             created_date__lte=start_date
         ).count()
         count_address_last_28_days = UserAddress.objects.filter(
-            state = random_province.id,
+            state = province_id,
             created_date__gte=start_date,
             created_date__lte=end_date
         ).count()
-        count_user_addresses_in_random_province = UserAddress.objects.filter(state=random_province.id).count()
+        count_user_addresses_in_random_province = UserAddress.objects.filter(state=province_id).count()
         
     except Province.DoesNotExist:
         provinces = None
