@@ -69,7 +69,10 @@ def GeoIndexView(request):
         countries = Country.objects.all()
         total_countries = countries.count()
         random_one_country = countries.order_by('?').first()
-        country_id = random_one_country.id
+        if random_one_country:
+            country_id = random_one_country.id 
+        else:
+            country_id = None    
         count_provinces_by_country = provinces_in_country(country_id)
         
         count_address_in_country = {}
