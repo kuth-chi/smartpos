@@ -39,27 +39,11 @@ def create_user_address(request, user_uuid):
 @login_required
 def user_profile(request):
     user = request.user
-    try:
-        
-        settings = get_object_or_404(SettingUser, user=user.pk)
-    except SettingUser.DoesNotExist:
-        settings = None
-        
-    try:
-        addresses = get_object_or_404(UserAddress, user=user)
-    except UserAddress.DoesNotExist:
-        addresses = None
+    settings = SettingUser.objects.filter(user=user).first()
+    addresses = UserAddress.objects.filter(user=user).first()
+    alt_phones = AlternativePhone.objects.filter(user=user)
+    social_profiles = UserSocial.objects.filter(user=user)
 
-    try:
-        alt_phones = AlternativePhone.objects.filter(user=user)
-    except AlternativePhone.DoesNotExist:
-        alt_phones = None
-
-    try:
-        social_profiles = UserSocial.objects.filter(user=user)
-    except UserSocial.DoesNotExist:
-        social_profiles = None
-    
     context = {
         'user': user,
         'title_page': user.first_name + ' ' + user.last_name + ' - ' + _('Profile'),
@@ -70,6 +54,7 @@ def user_profile(request):
         'social_profiles': social_profiles
     }
     return render(request, 'accounts/pages/profile.html', context)
+
 
 
 
@@ -123,18 +108,17 @@ def user_signup(request):
 
 # User login methods
 def user_login(request):
-    # Check if the user is already authenticated
-    if request.user.is_authenticated:
-        # Check if a reference URL is in the session
-        reference_url = request.session.get('reference_url')
-        if reference_url:
-            # Redirect to the stored URL
-            return redirect(reference_url)
-        else:
-            # Redirect to a default page (e.g., the user's profile)
-            return redirect('accounts:profile')
+    # Check for the reference URL in the session
+    reference_url = request.session.get('reference_url')
+    if reference_url:
+        request.session.pop('reference_url')
+        return redirect(reference_url)
     
-    elif request.method == 'POST':
+    if request.user.is_authenticated:
+        # Redirect to a default page (e.g., the user's profile)
+        return redirect('accounts:profile')
+
+    if request.method == 'POST':
         # Get the username/email/primary_phone and password from the POST request
         username_or_email_or_phone = request.POST['username_or_email_or_phone']
         password = request.POST['password']
@@ -144,8 +128,8 @@ def user_login(request):
         user = None
         try:
             user = User.objects.get(
-                Q(username=username_or_email_or_phone) | 
-                Q(email=username_or_email_or_phone) | 
+                Q(username=username_or_email_or_phone) |
+                Q(email=username_or_email_or_phone) |
                 Q(primary_phone=username_or_email_or_phone)
             )
         except User.DoesNotExist:
@@ -155,24 +139,20 @@ def user_login(request):
         if user is not None and user.check_password(password):
             # Log the user in and set a session variable
             login(request, user, backend='accounts.authentication.CustomUserModelBackend')
-            
+
             # Set session expiry based on 'remember me' checkbox
             if remember_me:
                 request.session.set_expiry(0)  # Set session to never expire
             else:
                 request.session.set_expiry(None)  # Use default session expiry time
-            
-            # Set Reference URL
-            # Set Reference URL
+
+            # Check for the reference URL in the session again
             reference_url = request.session.get('reference_url')
             if reference_url:
                 request.session.pop('reference_url')
-                # Redirect to the stored URL (profile_list or a default URL)
                 return redirect(reference_url)
             else:
-                # Redirect to a default URL (profile_list or another URL)
                 return redirect(reverse('accounts:profile'))
-            
         else:
             # Authentication failed, show an error message
             error_message = "Invalid login credentials. Please try again."

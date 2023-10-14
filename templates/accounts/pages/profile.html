@@ -10,7 +10,7 @@
        <div class="relative flex justify-center row-span-4​ bg-gradient-to-tr from-white to-gray-200 dark:bg-gradient-to-tr dark:from-blue-800/30 dark:to-sky-800/70 rounded-t-3xl">
          
          <img class="absolute -top-16 h-32 w-32 rounded-3xl object-cover ring-offset-blue-500 ring-4 md:ring-4" alt="{{ user.username }} avatar" 
-            src="{% if user.avatar %}{{ user.avatar.url }}{% else %}#{% endif %}">
+            src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'img/no_avatar.png' %}{% endif %}">
             <svg 
                class="absolute -top-16 w-32 h-32 p-16 stroke-sky-500 bg-transparent opacity-0 hover:opacity-100 hover:bg-sky-500/30 rounded-3xl text-gray-500 dark:text-gray-100 transition-all duration-300" 
                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
@@ -19,9 +19,9 @@
             </svg>
          </img> 
          <div class="top-24 text-black dark:text-sky-100 w-full flex items-center flex-col">
-            <h2 class="font-bold text-2xl font-heading font-sans pt-20">
+            <h3 class="font-bold text-4xl font-heading font-sans pt-20">
                {% if setting_user.is_first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.last_name }} {{ user.first_name }}{% endif %}
-            </h2>
+            </h3>
             <div class="text-black text-base dark:text-blue-300">
                {%if user.email %}
                   {{ user.email }}
@@ -75,7 +75,7 @@
                </li>
                {% endif %}
                <li>
-                  Join on {{ user.created_at|date:"d F Y" }}
+                  Join on {{ user.created_date|date:"d-F-Y" }}
                </li>
                
             </ul>
