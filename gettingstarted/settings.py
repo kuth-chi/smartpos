@@ -93,6 +93,8 @@ INSTALLED_APPS = [
     "biz.apps.BizConfig",
     "organizations.apps.OrganizationsConfig",
     "addressing.apps.AddressingConfig",
+    "payments.apps.PaymentsConfig",
+    "packages.apps.PackagesConfig",
     
 
     # THIRD_PARTY_APPS

@@ -161,7 +161,6 @@ class VerificationAccount(models.Model):
         "provide link of your profiles for more reference information"))
     status = models.CharField(
         _("status"), max_length=10, default="reviewing", choices=STATUS_CHOICE)
-    user = models.ForeignKey(User, related_name='verification_account', blank=True, null=True, on_delete=models.CASCADE)
     updated_date = models.DateTimeField(_('update at'), auto_now=True)
     created_date = models.DateTimeField(_('submitted at'), auto_now_add=True)
  
@@ -372,4 +371,3 @@ class UserSocial(models.Model):
     
     def __str__(self):
         return self.username
-
