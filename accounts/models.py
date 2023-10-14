@@ -45,12 +45,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=10, default="O", choices=GENDER_CHOICE, verbose_name=_('Gender'))
     last_login = models.DateTimeField(auto_now=True)
     joined_on = models.DateTimeField(auto_now_add=True)
-    is_public = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    updated_date = models.DateTimeField(_('update at'), auto_now=True)
-    created_date = models.DateTimeField(_('submitted at'), auto_now_add=True)
+    is_public = models.BooleanField(default=False, verbose_name=_('Public'))
+    is_active = models.BooleanField(default=True, verbose_name=_('Active'))
+    is_staff = models.BooleanField(default=False, verbose_name=_('Staff'))
+    is_superuser = models.BooleanField(default=False, verbose_name=_('Superuser'))
+    updated_date = models.DateTimeField(verbose_name=_('update at'), auto_now=True)
+    created_date = models.DateTimeField(verbose_name=_('submitted at'), auto_now_add=True)
 
     USERNAME_FIELD = "username"
     # REQUIRED_FIELDS = []
