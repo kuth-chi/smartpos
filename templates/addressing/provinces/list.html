@@ -18,16 +18,17 @@
                 <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4 bg-gray-50 dark:bg-gray-900">
                     <div class="w-full md:w-1/2">
                         <form class="flex items-center">
-                            <label for="simple-search" class="sr-only">Search</label>
+                            <label for="provinceSearchInput" class="sr-only">Search</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                                <input type="text" id="provinceSearchInput" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required oninput="searchProvinces(this.value)">
                             </div>
                         </form>
+                        
                     </div>
                     <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
                         <button type="button" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
@@ -104,11 +105,11 @@
                 </div>
             </caption>
  
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+            <table id="provinceTable" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-900 uppercase dark:text-gray-400 drop-shadow-md">
                     <tr class="bg-white dark:bg-gray-800">
                         <th scope="col" class="px-6 py-3">
-                            #
+                            {% translate "ID" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
                             {% translate "Province name" %}
@@ -124,79 +125,23 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for p in provinces %}
-                    <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-fit">{{ forloop.counter }}</th>
-                        <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ p.name}}
-                        </th>
-                        <td class="px-6 py-3 font-battambang text-base nowrap">
-                            {{ p.name_local }}
-                        </td>
-                        <td class="px-6 py-3">
-                            {{ p.type }}
-                        </td>
-                        <td class="px-6 py-3">
-                            {{ p.districts }}
-                        </td>
-                    </tr>
-                    {% endfor %}
+                <tbody id="provinceTableBody">
+
                 </tbody>
             </table>
+            
+            <!-- Load More Button -->
+            <div class="flex justify-center mt-4">
+                <button id="loadMoreButton" class="p-3 text-sm font-base rounded-full text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800/80 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-gray-800 border-2 border-gray-600 animate-bounce">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-sky-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 1v12m0 0 4-4m-4 4L1 9"/>
+                      </svg>
+                </button>
+            </div>
             <!-- Pagination controls -->
             <div class="mt-4">
                 <div class="relative overflow-hidden bg-white rounded-b-lg shadow-md dark:bg-gray-800">
-                    <nav class="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0"
-                        aria-label="Table navigation">
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                            {% translate "Showing" %} <span class="font-semibold text-gray-900 dark:text-white">{{ provinces.start_index }}-{{ provinces.end_index }}</span>
-                            {% translate "of" %} <span class="font-semibold text-gray-900 dark:text-white">{{ provinces.paginator.count }}</span>
-                        </span>
-                        <ul class="inline-flex items-stretch -space-x-px">
-                            {% if provinces.has_previous %}
-                            <li>
-                                <a href="?page={{ provinces.previous_page_number }}&province={{ items_per_page }}"
-                                    class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    <span class="sr-only">Previous</span>
-                                    <!-- Previous icon -->
-                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </a>
-                            </li>
-                            {% endif %}
-                            {% for page_num in provinces.paginator.page_range %}
-                            <li>
-                                <a href="?page={{ page_num }}&province={{ items_per_page }}"
-                                    class="flex items-center justify-center px-3 py-2 text-sm leading-tight
-                                    {% if page_num == provinces.number %} bg-blue-500 text-white {% else %}
-                                    text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 {% endif %}
-                                    dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    {{ page_num }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                            {% if provinces.has_next %}
-                            <li>
-                                <a href="?page={{ provinces.next_page_number }}&province={{ items_per_page }}"
-                                    class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    <span class="sr-only">Next</span>
-                                    <!-- Next icon -->
-                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+                   
                 </div>
             </div>
 
@@ -205,4 +150,84 @@
 {% endblock %}
 
 {% block javascript %}
-{% endblock %}163
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const apiUrl = '{{ api_url }}';
+        const provinceTable = document.getElementById('provinceTable');
+        const loadMoreButton = document.getElementById('loadMoreButton');
+        const provinceTableBody = document.getElementById('provinceTableBody');
+        const itemsPerPage = 10; // Number of items to load at a time
+        let offset = 0; // Track the current offset
+    
+        let data = []; // Store all data initially
+    
+        function loadProvinces() {
+            // Load data from the API and store it in the data variable
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(result => {
+                    data = result;
+                    updateTable();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    
+        function updateTable() {
+            // Get the search query
+            const searchQuery = document.getElementById('provinceSearchInput').value.trim().toLowerCase();
+        
+            // Filter the data based on the search query
+            const filteredData = data.filter(province => {
+                const nameMatch = province.name.toLowerCase().includes(searchQuery);
+                const localNameMatch = province.name_local.toLowerCase().includes(searchQuery);
+                const categoryMatch = province.type.toLowerCase().includes(searchQuery);
+                const districtMatch = province.districts.toString().includes(searchQuery);
+                
+                // Return true if any of the columns match the search query
+                return nameMatch || localNameMatch || categoryMatch || districtMatch;
+            });
+        
+            // Calculate the range for displaying items
+            const startIndex = offset;
+            const endIndex = offset + itemsPerPage;
+            const itemsToDisplay = filteredData.slice(startIndex, endIndex);
+        
+            // Display the filtered data
+            itemsToDisplay.forEach(province => {
+                const markup = `<tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover-bg-gray-600">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-fit">${province.id}</th>
+                    <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">${province.name}</th>
+                    <td class="px-6 py-3 font-battambang text-base nowrap">${province.name_local}</td>
+                    <td class="px-6 py-3">${province.type}</td>
+                    <td class="px-6 py-3">${province.districts}</td>
+                </tr>`;
+                provinceTableBody.insertAdjacentHTML('beforeend', markup);
+            });
+        
+            if (startIndex + itemsToDisplay.length >= filteredData.length) {
+                loadMoreButton.style.display = 'none'; // Hide the button when all data is loaded
+            }
+        }
+        
+    
+        loadProvinces(); // Initial load
+        loadMoreButton.addEventListener('click', function () {
+            offset += itemsPerPage; // Update the offset to load more items
+            updateTable();
+        });
+    
+        // Add an event listener to the search input
+        const searchInput = document.getElementById('provinceSearchInput');
+        searchInput.addEventListener('input', function () {
+            offset = 0; // Reset the offset when the search query changes
+            provinceTableBody.innerHTML = ''; // Clear the table when the search query changes
+            updateTable();
+        });
+    });
+    
+</script>
+    
+
+{% endblock %}

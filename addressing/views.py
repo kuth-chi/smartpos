@@ -5,9 +5,13 @@ from accounts.models import UserAddress
 from django.contrib import messages
 from django.db.models import Count
 from django.core.paginator import Paginator
+# DRF
+from rest_framework import viewsets
+from rest_framework.response import Response
+
 from .models import Country, Province, District, Commune, Village
 from .utils import *
-
+from .serializers import *
 # Create your views here.
 
 
@@ -33,6 +37,8 @@ def country_list(request):
     return render(request, 'addressing/countries/list.html', context)
 
 def province_list(request):
+    current_domain = request.get_host()
+    api_url = f"{request.scheme}://{current_domain}/api/v1/geography/provinces/"
     province_per_page = int(request.GET.get('province_per_page', 10))
     try:
         provinces = Province.objects.annotate(districts=Count('district')).order_by('-timestamp')
@@ -48,12 +54,80 @@ def province_list(request):
     context = {
         'title_page': _('Provinces'),
         'header_title': _('Provinces'),
+        'api_url': api_url,
         'provinces': provinces,
         'count_districts_by_province': count_districts_by_province,
         'items_per_page': province_per_page,
         
+        
     }
     return render(request, 'addressing/provinces/list.html', context)
+# Province API
+class ProvinceViewSet(viewsets.ModelViewSet):
+    queryset = Province.objects.all()
+    serializer_class = ProvinceSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serialized_data = self.get_serializer(queryset, many=True).data
+
+        # Annotate the number of districts for each province and add it to serialized data
+        for province_data in serialized_data:
+            try:
+                province_id = province_data['id']
+                district_count = District.objects.filter(province_id=province_id).count()
+                province_data['districts'] = district_count
+            except KeyError:
+                # Handle the case where 'id' is not present in the dictionary
+                province_data['districts'] = 0  # or another default value
+
+        return Response(serialized_data)
+    
+
+
+# District
+def district_list(request):
+    district_per_page = int(request.GET.get('district_per_page', 10))
+    try:
+        districts = District.objects.annotate(communes=Count('commune')).order_by('-timestamp')
+        # Create a Paginator instance and specify the number of items per page
+        paginator = Paginator(districts, district_per_page)
+        page = request.GET.get('page')
+
+        districts = paginator.get_page(page)
+    except District.DoesNotExist:
+        districts = None
+        
+        
+    context = {
+        'title_page': _('Districts'),
+        'header_title': _('Districts'),
+        'districts': districts,
+        'communes_by_district': communes_by_district,
+        'items_per_page': district_per_page,
+        
+    }
+    return render(request, 'addressing/districts/list.html', context)
+# District API
+class DistrictViewSet(viewsets.ModelViewSet):
+    queryset = District.objects.all()
+    serializer_class = DistrictSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serialized_data = self.get_serializer(queryset, many=True).data
+
+        # Annotate the number of communes for each district and add it to serialized data
+        for district_data in serialized_data:
+            try:
+                district_id = district_data['id']
+                commune_count = Commune.objects.filter(district_id=district_id).count()
+                district_data['communes'] = commune_count
+            except KeyError:
+                # Handle the case where 'id' is not present in the dictionary
+                district_data['communes'] = 0  # or another default value
+
+        return Response(serialized_data)
 
 
 
@@ -97,6 +171,9 @@ def GeoIndexView(request):
             province_id = random_province.id
         else:
             province_id = None
+        # Count District in Random Provinces
+        count_districts_in_province = count_districts_by_province(province_id)
+        
         # Count address in last 28 day
         count_address_28_days_before_last_28_days = UserAddress.objects.filter(
             state=province_id,
@@ -108,7 +185,14 @@ def GeoIndexView(request):
             created_date__gte=start_date,
             created_date__lte=end_date
         ).count()
+        
+        count_address_in_province = {}
+        for province in provinces:
+            count_address_in_province[province.name] = UserAddress.objects.filter(state=province).count()
+        total_address_count_in_province = sum(count_address_in_province.values())
+        
         count_user_addresses_in_random_province = UserAddress.objects.filter(state=province_id).count()
+        address_count_in_province_by_date = count_districts_by_province_and_date(province_id, start_date, end_date)
         
     except Province.DoesNotExist:
         provinces = None
@@ -123,18 +207,51 @@ def GeoIndexView(request):
     try:
         districts = District.objects.all()
         total_districts = districts.count()
+        if districts:
+            random_district = districts.order_by('?').first()
+            if random_district:
+                district_id = random_district.id
+            else:
+                district_id = None
+        count_address_28_days_before_last_28_days = UserAddress.objects.filter(
+            city=district_id,
+            created_date__gte=start_before_28_days,
+            created_date__lte=start_date
+        ).count()
+        count_address_last_28_days = UserAddress.objects.filter(
+            city=district_id,
+            created_date__gte=start_date,
+            created_date__lte=end_date
+        ).count()
+        count_user_addresses_in_random_district = UserAddress.objects.filter(city=district_id).count()
+        # all addresses in each district
+        count_user_addresses_in_district = {}
+        for district in  districts:
+            count_user_addresses_in_district[district.name] = UserAddress.objects.filter(city=district_id).count()
+        total_address_in_district = sum(count_user_addresses_in_district.values())
+        
+            
     except District.DoesNotExist:
         districts = None
         total_districts = 0
     latest_district = District.objects.order_by('-timestamp').first()
     
+    
+    # Commune
     try:
         communes = Commune.objects.all()
         total_communes = communes.count()
+        if communes:
+            random_commune = communes.order_by('?').first()
+            if random_commune:
+                commune_id = random_commune.id
+            else:
+                commune_id = None
     except Commune.DoesNotExist:
         communes = None
         total_communes = 0
     latest_commune = Commune.objects.order_by('-timestamp').first()
+    
     
     try:
         villages = Village.objects.all()
@@ -174,6 +291,14 @@ def GeoIndexView(request):
         'count_address_28_days_before_last_28_days': count_address_28_days_before_last_28_days,
         'province_count_by_country_with_date': province_count_by_country_with_date,
         'count_provinces_by_country': count_provinces_by_country,
-        'random_one_country': random_one_country
+        'random_one_country': random_one_country,
+        'count_user_addresses_in_random_district': count_user_addresses_in_random_district,
+        'total_address_in_district': total_address_in_district,
+        'address_count_in_province_by_date': address_count_in_province_by_date,
+        'total_address_count_in_province': total_address_count_in_province,
+        # District Block
+        'count_districts_in_province': count_districts_in_province,
+        'random_district': random_district,
+        
     }
     return render(request, 'addressing/index.html', context)

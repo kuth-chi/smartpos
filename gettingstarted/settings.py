@@ -70,8 +70,14 @@ else:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ['*']
+    CORS_ALLOWED_ORIGINS = [
+        "https://www.ez-startup.com",
+        "https://smartpos.ez-startup.com",
+        "https://dbinstance.cqk0zl3xt0rr.us-east-1.rds.amazonaws.com",
+    ]
 else:
     ALLOWED_HOSTS = []
+    CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -100,6 +106,7 @@ INSTALLED_APPS = [
     # THIRD_PARTY_APPS
     'rosetta',
     'storages',
+    'corsheaders',
     'rest_framework',
 ]
 
@@ -109,6 +116,7 @@ MIDDLEWARE = [
     # excellent WhiteNoise package to do so instead. The WhiteNoise middleware must be listed
     # after Django's `SecurityMiddleware` so that security redirects are still performed.
     # See: https://whitenoise.readthedocs.io
+    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.locale.LocaleMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",

@@ -50,6 +50,7 @@ django-guardian = "*"
 install = "*"
 qrcode = "*"
 timedelta = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

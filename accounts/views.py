@@ -57,7 +57,6 @@ def user_profile(request):
 
 
 
-
 User = get_user_model()
 def user_signup(request):
     if request.user.is_authenticated:

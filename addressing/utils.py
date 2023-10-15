@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Province, District
+from .models import Province, District, Commune
 
 def count_provinces_by_country_and_date(country_id, start_date, end_date):
     provinces = Province.objects.filter(
@@ -10,9 +10,9 @@ def count_provinces_by_country_and_date(country_id, start_date, end_date):
     )
     return provinces.count()
 
-def count_districts_by_province_and_date(province, start_date, end_date):
+def count_districts_by_province_and_date(province_id, start_date, end_date):
     districts = District.objects.filter(
-        province=province,
+        province_id=province_id,
         timestamp__gte=start_date,
         timestamp__lte=end_date
     )
@@ -47,6 +47,13 @@ def count_districts_by_province(province_id):
     try:
         districts = District.objects.filter(province_id=province_id)
         return districts.count()
+    except ObjectDoesNotExist:
+        return 0
+    
+def communes_by_district(district_id):
+    try:
+        communes = Commune.objects.filter(district_id=district_id)
+        return communes.count()
     except ObjectDoesNotExist:
         return 0
 
