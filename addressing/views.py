@@ -139,6 +139,7 @@ def GeoIndexView(request):
     
     
     # Country Block
+    random_district = None
     count_user_addresses_in_random_district = 0
     total_address_in_district = 0
     
