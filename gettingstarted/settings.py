@@ -61,12 +61,17 @@ else:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ['*']
+    CSRF_TRUSTED_ORIGINS = [
+    'www.ez-startup.com',
+    'smartpos.ez-startup.com',
+    ]
     CORS_ALLOWED_ORIGINS = [
         "https://www.ez-startup.com",
         "https://smartpos.ez-startup.com",
         "https://dbinstance.cqk0zl3xt0rr.us-east-1.rds.amazonaws.com",
         "https://smartpos-static.s3.ap-southeast-1.amazonaws.com",
     ]
+    CORS_ALLOW_CREDENTIALS = True
 else:
     ALLOWED_HOSTS = []
     CORS_ALLOW_ALL_ORIGINS = True
@@ -215,11 +220,12 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # Use AWS S3 storage for static and media files on Heroku
 # Static and Media settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 60 * 60 * 24
+
 if IS_HEROKU_APP:
-    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_AGE = 60*60*24
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 36000

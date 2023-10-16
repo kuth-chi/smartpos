@@ -18,6 +18,7 @@ class Country(models.Model):
     border_length = models.IntegerField(blank=True, default=0, verbose_name=_('Border length'))
     landmark = models.IntegerField(blank=True, default=0, verbose_name=_('Landmark'))
     is_before_chris = models.BooleanField(default=False, blank=True)
+    is_public = models.BooleanField(default=False, blank=True, verbose_name=_('Public'))
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -57,6 +58,7 @@ class Province(models.Model):
     border_length = models.IntegerField(blank=True, verbose_name=_('Border length'))
     leader = models.CharField(max_length=3, blank=True, verbose_name=_('Leader'))
     hotline = models.IntegerField(verbose_name=_('Hotline'))
+    is_public = models.BooleanField(default=False, blank=True, verbose_name=_('Public'))
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -78,6 +80,7 @@ class District(models.Model):
     border_with = models.CharField(max_length=250, blank=True, verbose_name=_('Border with'))
     border_length = models.IntegerField(blank=True, verbose_name=_('Border length'))
     hotline = models.IntegerField(blank=True, verbose_name=_('Hotline'))
+    is_public = models.BooleanField(default=False, blank=True, verbose_name=_('Public'))
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name=_('timestamp'))
 
     def __str__(self):
@@ -98,6 +101,7 @@ class Commune(models.Model):
     border_with = models.CharField(max_length=250, blank=True, verbose_name=_('Border with'))
     border_length = models.IntegerField(blank=True, verbose_name=_('Border length'))
     hotline = models.IntegerField(blank=True, verbose_name=_('Hotline'))
+    is_public = models.BooleanField(default=False, blank=True, verbose_name=_('Public'))
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -113,6 +117,7 @@ class Village(models.Model):
     border_with = models.CharField(max_length=250, default=False, blank=True, verbose_name=_('Border with'))
     border_length = models.IntegerField(blank=True, verbose_name=_('Border length'))
     hotline = models.IntegerField(blank=True, verbose_name=_('Hotline'))
+    is_public = models.BooleanField(default=False, blank=True, verbose_name=_('Public'))
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name=_('Timestamp'))
 
     def __str__(self):

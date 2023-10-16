@@ -1,0 +1,17 @@
+{% extends "addressing/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+{{ title_page }} {% if districts.previous_page_number >= 1 %} | {% translate "Page" %}  {{ districts.previous_page_number }} {% else%} {% endif %}
+
+{% endblock %}
+
+{% block header_title %}{{ title_page }}{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

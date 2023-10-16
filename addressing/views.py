@@ -38,27 +38,12 @@ def country_list(request):
 
 def province_list(request):
     current_domain = request.get_host()
-    api_url = f"{request.scheme}://{current_domain}/api/v1/geography/provinces/"
-    province_per_page = int(request.GET.get('province_per_page', 10))
-    try:
-        provinces = Province.objects.annotate(districts=Count('district')).order_by('-timestamp')
-        # Create a Paginator instance and specify the number of items per page
-        paginator = Paginator(provinces, province_per_page)
-        page = request.GET.get('page')
-
-        provinces = paginator.get_page(page)
-    except Province.DoesNotExist:
-        provinces = None
-        
+    api_url = f"{request.scheme}://{current_domain}/api/v1/geography/provinces/"   
         
     context = {
         'title_page': _('Provinces'),
         'header_title': _('Provinces'),
-        'api_url': api_url,
-        'provinces': provinces,
-        'count_districts_by_province': count_districts_by_province,
-        'items_per_page': province_per_page,
-        
+        'api_url': api_url,         
         
     }
     return render(request, 'addressing/provinces/list.html', context)
@@ -87,24 +72,12 @@ class ProvinceViewSet(viewsets.ModelViewSet):
 
 # District
 def district_list(request):
-    district_per_page = int(request.GET.get('district_per_page', 10))
-    try:
-        districts = District.objects.annotate(communes=Count('commune')).order_by('-timestamp')
-        # Create a Paginator instance and specify the number of items per page
-        paginator = Paginator(districts, district_per_page)
-        page = request.GET.get('page')
-
-        districts = paginator.get_page(page)
-    except District.DoesNotExist:
-        districts = None
-        
-        
+    current_domain = request.get_host()
+    api_url = f"{request.scheme}://{current_domain}/api/v1/geography/districts/"   
     context = {
         'title_page': _('Districts'),
         'header_title': _('Districts'),
-        'districts': districts,
-        'communes_by_district': communes_by_district,
-        'items_per_page': district_per_page,
+        'api_url': api_url,
         
     }
     return render(request, 'addressing/districts/list.html', context)
