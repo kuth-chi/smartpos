@@ -68,8 +68,10 @@ if IS_HEROKU_APP:
     }
     ALLOWED_HOSTS = ['*']
     CSRF_TRUSTED_ORIGINS = [
-    'www.ez-startup.com',
-    'smartpos.ez-startup.com',
+    'http://www.ez-startup.com',
+    'https://smartpos.ez-startup.com',
+    "https://dbinstance.cqk0zl3xt0rr.us-east-1.rds.amazonaws.com",
+    "https://smartpos-static.s3.ap-southeast-1.amazonaws.com",
     ]
     CORS_ALLOWED_ORIGINS = [
         "https://www.ez-startup.com",
