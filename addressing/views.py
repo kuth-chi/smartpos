@@ -140,6 +140,7 @@ def GeoIndexView(request):
     
     # Country Block
     count_user_addresses_in_random_district = 0
+    total_address_in_district = 0
     
     try:
         countries = Country.objects.all()
