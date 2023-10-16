@@ -65,6 +65,7 @@ if IS_HEROKU_APP:
         "https://www.ez-startup.com",
         "https://smartpos.ez-startup.com",
         "https://dbinstance.cqk0zl3xt0rr.us-east-1.rds.amazonaws.com",
+        "https://smartpos-static.s3.ap-southeast-1.amazonaws.com",
     ]
 else:
     ALLOWED_HOSTS = []
@@ -100,12 +101,12 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.locale.LocaleMiddleware',
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.common.CommonMiddleware',
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -217,6 +218,8 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 if IS_HEROKU_APP:
     SESSION_ENGINE = 'django.contrib.sessions.backends.db'
     SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_AGE = 60*60*24
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 36000
@@ -303,6 +306,14 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 
 LOGGING = {
