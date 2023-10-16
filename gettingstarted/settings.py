@@ -13,6 +13,8 @@ import environ
 import os
 import boto3
 import secrets
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from decouple import Config
@@ -60,6 +62,10 @@ else:
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
+    REST_FRAMEWORK = {
+        'DEFAULT_RENDERER_CLASSES': (JSONRenderer,),
+        'DEFAULT_PARSER_CLASSES': (JSONParser,),
+    }
     ALLOWED_HOSTS = ['*']
     CSRF_TRUSTED_ORIGINS = [
     'www.ez-startup.com',
