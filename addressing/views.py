@@ -137,7 +137,9 @@ def GeoIndexView(request):
     start_date = end_date - timedelta(days=28)
     start_before_28_days = start_date - timedelta(days=28)
     
+    
     # Country Block
+    count_user_addresses_in_random_district = 0
     
     try:
         countries = Country.objects.all()
@@ -207,6 +209,7 @@ def GeoIndexView(request):
     try:
         districts = District.objects.all()
         total_districts = districts.count()
+        
         if districts:
             random_district = districts.order_by('?').first()
             if random_district:
