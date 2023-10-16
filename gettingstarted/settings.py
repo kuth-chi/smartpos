@@ -33,12 +33,6 @@ config = Config(os.path.join(BASE_DIR, 'env'))
 # Before using your Heroku app in production, make sure to review Django's deployment checklist:
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# Django requires a unique secret key for each Django app, that is used by several of its
-# security features. To simplify initial setup (without hardcoding the secret in the source
-# code) we set this to a random value every time the app starts. However, this will mean many
-# Django features break whenever an app restarts (for example, sessions will be logged out).
-# In your production Heroku apps you should set the `DJANGO_SECRET_KEY` config var explicitly.
-# Make sure to use a long unique value, like you would for a password. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-SECRET_KEY
 # https://devcenter.heroku.com/articles/config-vars
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -58,10 +52,7 @@ if not IS_HEROKU_APP:
     DEBUG = True
 else: 
     DEBUG = False
-# if IS_HEROKU_APP:
-#     DEBUG = config("DEBUG", default=False, cast=bool)
-# else:
-#     DEBUG = True
+
 
 
 # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
@@ -85,8 +76,6 @@ else:
 INSTALLED_APPS = [
     # Use WhiteNoise's runserver implementation instead of the Django default, for dev-prod parity.
     "whitenoise.runserver_nostatic",
-    # Uncomment this and the entry in `urls.py` if you wish to use the Django admin feature:
-    # https://docs.djangoproject.com/en/4.2/ref/contrib/admin/
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -112,10 +101,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # Django doesn't support serving static assets in a production-ready way, so we use the
-    # excellent WhiteNoise package to do so instead. The WhiteNoise middleware must be listed
-    # after Django's `SecurityMiddleware` so that security redirects are still performed.
-    # See: https://whitenoise.readthedocs.io
     "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.locale.LocaleMiddleware',
@@ -230,9 +215,9 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 # Use AWS S3 storage for static and media files on Heroku
 # Static and Media settings
 if IS_HEROKU_APP:
-
-    CSRF_COOKIE_SECURE = True
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
     SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 36000
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
