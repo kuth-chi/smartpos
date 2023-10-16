@@ -213,15 +213,18 @@ def GeoIndexView(request):
                 district_id = random_district.id
             else:
                 district_id = None
+    except District.DoesNotExist:
+        districts = None
+        total_districts = 0
+        
+    latest_district = District.objects.order_by('-timestamp').first()
+    
+    try:
+        # Count address in last 28 day
         count_address_28_days_before_last_28_days = UserAddress.objects.filter(
-            city=district_id,
-            created_date__gte=start_before_28_days,
-            created_date__lte=start_date
-        ).count()
-        count_address_last_28_days = UserAddress.objects.filter(
-            city=district_id,
-            created_date__gte=start_date,
-            created_date__lte=end_date
+                city=district_id,
+                created_date__gte=start_before_28_days,
+                created_date__lte=start_date
         ).count()
         count_user_addresses_in_random_district = UserAddress.objects.filter(city=district_id).count()
         # all addresses in each district
@@ -229,12 +232,18 @@ def GeoIndexView(request):
         for district in  districts:
             count_user_addresses_in_district[district.name] = UserAddress.objects.filter(city=district_id).count()
         total_address_in_district = sum(count_user_addresses_in_district.values())
+        count_address_last_28_days = UserAddress.objects.filter(
+            city=district_id,
+            created_date__gte=start_date,
+            created_date__lte=end_date
+        ).count()
+    except UserAddress.DoesNotExist:
+        count_address_28_days_before_last_28_days = 0
+        count_user_addresses_in_random_district = 0
+        count_address_last_28_days = 0
+        
         
             
-    except District.DoesNotExist:
-        districts = None
-        total_districts = 0
-    latest_district = District.objects.order_by('-timestamp').first()
     
     
     # Commune

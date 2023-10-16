@@ -1,4 +1,6 @@
+import logging
 from django.db import models
+from django.core.files.storage import default_storage
 from django.utils.translation import gettext_lazy as _
 
     
@@ -23,6 +25,21 @@ class Country(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+    
+    def delete(self, *args, **kwargs):
+        flag_path = self.flag.path
+        super().delete(*args, **kwargs)
+        
+        logger = logging.getLogger(__name__)
+        # Delete image from storage
+        if flag_path and self.__class__.objects.filter(flag=flag_path).count() == 0:
+            try:
+                # Delete the file from storage
+                default_storage.delete(flag_path)
+            except Exception as e:
+                    # Handle exceptions here, for example, log the error
+                    # You can customize this based on your error handling needs
+                    logger.error(f"Failed to delete flag image: {e}")
 
 
 class Province(models.Model):
