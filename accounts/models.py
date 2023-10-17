@@ -321,7 +321,7 @@ class Location(models.Model):
     created_date = models.DateTimeField(_('submitted at'), auto_now_add=True)
     
     def __str__(self):
-        return self.latitude + ", " + self.longitude
+        return str(self.latitude) + ", " + str(self.longitude)
         
 class UserAddress(models.Model):
     ADDRESS_CHOICES = (

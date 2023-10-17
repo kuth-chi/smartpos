@@ -1,17 +1,19 @@
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
+import folium
 from accounts.models import UserAddress
 from django.contrib import messages
 from django.db.models import Count
 from django.core.paginator import Paginator
 # DRF
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 
 from .models import Country, Province, District, Commune, Village
 from .utils import *
 from .serializers import *
+from addressing.permissions import IsOwnerOrReadOnly
 # Create your views here.
 
 
@@ -85,6 +87,8 @@ def district_list(request):
 class DistrictViewSet(viewsets.ModelViewSet):
     queryset = District.objects.all()
     serializer_class = DistrictSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly]
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -115,6 +119,38 @@ def GeoIndexView(request):
     random_district = None
     count_user_addresses_in_random_district = 0
     total_address_in_district = 0
+    
+    # Retrieve user addresses with associated locations
+ 
+    user_addresses_with_locations = UserAddress.objects.filter(location__isnull=False).select_related('location')
+
+    # Check if there are any user addresses with locations
+    if user_addresses_with_locations:
+        # Calculate the map center based on the average coordinates of available locations
+        latitudes = [ua.location.latitude for ua in user_addresses_with_locations]
+        longitudes = [ua.location.longitude for ua in user_addresses_with_locations]
+        center_lat = sum(latitudes) / len(latitudes)
+        center_lon = sum(longitudes) / len(longitudes)
+
+        # Create a map with the calculated center and a suitable zoom level
+        m = folium.Map(location=[center_lat, center_lon], zoom_start=10, tiles="OpenStreetMap")
+
+        # Add markers for each user address's location
+        for user_address in user_addresses_with_locations:
+            location = user_address.location
+
+            folium.Marker(
+                location=[location.latitude, location.longitude],
+                tooltip=f"{user_address.name}",
+                popup=user_address.address,
+                icon=folium.Icon(icon="home", color="red"),
+            ).add_to(m)
+    else:
+        # If there are no user addresses with locations, create a map with default coordinates
+        m = folium.Map(location=[12.5657, 104.9910], zoom_start=12, tiles="OpenStreetMap")
+
+    # Render the map as HTML
+    map_html = m._repr_html_()
     
     try:
         countries = Country.objects.all()
@@ -286,6 +322,7 @@ def GeoIndexView(request):
         # District Block
         'count_districts_in_province': count_districts_in_province,
         'random_district': random_district,
+        'map_html': map_html
         
     }
     return render(request, 'addressing/index.html', context)

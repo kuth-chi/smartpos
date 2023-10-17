@@ -61,11 +61,8 @@ else:
 # validation of the Host header in the incoming HTTP request. On other platforms you may need
 # to list the expected hostnames explicitly to prevent HTTP Host header attacks. See:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-ALLOWED_HOSTS
+
 if IS_HEROKU_APP:
-    REST_FRAMEWORK = {
-        'DEFAULT_RENDERER_CLASSES': (JSONRenderer,),
-        'DEFAULT_PARSER_CLASSES': (JSONParser,),
-    }
     ALLOWED_HOSTS = ['*']
     CSRF_TRUSTED_ORIGINS = [
     'http://www.ez-startup.com',
@@ -131,6 +128,18 @@ AUTHENTICATION_BACKENDS = [
     'accounts.authentication.CustomUserModelBackend',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'accounts.authentication.CustomUserModelBackend',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    # Other settings...
+}
 
 ROOT_URLCONF = "gettingstarted.urls"
 # LOGIN URL
