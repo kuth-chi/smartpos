@@ -1,0 +1,159 @@
+{% extends "accounts/info/info_base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+{{ title_page }}
+{% endblock %}
+
+{% block content %}
+<div class="p-4">
+    <!-- Button back -->
+    <div class="w-full flex flex-row justify-start px-4 text-xl py-4">
+        <a href="{{ request.META.HTTP_REFERER }}" title="{% translate "Back" %}" class="bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 rounded-lg text-white px-4 py-2">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+            </svg>
+        </a>
+    </div>
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+      
+       <div class="grid grid-cols-2 gap-4 mb-4">
+           <div class="flex items-center justify-center rounded bg-gray-50 h-auto dark:bg-gray-800">
+               <div class="w-full max-w-md">
+                    <h3 class="text-3xl text-slate-800 dark:text-white py-4 px-2.5">{{ header_title|title }}</h3>
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <div for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "First name" %}</div>
+                            <p  id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{ profile.first_name }}
+                            </p>
+                        </div>
+                        <div>
+                            <div for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "Last name" %}</div>
+                            <p  id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{ profile.last_name }}
+                            </p>
+                        </div>
+                        <div>
+                            <div for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "Local name" %}</div>
+                            <p  id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{ profile.local_name }}
+                            </p>
+                        </div>
+                        <div>
+                            <div for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "Gender" %}</div>
+                            <p  id="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{ profile.gender }}
+                            </p>
+                        </div>  
+                        <div class="row-span-2">
+                            <div for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "Phone number" %}</div>
+                            <div  id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+                                <ul>
+                                    <li class="ml-2">{{ profile.primary_phone }}</li>
+                                    {% for phone in alternative_phone %}
+                                        <li class="ml-2">{{ phone.number }}</li>
+                                    {% endfor %}
+
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "Date of birth" %}</div>
+                            <p  id="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{ profile.dob }}
+                            </p>
+                        </div>
+                      
+                       
+                    </div>
+                        <div class="mb-6">
+                            <div for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{% translate "Email address" %}</div>
+                            <p id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {{ profile.email }}
+                            </p>
+                        </div> 
+                </div>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+            <h3 class="text-3xl text-slate-800 dark:text-white py-4 px-2.5">{% translate "Address" %}</h3>
+             <div class="text-2xl text-gray-400 dark:text-gray-500">
+                {% if profile.address %}
+                    {% for a in address %}
+                        <div class="mb-6">
+                            <div for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></div>
+                            <p id="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                
+                            </p>
+                        </div> 
+                    {% endfor %}
+                {% else %}
+                    <a href="{% url 'accounts:create_user_address' user_uuid=request.user.uuid %}" class="text-2xl text-gray-400 dark:text-gray-500">
+                        <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                        </svg>
+                    </a>
+                {% endif %}
+                
+             </div>
+             
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+       </div>
+       <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+          <p class="text-2xl text-gray-400 dark:text-gray-500">
+             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+             </svg>
+          </p>
+       </div>
+       <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+          <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+             <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                </svg>
+             </p>
+          </div>
+       </div>
+    </div>
+ </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

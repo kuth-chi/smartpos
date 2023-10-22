@@ -1,4 +1,4 @@
-import logging
+import logging, uuid
 from django.db import models
 from django.core.files.storage import default_storage
 from django.utils.translation import gettext_lazy as _
@@ -56,9 +56,11 @@ class Province(models.Model):
     code = models.IntegerField(blank=True, verbose_name=_('Code'))
     border_with = models.CharField(max_length=250, blank=True, verbose_name=_('Border with'))
     border_length = models.IntegerField(blank=True, verbose_name=_('Border length'))
-    leader = models.CharField(max_length=3, blank=True, verbose_name=_('Leader'))
+    leader = models.CharField(max_length=25, blank=True, verbose_name=_('Leader'))
     hotline = models.IntegerField(verbose_name=_('Hotline'))
     is_public = models.BooleanField(default=False, blank=True, verbose_name=_('Public'))
+    latitude = models.FloatField(default=0.0, blank=True, verbose_name=_('Latitude'))
+    longitude = models.FloatField(default=0.0, blank=True, verbose_name=_('Longitude'))
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -135,6 +137,9 @@ class CountryLeader(models.Model):
     gender = models.CharField(max_length=100, blank=True, verbose_name=_('Gender'))
     born = models.DateField(blank=True, verbose_name=_('Born'))
     position = models.CharField(max_length=100, default='prime_minister', blank=True, choices=LEADER_POSITION_CHOICES, verbose_name=_('Position'))
+    phone = models.CharField(max_length=100, blank=True, verbose_name=_('Phone'))
+    email = models.EmailField(blank=True, verbose_name=_('Email'))
+    website = models.URLField(blank=True, verbose_name=_('Website'))
     start_on = models.DateField(blank=True, verbose_name=_('Start on'))
     exit_on = models.DateField(blank=True, verbose_name=_('Exit on'))
     contributor = models.CharField(max_length=100, blank=True, verbose_name=_('Contributor'))
@@ -146,3 +151,19 @@ class CountryLeader(models.Model):
     
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+    
+    
+class CustomLocation(models.Model):
+    uuid = models.CharField(max_length=100, default=uuid.uuid4, blank=True, unique=True, verbose_name=_('UUID'))
+    latitude = models.FloatField(default=0.0, blank=True, verbose_name=_('Latitude'))
+    longitude = models.FloatField(default=0.0, blank=True, verbose_name=_('Longitude'))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_('Updated at'))
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name=_('Timestamp'))
+    
+    def __str__(self):
+        return str(self.latitude) + ", " + str(self.longitude)
+    
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            self.uuid = str(uuid.uuid4())[:24].replace('-', '').lower()
+        super(CustomLocation, self).save(*args, **kwargs)

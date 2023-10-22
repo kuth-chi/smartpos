@@ -8,7 +8,9 @@ module.exports = {
   ],
   theme: {
     variants: {
-      backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+      extend: {
+        backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+      },
     },
     extend: {
             fontFamily: {

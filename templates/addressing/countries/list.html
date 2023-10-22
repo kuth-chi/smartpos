@@ -7,6 +7,21 @@
 {% block header_title %} {{ title_page }} {% endblock %}
 
 {% block content %}
-    <h2>{{ title_page }}</h2>
+    <h2 class="text-gray-800 dark:text-white text-5xl text-center">{{ header_title }}</h2>
+    <p class="text-gray-800 dark:text-white text-center">{{ description }}</p>
+    {% if countries %}
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12 mt-20 md:mb-0">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {% for country in countries %}  
+                <div class="relative">
+                    <img class="h-auto max-w-full rounded-lg" src="country.flag.url" alt="{{ country.name }}'s flag">
+                    <p class="absolute bottom-2 text-gray-800 dark:text-white text-center text-2xl">{{ country.name }}</p>
+                </div>
+            {% endfor %}
+            </div>
+        </div>  
+    {% else %}
+        <p class="text-2xl text-gray-900 dark:text-white w-full text-center">No countries found.</p>
+    {% endif %}
 {% endblock %}
 

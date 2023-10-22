@@ -13,6 +13,45 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 md:mb-8">
     <div
       class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-64 md:h-64 max-w-sm">
+      <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 h-full">
+        <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center">
+            <div class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center mr-3">
+              <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 15V9m4 6V9m4 6V9m4 6V9M2 16h16M1 19h18M2 7v1h16V7l-8-6-8 6Z"/>
+              </svg>
+            </div>
+            <div>
+              <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-1">{{ total_communes }}</h5>
+              <p class="text-sm font-normal text-gray-500 dark:text-gray-400"> {% translate "Commune(s)" %}</p>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="grid grid-cols-2 h-full">
+          <dl class="flex items-center">
+              <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal mr-1"></dt>
+              <dd class="text-gray-900 text-sm dark:text-white font-semibold"><div class="flex -space-x-4 rounded-full bg-gray-200 dark:bg-darkBlue">
+                {% for commune in communes|slice:"0:5" %}  
+                  <a class="flex items-center justify-center w-10 h-10 text-xs font-medium random-color-element text-white border-2 border-white rounded-full hover:bg-800 dark:border-sky-900 hover:z-50" href="#">
+                      <p>{{ commune.name|slice:"0:1" }}</p>
+                  </a>  
+                {% endfor %}
+                <a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-blue-800 border-2 border-white rounded-full hover:bg-blue-600 dark:border-sky-900" href="{% url 'addressing:communes' %}">+<span id="countCommune"></span></a> 
+              </div></dd>
+          </dl>
+          <dl class="flex items-center justify-end">
+            <a href="{% url 'addressing:communes' %}" class="text-gray-500 dark:text-gray-400 text-sm font-normal mr-1 flex flex-row space-x-2 hover:outline-1 hover:outline-gray-400 rounded-md bg-blue-500 dark:bg-gray-700 p-2" title="Province list">
+              <dt id="percentageProvinceIncrease">More</dt>
+              <dd><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+              </dd>
+            </a>
+          </dl>
+        </div> 
+      </div>
     </div>
     <!-- District -->
     <div class="relative border-2 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 md:h-64 h-full max-w-sm">
@@ -30,14 +69,7 @@
               <p class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ total_districts }} {% translate "district(s)" %}</p>
             </div>
           </div>
-          <div>
-            <span class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300">
-              <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4"/>
-              </svg>
-              42.5%
-            </span>
-          </div>
+          
         </div>
 
         <div class="grid grid-cols-2 h-full">
@@ -49,7 +81,7 @@
             <a href="{% url 'addressing:districts' %}" class="text-gray-500 dark:text-gray-400 text-sm font-normal mr-1 flex flex-row space-x-2 hover:outline-1 hover:outline-gray-400 rounded-md bg-blue-500 dark:bg-gray-700 p-2" title="Province list">
               <dt id="percentageProvinceIncrease">More</dt>
               <dd><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                 </svg>
               </dd>
             </a>
@@ -107,7 +139,7 @@
                 <a href="{% url 'addressing:provinces' %}" class="text-gray-500 dark:text-gray-400 text-sm font-normal mr-1 flex flex-row space-x-2 hover:outline-1 hover:outline-gray-400 rounded-md bg-blue-500 dark:bg-gray-700 p-2" title="Province list">
                   <dt id="percentageProvinceIncrease">More</dt>
                   <dd><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
                   </dd>
                 </a>
@@ -136,7 +168,7 @@
   </div>
   <div
     class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 aspect-square md:aspect-[6/4] lg:aspect-[19/6] mb-4">
-    <div>{{ map_html|safe }}</div>
+    <div class="w-full h-full">{{ map_html|safe }}</div>
   </div>
   
   </div>
@@ -215,12 +247,14 @@
       // Data to format and update
       const countUserAddressInRandomProvince = {{ count_user_addresses_in_random_province }};
       const totalProvinces = {{ total_provinces }} > 5 ? {{ total_provinces }} - 5 : 0;
+      const totalCommunes = {{ total_communes }} > 5 ? {{ total_communes }} - 5 : 0
       const totalCountries = {{ total_countries }} > 5 ? {{ total_countries }} - 5 : 0;
       const totalUserAddresses = {{count_user_address}} > 0 ? {{ count_user_address }} : 0;
       
       
       const numbersToFormat = [
         { id: "countProvince", number: totalProvinces },
+        { id: "countCommune", number: totalCommunes },
         { id: "countCountry", number: totalCountries },
         { id: "countUserAddressInRandomProvince", number: countUserAddressInRandomProvince },
         { id: "totalUserAddress", number: totalUserAddresses },

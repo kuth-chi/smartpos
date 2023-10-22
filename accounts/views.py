@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.contrib import messages
@@ -6,10 +7,105 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
+from rest_framework import generics, status
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
+from rest_framework.response import Response
+from addressing.models import Country, Province, District, Commune, Village
 from .models import User, SettingUser, UserAddress, AlternativePhone, UserSocial
+from .serializers import UserAddressSerializer
 from .forms import UserRegisterForm
 from .utils import is_phone_number
 from django.db.models import Q
+
+
+def user_address(user_id):
+    try:
+        address = UserAddress.objects.filter(user=user_id).order_by('name')
+    except UserAddress.DoesNotExist:
+        address = None
+    return address
+
+# User Address API
+class UserAddressCreateView(CreateAPIView):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressSerializer
+
+class UserAddressListView(ListAPIView):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressSerializer
+    def create(self, request, *args, **kwargs):
+        # Deserialize the data from the request
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Handle the cascading dropdowns
+        country_name = serializer.validated_data.get('country')
+        province_name = serializer.validated_data.get('province')
+        district_name = serializer.validated_data.get('district')
+        commune_name = serializer.validated_data.get('commune')
+        village_name = serializer.validated_data.get('village')
+
+        # You need to retrieve or create the instances for the selected locations
+        # You can use the names provided and match them to existing instances or create new ones
+        # For example, you can do:
+        country, created = Country.objects.get_or_create(name=country_name)
+        province, created = Province.objects.get_or_create(name=province_name, country=country)
+        district, created = District.objects.get_or_create(name=district_name, province=province)
+        commune, created = Commune.objects.get_or_create(name=commune_name, district=district)
+        village, created = Village.objects.get_or_create(name=village_name, commune=commune)
+
+        # Create the UserAddress instance with the resolved locations
+        user_address = UserAddress(
+            name=serializer.validated_data['name'],
+            user=serializer.validated_data['user'],
+            address=serializer.validated_data['address'],
+            village=village,
+            commune=commune,
+            district=district,
+            province=province,
+            country=country,
+            zip=serializer.validated_data['zip'],
+            location=serializer.validated_data['location'],
+        )
+        user_address.save()
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(UserAddressSerializer(user_address).data, status=status.HTTP_201_CREATED, headers=headers)
+
+class UserAddressRetrieveView(RetrieveAPIView):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressSerializer
+    lookup_field = 'pk'  # or 'id' based on your URL configuration
+
+class UserAddressUpdateView(UpdateAPIView):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressSerializer
+    lookup_field = 'pk'  # or 'id'
+
+class UserAddressDeleteView(DestroyAPIView):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressSerializer
+    lookup_field = 'pk'  # or 'id'
+
+
+@login_required(login_url='accounts:login')
+def user_info_view(request, user_uuid):
+    profile = request.user
+    user_id = profile.id
+    address = user_address(user_id)
+    try:
+        alternative_phone = AlternativePhone.objects.filter(user=profile.id)
+    except AlternativePhone.DoesNotExist:
+        alternative_phone = None    
+    context = {
+        'title_page': _('User Info'),
+        'header_title': _('User Info'),
+        'user_uuid': user_uuid,
+        'profile': profile,
+        'alternative_phone': alternative_phone,
+        'address': address	
+    }
+    return render(request, 'accounts/info/info.html', context)
 
 
 # Create User Address
@@ -26,16 +122,20 @@ def user_address_list(request, user_uuid):
 
 @login_required
 def create_user_address(request, user_uuid):
+    # current_domain = request.get_host()
+    # api_url = f"{request.scheme}://{current_domain}/api/v1/user/addresses/"
     user_uuid =request.user.uuid
+    # Generate the full URL path for the 'user_address_create' view
 
     context = {
         'title_page': _('Create New Address'),
         'header_title': _('Create New Address'),
+        
     }
     
     return render(request, 'accounts/pages/addresses/create.html', context)
 
-
+    
 @login_required
 def user_profile(request):
     user = request.user
@@ -108,7 +208,9 @@ def user_signup(request):
 # User login methods
 def user_login(request):
     # Check for the reference URL in the session
+    
     reference_url = request.session.get('reference_url')
+    referer = request.META.get('HTTP_REFERER')
     if reference_url:
         request.session.pop('reference_url')
         return redirect(reference_url)
@@ -146,12 +248,13 @@ def user_login(request):
                 request.session.set_expiry(None)  # Use default session expiry time
 
             # Check for the reference URL in the session again
-            reference_url = request.session.get('reference_url')
-            if reference_url:
-                request.session.pop('reference_url')
-                return redirect(reference_url)
+            referer_url = request.session.get('referer_url')
+            if referer_url:
+                # Redirect the user back to the REFERER URL
+                del request.session['referer_url']  # Clear the session variable
+                return redirect(referer_url)
             else:
-                return redirect(reverse('accounts:profile'))
+                return redirect(reverse('accounts:profile')) 
         else:
             # Authentication failed, show an error message
             error_message = "Invalid login credentials. Please try again."

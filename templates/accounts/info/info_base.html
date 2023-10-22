@@ -14,20 +14,24 @@
       </title>
       {% include 'sources/links_head.html' %}
       {% include 'sources/style_head.html' %}
-  </head>   
+  </head>
   <body class="bg-gray-200 dark:bg-darkBlue2 font-mulish h-screen mb-16 md:mb-0">
     <nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
         {% include "web/layout/navbar.html" %}
     </nav>
-    <main class="p-4 h-auto pt-20 transition-opacity ease-in-out duration-300">
-      {% block content %}
 
-      {% endblock %}
+      <!-- Display Page Content HERE --> 
+    <main class="p-0 md:p-4 md:ml-64 h-auto pt-20">
+    {% block content %}
+    {% endblock  %}
     </main>
+     
+    
+    
+    <!-- text/javascript -->
+    {% include 'sources/body_scripts.html' %}
+    {% block javascript %}
+    {% endblock  %}
 
-      <!-- text/javascript -->
-      {% include 'sources/body_scripts.html'%}
-      {% block javascript %}
-      {% endblock  %}
   </body>
 </html>

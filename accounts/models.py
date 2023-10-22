@@ -326,7 +326,9 @@ class Location(models.Model):
 class UserAddress(models.Model):
     ADDRESS_CHOICES = (
         ('home', _('Home')),
-        ('work', _('Work')),  
+        ('work', _('Work')),
+        ('birthplace', _('Birthplace')),
+        ('other', _('Other')),
     )
     name = models.CharField(max_length=250, blank=True, default=ADDRESS_CHOICES[0], choices=ADDRESS_CHOICES, verbose_name=_('Name'))
     user = models.ForeignKey(User, related_name="user_address", on_delete=models.CASCADE)

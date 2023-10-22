@@ -1,14 +1,18 @@
 from datetime import datetime, timedelta
+from django.http import Http404
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 import folium
+from folium.plugins import MarkerCluster
 from accounts.models import UserAddress
 from django.contrib import messages
 from django.db.models import Count
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 # DRF
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .models import Country, Province, District, Commune, Village
 from .utils import *
@@ -32,11 +36,44 @@ def country_list(request):
     context = {
         'title_page': _('Countries'),
         'header_title': _('Countries'),
+        'description': _('List of Countries'),
         'countries': countries,
         'total_countries': count_countries,
         'latest_country': latest_country,  # Add the latest_country to the context
     }
     return render(request, 'addressing/countries/list.html', context)
+
+# Province View Detail
+def province_detail(request, pk):
+    try:
+        province = Province.objects.get(pk=pk)
+        province_id = province.id
+    except Province.DoesNotExist:
+        province_id = None
+        province = None
+        
+    # Create a Folium map
+    if province.latitute and province.longitude:
+        m = folium.Map(location=[province.latitude, province.longitude], zoom_start=12, tiles="OpenStreetMap")
+        folium.Marker(
+            location=[province.latitude, province.longitude],
+            tooltip=province.name,
+        ).add_to(m)
+    else:
+        m = folium.Map(location=[12.5657, 104.9910], zoom_start=12, tiles="OpenStreetMap")
+
+    current_domain = request.get_host()
+    api_url = f"{request.scheme}://{current_domain}/api/v1/geography/provinces/{province_id}/"    
+    context = {
+        'title_page': _('Province'),
+        'header_title': _('Province'),
+        'api_url': api_url,
+        'province': province,
+        'map': m._repr_html_(), 
+    }
+    
+    return render(request, 'addressing/provinces/detail.html', context)
+
 
 def province_list(request):
     current_domain = request.get_host()
@@ -45,7 +82,7 @@ def province_list(request):
     context = {
         'title_page': _('Provinces'),
         'header_title': _('Provinces'),
-        'api_url': api_url,         
+        'api_url': api_url,        
         
     }
     return render(request, 'addressing/provinces/list.html', context)
@@ -69,6 +106,13 @@ class ProvinceViewSet(viewsets.ModelViewSet):
                 province_data['districts'] = 0  # or another default value
 
         return Response(serialized_data)
+    
+    # Create a detail view to retrieve a single province by its primary key
+    @action(detail=True, methods=['GET'])
+    def detail(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
 
 
@@ -105,6 +149,40 @@ class DistrictViewSet(viewsets.ModelViewSet):
                 district_data['communes'] = 0  # or another default value
 
         return Response(serialized_data)
+    
+# Communes
+def commune_list(request):
+    current_domain = request.get_host()
+    api_url = f"{request.scheme}://{current_domain}/api/v1/geography/communes/"   
+    context = {
+        'title_page': _('Communes'),
+        'header_title': _('Communes'),
+        'api_url': api_url,
+        
+    }
+    return render(request, 'addressing/communes/list.html', context)
+# District API
+class CommuneViewSet(viewsets.ModelViewSet):
+    queryset = Commune.objects.all()
+    serializer_class = CommuneSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly]
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serialized_data = self.get_serializer(queryset, many=True).data
+
+        # Annotate the number of communes for each district and add it to serialized data
+        for commune_data in serialized_data:
+            try:
+                commune_id = commune_data['id']
+                village_count = Village.objects.filter(commune_id=commune_id).count()
+                commune_data['villages'] = village_count
+            except KeyError:
+                # Handle the case where 'id' is not present in the dictionary
+                commune_data['villages'] = 0  # or another default value
+
+        return Response(serialized_data)
 
 
 
@@ -116,6 +194,7 @@ def GeoIndexView(request):
     
     
     # Country Block
+   
     random_district = None
     count_user_addresses_in_random_district = 0
     total_address_in_district = 0
@@ -133,7 +212,8 @@ def GeoIndexView(request):
         center_lon = sum(longitudes) / len(longitudes)
 
         # Create a map with the calculated center and a suitable zoom level
-        m = folium.Map(location=[center_lat, center_lon], zoom_start=10, tiles="OpenStreetMap")
+        m = folium.Map(location=[center_lat, center_lon], zoom_start=12, tiles="OpenStreetMap")
+        marker_cluster = MarkerCluster().add_to(m)
 
         # Add markers for each user address's location
         for user_address in user_addresses_with_locations:
@@ -144,7 +224,7 @@ def GeoIndexView(request):
                 tooltip=f"{user_address.name}",
                 popup=user_address.address,
                 icon=folium.Icon(icon="home", color="red"),
-            ).add_to(m)
+            ).add_to(marker_cluster)
     else:
         # If there are no user addresses with locations, create a map with default coordinates
         m = folium.Map(location=[12.5657, 104.9910], zoom_start=12, tiles="OpenStreetMap")
@@ -254,25 +334,46 @@ def GeoIndexView(request):
         total_districts = 0
         
     latest_district = District.objects.order_by('-timestamp').first()
-    
-        
-        
-            
-    
+
     
     # Commune
     try:
         communes = Commune.objects.all()
         total_communes = communes.count()
+        
         if communes:
             random_commune = communes.order_by('?').first()
-            if random_commune:
-                commune_id = random_commune.id
-            else:
-                commune_id = None
+            commune_id = random_commune.id if random_commune else None
+            
+            count_user_addresses_in_random_commune = UserAddress.objects.filter(commune=commune_id).count()
+            
+            count_user_addresses_in_commune = {}
+            for commune in communes:
+                count_user_addresses_in_commune[commune.name] = UserAddress.objects.filter(commune=commune.id).count()
+            
+            total_address_in_commune = sum(count_user_addresses_in_commune.values())
+            
+            count_address_28_days_before_last_28_days = UserAddress.objects.filter(
+                commune=commune_id,
+                created_date__gte=start_before_28_days,
+                created_date__lte=start_date
+            ).count()
+            
+            count_address_last_28_days = UserAddress.objects.filter(
+                city=district_id,
+                created_date__gte=start_date,
+                created_date__lte=end_date
+            ).count()
+        else:
+            random_commune = None
+            count_user_addresses_in_random_commune = 0
+            total_address_in_commune = 0
+            count_address_28_days_before_last_28_days = 0
+            count_address_last_28_days = 0
     except Commune.DoesNotExist:
         communes = None
         total_communes = 0
+
     latest_commune = Commune.objects.order_by('-timestamp').first()
     
     
@@ -301,9 +402,11 @@ def GeoIndexView(request):
         'districts': districts,
         'total_districts': total_districts,
         'latest_district': latest_district,
-        'Communes': communes,
+        'communes': communes,
         'total_communes': total_communes,
         'latest_commune': latest_commune,
+        'count_user_addresses_in_random_commune': count_user_addresses_in_random_commune,
+        'total_address_in_commune': total_address_in_commune,
         'Villages': villages,
         'total_villages': total_villages,
         'latest_village': latest_village,

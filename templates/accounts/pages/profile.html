@@ -6,141 +6,147 @@
 {% block content %}
 <div class="p-0 md:p-8  rounded-lg dark:border-gray-700 mt-16">
     
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-h-fit gap-4 mb-4 mt-26 duration-300 transition-all pb-4">
-       <div class="relative flex justify-center row-span-4​ bg-gradient-to-tr from-white to-gray-200 dark:bg-gradient-to-tr dark:from-blue-800/30 dark:to-sky-800/70 rounded-t-3xl">
-         
-         <img class="absolute -top-16 h-32 w-32 rounded-3xl object-cover ring-offset-blue-500 ring-4 md:ring-4" alt="{{ user.username }} avatar" 
-            src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'img/no_avatar.png' %}{% endif %}">
-            <svg 
-               class="absolute -top-16 w-32 h-32 p-16 stroke-sky-500 bg-transparent opacity-0 hover:opacity-100 hover:bg-sky-500/30 rounded-3xl text-gray-500 dark:text-gray-100 transition-all duration-300" 
-               aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
-               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3h-2l-.447-.894A2 2 0 0 0 12.764 1H7.236a2 2 0 0 0-1.789 1.106L5 3H3a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a2 2 0 0 0-2-2Z"/>
-            </svg>
-         </img> 
-         <div class="top-24 text-black dark:text-sky-100 w-full flex items-center flex-col">
-            <h3 class="font-bold text-4xl font-heading font-sans pt-20">
-               {% if setting_user.is_first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.last_name }} {{ user.first_name }}{% endif %}
-            </h3>
-            <div class="text-black text-base dark:text-blue-300">
-               {%if user.email %}
-                  {{ user.email }}
-               {% else %}
-                  {{ user.username }}
-               {% endif %}
-            </div>
-            <div class="flex flex-row items-center text-black text-base dark:text-blue-300 space-x-2.5">
-               {% translate "ID:" %}&nbsp;  <span class="text-sm text-gray-400 dark:text-sky-600 cursor-pointer hover:text-sky-400 dark:hover:text-sky-400" id="copyUid" > {{ user.uuid|truncatewords:25 }}</span>
-               <button data-tooltip-target="popover-default" data-tooltip-placement="top"><svg class="w-4 h-4 text-gray-800 dark:text-sky-700 dark:hover:text-sky-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h2v5m-2 0h4M9.408 5.5h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                </svg>
-               </button>
-               <!-- Tooltip -->
-
-               <div data-popover id="popover-default" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800/90">
-                   <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700/80">
-                       <h3 class="font-semibold text-gray-900 dark:text-white">ID tips</h3>
-                   </div>
-                   <div class="px-3 py-2">
-                       <p>This is a unique identifier for this user's account.</p>
-                   </div>
-                   <div data-popper-arrow></div>
-               </div>
-               
-            </div>
-            <!-- Address -->
-            
-      <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="profileTab" data-tabs-toggle="#profileTabContent" role="tablist">
-            <li class="mr-2" role="presentation">
-               <button class="inline-block p-4 border-b-2 rounded-t-lg" id="about-profile-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false">About</button>
-            </li>
-         
-            <li role="presentation">
-               <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Contacts</button>
-            </li>
-         </ul>
-      </div>
-      <div id="profileTabContent" class="px-4">
-         <!-- About -->
-         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-blue-800/50  " id="about" role="tabpanel" aria-labelledby="about-profile-tab">
-            <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Abit about me:</h2>
-            <ul class="max-w-md text-sm space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400 w-full">
-               {% if user.dob %}
-               <li>
-                  {% translate "Birthday" %}: <span class="text-slate-900 bg-slate-300 px-2.5 py-1.5 rounded-md dark:bg-blue-800/90 dark:text-blue-300 text-semibold">{{ user.dob|date:"d F Y" }}</span> <span id="userAge"></span>
+      <div class="grid grid-cols-1 max-h-fit gap-4 mb-4 mt-26 duration-300 transition-all pb-4">
+         <div class="relative flex justify-center row-span-4​ bg-gradient-to-tr from-white to-gray-200 dark:bg-gradient-to-tr dark:from-blue-800/30 dark:to-sky-800/70 rounded-t-3xl">
+            <img class="absolute -top-16 h-32 w-32 rounded-3xl object-cover ring-offset-blue-500 ring-4 md:ring-4" alt="{{ user.username }} avatar" 
+               src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'img/no_avatar.png' %}{% endif %}">
+               <svg 
+                  class="absolute -top-16 w-32 h-32 p-16 stroke-sky-500 bg-transparent opacity-0 hover:opacity-100 hover:bg-sky-500/30 rounded-3xl text-gray-500 dark:text-gray-100 transition-all duration-300" 
+                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3h-2l-.447-.894A2 2 0 0 0 12.764 1H7.236a2 2 0 0 0-1.789 1.106L5 3H3a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a2 2 0 0 0-2-2Z"/>
+               </svg>
+            </img> 
+            <div class="top-24 text-black dark:text-sky-100 w-full flex items-center flex-col">
+               <h3 class="font-bold text-4xl font-heading font-sans pt-20">
+                  {% if setting_user.is_first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.last_name }} {{ user.first_name }}{% endif %}
+               </h3>
+               <div class="text-black text-base dark:text-blue-300">
+                  {%if user.email %}
+                     {{ user.email }}
                   {% else %}
-                     Not yet set date of birth <a href="#" class="px-2.5 py-1.5 rounded-md text-white dark:text-sky-300 bg-blue-500 hover:text-white dark:hover:text-sky-200 hover:scale-105 dark:bg-blue-800 dark:hover:bg-blue-600 shadow-md dark:shadow-md dark:hover:scale-105 duration-200 transition-all">Set Now</a>
-                  
-               </li>
-               {% endif %}
-               <li>
-                  Join on {{ user.created_date|date:"d-F-Y" }}
-               </li>
-               
-            </ul>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ user.biography }}</p>
-         </div>
-         <!-- Contacts -->
-         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-blue-800/50" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400 w-full">
-               <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                   <div class="flex flex-col pb-3">
-                       <dt class="mb-1 text-gray-500 text-sm dark:text-gray-400">Email address</dt>
-                       <dd class="text-sm font-semibold">{{ user.email }}</dd>
-                   </div>
-                     <div class="flex flex-col py-3">
-                        <dt class="mb-1 text-gray-500 text-sm dark:text-gray-400">Address</dt>
-                        {% if address %}
-                           <dd class="text-sm font-semibold">{{ address.address }}, {{ address.city }}, {{ address.state }}, {{ address.country }}, {{ address.zip }}</dd>
-                        {% else %}
-                           <dd class="text-sm font-semibold">No address information available</dd>
-                        {% endif %}
+                     {{ user.username }}
+                  {% endif %}
+               </div>
+               <div class="flex flex-row items-center text-black text-base dark:text-blue-300 space-x-2.5">
+                  {% translate "ID:" %}&nbsp;  <span class="text-sm text-gray-400 dark:text-sky-600 cursor-pointer hover:text-sky-400 dark:hover:text-sky-400" id="copyUid" > {{ user.uuid|truncatewords:25 }}</span>
+                  <button data-tooltip-target="popover-default" data-tooltip-placement="top"><svg class="w-4 h-4 text-gray-800 dark:text-sky-700 dark:hover:text-sky-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h2v5m-2 0h4M9.408 5.5h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                  </svg>
+                  </button>
+                  <!-- Tooltip -->
+
+                  <div data-popover id="popover-default" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800/90">
+                     <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700/80">
+                        <h3 class="font-semibold text-gray-900 dark:text-white">ID tips</h3>
                      </div>
-                   <div class="flex flex-col pt-3">
-                       <dt class="mb-1 text-gray-500 text-sm dark:text-gray-400">Phone number</dt>
-                       <dd class="text-sm font-semibold">{{ user.primary_phone }}</dd>
-                   </div>
-               </dl>
+                     <div class="px-3 py-2">
+                        <p>This is a unique identifier for this user's account.</p>
+                     </div>
+                     <div data-popper-arrow></div>
+                  </div>
+               </div>
+               <!-- Address -->
+               
+               <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="profileTab" data-tabs-toggle="#profileTabContent" role="tablist">
+                     <li class="mr-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="about-profile-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false">{% translate "About" %}</button>
+                     </li>
+                     <li role="presentation">
+                        <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">{% translate "Contacts" %}</button>
+                     </li>
+                  </ul>
+               </div>
+               <div id="profileTabContent" class="p-4 w-full">
+                  <!-- About -->
+                  <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50  " id="about" role="tabpanel" aria-labelledby="about-profile-tab">
+                     <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Abit about me:</h2>
+                     <ul class="max-w-md text-sm space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400 w-full">
+                        {% if user.dob %}
+                        <li>
+                           {% translate "Birthday" %}: <span class="text-slate-900 bg-slate-300 px-2.5 py-1.5 rounded-md dark:bg-blue-800/90 dark:text-blue-300 text-semibold">{{ user.dob|date:"d F Y" }}</span> <span id="userAge"></span>
+                           {% else %}
+                              Not yet set date of birth <a href="#" class="px-2.5 py-1.5 rounded-md text-white dark:text-sky-300 bg-blue-500 hover:text-white dark:hover:text-sky-200 hover:scale-105 dark:bg-blue-800 dark:hover:bg-blue-600 shadow-md dark:shadow-md dark:hover:scale-105 duration-200 transition-all">Set Now</a>
+                           
+                        </li>
+                        {% endif %}
+                        <li>
+                           Join on {{ user.created_date|date:"d-F-Y" }}
+                        </li>
+                        
+                     </ul>
+                     <p class="text-sm text-gray-500 dark:text-gray-400">{{ user.biography }}</p>
+                  </div>
+                  <!-- Contacts -->
+                  <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                     <p class="text-sm text-gray-500 dark:text-gray-400 w-full">
+                        <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                           <div class="flex flex-col pb-3">
+                              <dt class="mb-1 text-gray-500 text-sm dark:text-gray-400">Email address</dt>
+                              <dd class="text-sm font-semibold">{{ user.email }}</dd>
+                           </div>
+                           <div class="flex flex-col py-3">
+                              <dt class="mb-1 text-gray-500 text-sm dark:text-gray-400">Address</dt>
+                              <dd class="text-base font-semibold flex flex-row justify-between hover:bg-gray-700 py-2 px-2.5 rounded-md">
+                                 <p>
+                                 {% if address %}
+                                    {{ address.address }}, {{ address.city }}, {{ address.state }}, {{ address.country }}, {{ address.zip }}
+                                 {% else %}
+                                    No address information available
+                                 {% endif %}
+                                 </p>
+                                 <span>
+                                    <a href="{% url 'accounts:user_info' user_uuid=request.user.uuid %}">
+                                       <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 8 14">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
+                                       </svg>
+                                    </a>
+                                 </span>
+                              </dd>
+                           </div>
+                           <div class="flex flex-col pt-3">
+                              <dt class="mb-1 text-gray-500 text-sm dark:text-gray-400">Phone number</dt>
+                              <dd class="text-sm font-semibold">{{ user.primary_phone }}</dd>
+                           </div>
+                        </dl>
+                     </p>
+                  </div>
+               </div>
+            </div> 
+         </div>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+            <p class="text-2xl text-gray-400 dark:text-gray-500">
+               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+               </svg>
+            </p>
+         </div>
+         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+            <p class="text-2xl text-gray-400 dark:text-gray-500">
+               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+               </svg>
+            </p>
+         </div>
+         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+            <p class="text-2xl text-gray-400 dark:text-gray-500">
+               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+               </svg>
+            </p>
+         </div>
+         <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
+            <p class="text-2xl text-gray-400 dark:text-blue-500">
+               <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+               </svg>
             </p>
          </div>
       </div>
-
-         </div> 
-         
-       </div>
-      </div>
-  
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-       <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-          <p class="text-2xl text-gray-400 dark:text-gray-500">
-             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-             </svg>
-          </p>
-       </div>
-       <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-          <p class="text-2xl text-gray-400 dark:text-gray-500">
-             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-             </svg>
-          </p>
-       </div>
-       <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-          <p class="text-2xl text-gray-400 dark:text-gray-500">
-             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-             </svg>
-          </p>
-       </div>
-       <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-          <p class="text-2xl text-gray-400 dark:text-blue-500">
-             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-             </svg>
-          </p>
-       </div>
-    </div>
 </div>
 <div id="toast-undo" class="hidden absolute right-0 bottom-4 items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 " role="alert">
    <div class="text-sm font-normal">

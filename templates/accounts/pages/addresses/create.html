@@ -1,10 +1,119 @@
+{% extends "accounts/info/info_base.html" %}
+{% load static %}
+{% load i18n %}
 {% include "accounts/elements/account_child.html" %}
 
 
 {% block content %}
     <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12 mt-20 md:mb-0">
-        <h2 class="text-base font-bold text-slate-800 dark:text-slate-200">Create address is working! {{ header_title }}</h2>
+        <h2 class="text-2xl py-4 font-bold text-slate-800 dark:text-slate-200">{{ header_title }}  {% url "accounts:user_address_create_api" %}</h2>
+        <form id="userAddressForm">
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div>
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+                    <select id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Choose an option</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                    <input type="text" id="company" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cambodia" required>
+                </div>  
+
+                <div>
+                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
+                    <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="E.g Phnom Penh" required>
+                </div>
+                <div>
+                    <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                    <input type="url" id="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Takmao" required>
+                </div>
+
+                <div>
+                    <label for="commune" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Commune / Town</label>
+                    <input type="text" id="commune" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1234 Main Street" required>
+                </div>
+                
+                <div>
+                    <label for="zipcode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zipcode</label>
+                    <input type="url" id="zipcode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="177200" required>
+                </div>
+
+                <div class="mb-6">
+                    <label for="village" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Village / Building / Street</label>
+                    <input type="text" id="village" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phnom Penh Tower, Floor# 80">
+                </div> 
+
+                <div>
+                    <label for="pinMap" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pin map</label>
+                    <button type="url" id="pinMap" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="177200" required>
+                        <svg class="w-5 h-5 text-gray-800 dark:text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                            <path d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                        </svg>
+                    </button>
+                </div>   
+                
+            </div>
+            <div class="flex flex-row justify-between items-center">
+                <a href="{{ request.META.HTTP_REFERER }}" class="px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-700 dark:hover:bg-gray-800 rounded-md drop-shadow-md" title="Back">
+                    <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+                      </svg>
+                </a>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+            </div>
+        </form>
+
+        
+          
     </section>
 {% endblock %}
 {% block javascript %}
+<script>
+    const form = document.getElementById("userAddressForm");
+    const nameSelect = document.getElementById("name");
+    const ADDRESS_CHOICES = [
+        ['home', 'Home'],
+        ['work', 'Work'],
+        ['birthplace', 'Birthplace'],
+        ['other', 'Other'],
+    ];
+
+    // Clear any existing options
+    nameSelect.innerHTML = "";
+
+    // Populate the select element with the choices
+    ADDRESS_CHOICES.forEach((choice) => {
+        const option = document.createElement("option");
+        option.value = choice[0];
+        option.textContent = choice[1];
+        nameSelect.appendChild(option);
+    });
+    
+    // Add event listener for form submission
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+    
+      const name = nameSelect.value;
+      const address = document.getElementById("address").value;
+      // Get other form field values as needed
+    
+      try {
+        // Make a POST request to create UserAddress
+        const response = await axios.post("/api/user/addresses/", {
+          name,
+          address,
+          // Include other fields here
+        });
+    
+        // Handle the success response here
+        console.log("UserAddress created:", response.data);
+      } catch (error) {
+        // Handle the error here
+        console.error("Error creating UserAddress:", error);
+      }
+    });
+    
+  </script>
+  
 {% endblock%}

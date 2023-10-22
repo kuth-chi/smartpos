@@ -19,6 +19,7 @@ class Organization(models.Model):
     description = models.TextField(verbose_name=_("Description"), blank=True)
     is_active = models.BooleanField(default=True, verbose_name=_("Active"))
     is_permanent_closed = models.BooleanField(default=False, verbose_name=_("Permanent Closed"))
+    created_by = models.ForeignKey('accounts.User', null=True, blank=True, on_delete=models.CASCADE) # Reference to User
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
     
