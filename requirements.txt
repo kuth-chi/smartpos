@@ -46,7 +46,7 @@ PyYAML==6.0.1
 qrcode==7.4.2
 rcssmin==1.1.1
 requests==2.31.0
-rjsmin==1.2.1
+rjsmin==1.2.2
 rsa==4.9
 s3transfer==0.6.2
 six==1.16.0
