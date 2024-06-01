@@ -13,7 +13,7 @@ Django==4.2.5
 django-appconf==1.0.5
 django-cors-headers==4.3.0
 django-environ==0.11.2
-django-filter==23.3
+django-filter==24.2
 django-guardian==2.4.0
 django-rosetta==0.9.9
 django-storages==1.14.2
