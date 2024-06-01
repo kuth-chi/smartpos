@@ -16,7 +16,7 @@ django-environ==0.11.2
 django-filter==23.3
 django-guardian==2.4.0
 django-rosetta==0.9.9
-django-storages==1.14.2
+django-storages==1.14.3
 djangorestframework==3.14.0
 folium==0.14.0
 gunicorn==21.2.0
